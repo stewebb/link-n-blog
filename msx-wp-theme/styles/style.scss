@@ -1,6 +1,7 @@
 @import '_variables.scss';
-@import '_imports.scss';
-//@import '_components.scss';
+
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+
 @import '_layouts.scss';
 
 @import 'Navbar.scss';
