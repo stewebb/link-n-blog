@@ -1,2 +1,6 @@
 wordpress/
 node_modules/
+
+# CSS are compiled by SASS automatically.
+*.css
+*.map

@@ -8,6 +8,7 @@
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
+    <?php require_once(get_template_directory() . "/includes/Navbar.php"); ?>
     <header>
         <h1><?php bloginfo('name'); ?></h1>
         <p><?php bloginfo('description'); ?></p>
