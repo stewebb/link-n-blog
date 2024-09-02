@@ -8,21 +8,28 @@
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
-    <?php require_once(get_template_directory() . "/includes/Navbar.php"); ?>
-    <header>
-        <h1><?php bloginfo('name'); ?></h1>
-        <p><?php bloginfo('description'); ?></p>
-    </header>
 
-    <main>
-        <h2>Hello, World!</h2>
-        <p>Welcome to your new WordPress theme!</p>
-    </main>
+    <div id="app">
+        <?php require_once(get_template_directory() . "/includes/Navbar.php"); ?>
 
-    <footer>
-        <p>&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?></p>
-    </footer>
+        <main>
+            <h1>Welcome to My Homepage</h1>
+            <ul>
+                <?php
+                for ($i = 1; $i <= 5; $i++) {
+                    $url = get_theme_mod("link_{$i}_url");
+                    $text = get_theme_mod("link_{$i}_text");
 
-    <?php wp_footer(); ?>
+                    if ($url && $text) {
+                        echo '<li><a href="' . esc_url($url) . '">' . esc_html($text) . '</a></li>';
+                    }
+                }
+                ?>
+            </ul>
+        </main>
+
+        <?php require_once(get_template_directory() . "/includes/Footer.php"); ?>
+        <?php wp_footer(); ?>
+    </div>
 </body>
 </html>

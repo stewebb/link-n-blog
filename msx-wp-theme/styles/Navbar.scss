@@ -24,6 +24,11 @@
             border-bottom: 3px solid $primary;
         }
     }
+
+    .custom-logo {
+        width: auto;
+        max-height: 40px;
+    }
 }
 
 // Active navigation links
@@ -35,7 +40,7 @@
 }
 
 // Additional header or top bar
-.super-header {
-    height: 60px;
-    z-index: 1010;  
-}
+//.super-header {
+//    height: 60px;
+//    z-index: 1010;  
+//}
