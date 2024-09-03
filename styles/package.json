@@ -2,12 +2,14 @@
     "devDependencies": {
         "cssnano": "^7.0.5",
         "postcss-cli": "^11.0.0",
+        "rimraf": "^6.0.1",
         "sass": "^1.77.8"
     },
     "scripts": {
+        "clean": "rimraf dist",
         "build": "sass src/:dist/",
         "minify": "postcss dist/*.css --use cssnano --dir dist/",
-        "start": "npm run build && npm run minify"
+        "start": "npm run clean && npm run build && npm run minify"
     },
     "dependencies": {
         "bootstrap": "^5.3.3"
