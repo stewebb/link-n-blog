@@ -1,21 +1,23 @@
 #!/bin/bash
 
-# Variables
-THEME_PATH="wordpress/wp-content/themes/msx-wp-theme/"
-SOURCE_PATH="msx-wp-theme/"
+# Source folders
+SRC_THEME_DIR="theme/"
+SRC_STYLE_DIR="styles/"
 
-# Compile SCSS
-cd msx-wp-theme
+# Destination folders
+THEME_NAME="link-n-blog"
+DIST_THEME_ROOT="/home/vboxuser/MSX/wordpress/wp-content/themes/"
+DIST_THEME_DIR="${DIST_THEME_ROOT}${THEME_NAME}/"
+
+# Step 2: compile SCSS
+cd "$SRC_STYLE_DIR" || exit
 npm install
-npm run build-css
+npm start
 cd ..
 
-# Copy theme files
-sudo rm -rf "$THEME_PATH"
-sudo mkdir -p "$THEME_PATH"
+# Step 3: copy theme files
+sudo rm -rf "$DIST_THEME_DIR"
+sudo mkdir -p "$DIST_THEME_DIR"
 
-sudo cp -r  "${SOURCE_PATH}includes"        "$THEME_PATH"
-sudo cp     "${SOURCE_PATH}index.php"       "$THEME_PATH"
-sudo cp     "${SOURCE_PATH}functions.php"   "$THEME_PATH"
-sudo cp     "${SOURCE_PATH}style.css"       "$THEME_PATH"
-sudo cp     "${SOURCE_PATH}style.css.map"   "$THEME_PATH"
+sudo cp -r "$SRC_THEME_DIR." "$DIST_THEME_DIR"
+sudo cp -r "$SRC_STYLE_DIR/dist" "$DIST_THEME_DIR/styles"

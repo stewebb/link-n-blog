@@ -50,6 +50,23 @@
 
 
     add_action('after_setup_theme', 'mytheme_setup');
-    add_action('after_setup_theme', 'mytheme_setup');
-    add_action('wp_enqueue_scripts', 'hello_world_theme_enqueue_styles');
+    //add_action('after_setup_theme', 'mytheme_setup');
+
+
+    //function hello_world_theme_enqueue_styles() {
+    //    // Correctly enqueue the stylesheet from /includes/Common.css
+    //    wp_enqueue_style('mytheme-style', get_template_directory_uri() . '/includes/Common.css');
+    //}
+
+    //add_action('wp_enqueue_scripts', 'hello_world_theme_enqueue_styles');
+
+    // The enqueue function
+    //add_action('wp_enqueue_scripts', function() {
+    //    //echo get_template_directory_uri();
+    //    wp_enqueue_style('mytheme-style', get_stylesheet_directory_uri() . '/styles/Common.css');
+    //});
+
+    add_action('wp_enqueue_scripts', function() {
+        wp_enqueue_style('MSX', get_stylesheet_uri());
+    });
 ?>
