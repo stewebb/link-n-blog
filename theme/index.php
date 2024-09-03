@@ -12,21 +12,32 @@
     <div id="app">
         <?php require_once(get_template_directory() . "/includes/Navbar.php"); ?>
 
-        <main>
-            <h1>Welcome to My Homepage</h1>
-            <ul>
-                <?php
-                for ($i = 1; $i <= 5; $i++) {
-                    $url = get_theme_mod("link_{$i}_url");
-                    $text = get_theme_mod("link_{$i}_text");
-
-                    if ($url && $text) {
-                        echo '<li><a href="' . esc_url($url) . '">' . esc_html($text) . '</a></li>';
-                    }
-                }
-                ?>
-            </ul>
-        </main>
+        <div id="content">
+    <?php
+    // Fetch links from custom post type
+    $args = array(
+        'post_type' => 'link',
+        'posts_per_page' => -1,
+        'orderby' => 'menu_order',
+        'order' => 'ASC'
+    );
+    $links = new WP_Query($args);
+    
+    if ($links->have_posts()) : ?>
+        <ul class="link-list">
+            <?php while ($links->have_posts()) : $links->the_post(); ?>
+                <li>
+                    <a href="<?php the_field('link_url'); ?>" target="_blank">
+                        <?php the_title(); ?>
+                    </a>
+                </li>
+            <?php endwhile; ?>
+        </ul>
+    <?php else : ?>
+        <p>No links found.</p>
+    <?php endif; ?>
+    <?php wp_reset_postdata(); ?>
+</div>
 
         <?php require_once(get_template_directory() . "/includes/Footer.php"); ?>
         <?php wp_footer(); ?>
