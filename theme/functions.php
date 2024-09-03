@@ -26,14 +26,15 @@
     });
     
     */
- // Sanitize function for custom_links setting
- function sanitize_textarea_field($input) {
-    // Convert line breaks to HTML <br> tags
-    return wp_kses_post($input);
-}
+    // Sanitize function for custom_links setting
+    //function sanitize_textarea_field($input) {
+    //    // Convert line breaks to HTML <br> tags
+    //    return wp_kses_post($input);
+    //}
 
     
     // Add Customizer settings and controls
+    /*
     add_action('customize_register', function($wp_customize) {
     
         // Add a new section to the Customizer
@@ -56,6 +57,7 @@
             'type'     => 'textarea', // Use 'textarea' for multiple links input
         )));
     });
+    */
     
    
     
@@ -98,6 +100,98 @@
 
     add_action('customize_register', 'lnb_admin_register');
     */
+
+    /*
+    add_action('customize_register', function($wp_customize) {
+        // Add a section for custom links
+        $wp_customize->add_section('homepage_links_section', array(
+            'title'    => __('Homepage Links', 'mytheme'),
+            'priority' => 30,
+        ));
+
+        $i = 1;
+    
+        
+        // Add settings for each link
+        //for ($i = 1; $i <= 5; $i++) {
+            $wp_customize->add_setting("link_{$i}_url", array(
+                'default' => '',
+                'sanitize_callback' => 'esc_url_raw',
+            ));
+    
+            $wp_customize->add_control("link_{$i}_url", array(
+                'label'    => __("Link $i URL", 'mytheme'),
+                'section'  => 'homepage_links_section',
+                'type'     => 'url',
+            ));
+    
+            $wp_customize->add_setting("link_{$i}_text", array(
+                'default' => "Link $i",
+                'sanitize_callback' => 'sanitize_text_field',
+            ));
+    
+            $wp_customize->add_control("link_{$i}_text", array(
+                'label'    => __("Link $i Text", 'mytheme'),
+                'section'  => 'homepage_links_section',
+                'type'     => 'text',
+            ));
+        //}
+    });
+    */
+    add_action('customize_register', function($wp_customize) {
+        // Add a section for custom links
+        $wp_customize->add_section('homepage_links_section', array(
+            'title'    => __('Homepage Links', 'mytheme'),
+            'priority' => 30,
+        ));
+    
+        // Add setting for the number of links
+        $wp_customize->add_setting('num_links', array(
+            'default'           => 3,
+            'sanitize_callback' => 'absint',
+        ));
+    
+        $wp_customize->add_control('num_links', array(
+            'label'    => __('Number of Links', 'mytheme'),
+            'section'  => 'homepage_links_section',
+            'type'     => 'number',
+            'input_attrs' => array(
+                'min' => 1,
+                'max' => 10,
+                'step' => 1,
+            ),
+        ));
+    
+        // Generate settings and controls based on the number of links
+        $num_links = get_theme_mod('num_links', 3); // Default to 3 if not set
+    
+        for ($i = 1; $i <= $num_links; $i++) {
+            // Add setting for each link URL
+            $wp_customize->add_setting("link_{$i}_url", array(
+                'default'           => '',
+                'sanitize_callback' => 'esc_url_raw',
+            ));
+    
+            $wp_customize->add_control("link_{$i}_url", array(
+                'label'    => __("Link $i URL", 'mytheme'),
+                'section'  => 'homepage_links_section',
+                'type'     => 'url',
+            ));
+    
+            // Add setting for each link text
+            $wp_customize->add_setting("link_{$i}_text", array(
+                'default'           => "Link $i",
+                'sanitize_callback' => 'sanitize_text_field',
+            ));
+    
+            $wp_customize->add_control("link_{$i}_text", array(
+                'label'    => __("Link $i Text", 'mytheme'),
+                'section'  => 'homepage_links_section',
+                'type'     => 'text',
+            ));
+        }
+    });
+    
 
     /*
     add_action('customize_register', function($wp_customize) {

@@ -12,32 +12,32 @@
     <div id="app">
         <?php require_once(get_template_directory() . "/includes/Navbar.php"); ?>
 
-        <div id="content">
-    <?php
-    // Fetch links from custom post type
-    $args = array(
-        'post_type' => 'link',
-        'posts_per_page' => -1,
-        'orderby' => 'menu_order',
-        'order' => 'ASC'
-    );
-    $links = new WP_Query($args);
     
-    if ($links->have_posts()) : ?>
-        <ul class="link-list">
-            <?php while ($links->have_posts()) : $links->the_post(); ?>
-                <li>
-                    <a href="<?php the_field('link_url'); ?>" target="_blank">
-                        <?php the_title(); ?>
-                    </a>
-                </li>
-            <?php endwhile; ?>
-        </ul>
-    <?php else : ?>
-        <p>No links found.</p>
-    <?php endif; ?>
-    <?php wp_reset_postdata(); ?>
-</div>
+
+        <?php
+// Get the number of links from the Customizer
+$num_links = get_theme_mod('num_links', 3); // Default to 3 if not set
+
+if ($num_links > 0) {
+    echo '<ul class="homepage-links">';
+
+    for ($i = 1; $i <= $num_links; $i++) {
+        $link_url = get_theme_mod("link_{$i}_url");
+        $link_text = get_theme_mod("link_{$i}_text", "Link $i");
+
+        if (!empty($link_url)) {
+            echo '<li>';
+            echo '<a href="' . esc_url($link_url) . '">' . esc_html($link_text) . '</a>';
+            echo '</li>';
+        }
+    }
+
+    echo '</ul>';
+}
+?>
+
+
+        
 
         <?php require_once(get_template_directory() . "/includes/Footer.php"); ?>
         <?php wp_footer(); ?>
