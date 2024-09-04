@@ -1,3 +1,18 @@
+<?php
+function lighten_color($hex, $percent) {
+    $hex = str_replace('#', '', $hex);
+    $r = hexdec(substr($hex, 0, 2));
+    $g = hexdec(substr($hex, 2, 2));
+    $b = hexdec(substr($hex, 4, 2));
+
+    $r = min(255, max(0, $r + ($r * $percent)));
+    $g = min(255, max(0, $g + ($g * $percent)));
+    $b = min(255, max(0, $b + ($b * $percent)));
+
+    return sprintf("#%02x%02x%02x", $r, $g, $b);
+}
+?>
+
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -13,84 +28,49 @@
     <div id="app">
         <?php require_once(get_template_directory() . "/includes/Navbar.php"); ?>
 
-    
-        <!--
-        <div class="event-item disabled" role="button" tabindex="0" aria-disabled="true">
-    
-    <-- Banner --
-    <div class="banner-container">
-        <img src="path-to-banner-image.jpg" alt="Event Name" style="width: 100%; height: auto;" />
-    </div>
-
-    <-- Brief info --
-    <div class="px-3 pt-3 pb-1">
-        <h5 class="fw-bold text-secondary" id="eventNameLabel">Event Name</h5>
-
-        <-- Time --
-        <div class="small mb-1">
-            <i class="fa-regular fa-clock fa-fw" aria-label="Time"></i>&nbsp;Event Time
-        </div>
-
-        <-- Location --
-        <div class="small mb-1">
-            <i class="fa-solid fa-location-dot fa-fw" aria-label="Location"></i>&nbsp;Event Location
-        </div>
-
-        <-- Organizer --
-        <div class="small mb-1">
-            <i class="fa-solid fa-users fa-fw" aria-label="Organizer"></i>&nbsp;Event Organizer
-        </div>
-
-        <-- Short description --
-        <div class="small mb-1">
-            <i class="fa-regular fa-comment fa-fw" aria-label="Short description"></i>&nbsp;Short Description
-        </div>
-        
-        <-- Ticket Info --
-        <div class="small mb-1">
-            <-- Ticket info placeholder --
-            Ticket Information
-        </div>
-    </div>
-
-    <-- Like button --
-    <div class="d-flex justify-content-center mb-3">
-        <-- Favorite icon placeholder --
-        <span class="favorite-icon"></span>
-    </div>
-</div>
-
-        -->
-
         <div class="container-fluid">
-
             <!-- Hero Section -->
             <div class="p-3 mb-3">
                 <?= get_theme_mod('hero'); ?>
             </div>
 
-            <div class="col-xl-3 col-lg-4 col-sm-6 menu-col">
+            <div class="row">
+                
+                    
+                    
             <?php
                 $num_links = get_theme_mod('num_links', 3);
                 for ($i = 1; $i <= $num_links; $i++) {
                     $link_text = get_theme_mod("link_{$i}_text", "Link $i");
                     $image_url = get_theme_mod("link_{$i}_image");
+                    $link_color = get_theme_mod("link_{$i}_color");
 
-                    echo '<div class="link-item p-1" role="button" tabindex="0" aria-disabled="true">';
+                    echo '<div class="col-xl-3 col-lg-4 col-sm-6 menu-col">';
+                    echo '<div class="link-item p-1">';
                     if (!empty($image_url)) {
                         echo '<div class="banner-container">';
                         echo '<img src="' . esc_url($image_url) . '" alt="' . esc_attr($link_text) . '">';
                         echo '</div>';
                     }
-                    echo '  <span class="text-primary fw-bold">' . esc_attr($link_text) . '</span>';
-                    echo '</div>';
+                    ?>
+                    <div class="overlay">
+                        <button class="btn btn-primary">Button 1</button>
+                        <button class="btn btn-secondary">Button 2</button>
+                        <button class="btn btn-success">Button 3</button>
+                    </div>
+                    <?php
+                    echo '<span class="fw-bold" style="color:' . esc_attr($link_color) . ';">' . esc_attr($link_text) . '</span>';
+                    echo '</div>'; // Close .link-item
+                    echo '</div>'; // Close .col-xl-3
                 }
-                
             ?>
 
-            
+                    
+                
             </div>
         </div>
+    </div>
+
 <?php
 //$num_links = get_theme_mod('num_links', 3); // Default to 3 if not set
 

@@ -2,62 +2,62 @@
 
 // Styles the container of an event item, typically a card or a list item.
 .link-item {
+    position: relative; // Ensures the overlay is positioned relative to this container
     display: flex;
     flex-direction: column;
     height: 100%;
     justify-content: space-between;
-
+    overflow: hidden;
     background-color: #fff;
     border: 1px solid var(--bs-gray-300);
     margin: 0;
     font-size: 18px;
     transition: background-color 0.3s, box-shadow 0.3s;
 
-    // Defines styles when the .event-item is hovered over.
+    // Styles when the .link-item is hovered over
     &:hover {
-        background-color: $primary-600;
         cursor: pointer;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    // Styles for .event-item when it is in a disabled state.
-    /*
-    &.disabled {
-        background-color: var(--bs-gray-200);
-        border: 1px solid var(--bs-gray-300);
-        color: var(--bs-gray);
-        cursor: not-allowed;
-        box-shadow: none;
-
-        // Disabled .event-item.
-        &:hover {
-            background-color: var(--bs-gray-200);
-            box-shadow: none;
-        }
-
-        // Images within a disabled .event-item (black and white).
+        
         img {
-            filter: grayscale(100%);
+            opacity: 0.3; // Optional: fade the image out on hover
         }
-
-        #eventNameLabel {
-            color: var(--bs-gray)!important;
-        }
-
-        .favorite-icon {
-            color: var(--bs-gray)!important;
+        
+        .overlay {
+            opacity: 1;
         }
     }
-    */
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); // Dark background for the overlay
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1;
+
+        button {
+            margin: 5px;
+        }
+    }
 
     .banner-container {
         position: relative;
+
         img {
             width: 100%;
             height: auto;
         }
     }
 }
+
 
 .menu-row {
     margin-right: -15px;
