@@ -167,4 +167,11 @@
         //wp_enqueue_style('Footer', $dir_uri . '/styles/Footer.css');
         //wp_enqueue_style('LinkItem', $dir_uri . '/styles/LinkItem.css');
     });
+
+    function register_my_custom_menus() {
+        register_nav_menus(array(
+            'your_custom_menu_location' => __('Custom Menu'),
+        ));
+    }
+    add_action('init', 'register_my_custom_menus');
 ?>

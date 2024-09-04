@@ -1,10 +1,8 @@
 <nav class="navbar navbar-expand-sm no-padding pt-0 pb-0">
     <div class="container-fluid d-flex align-items-center">
+
         <!-- Logo -->
         <div class="d-flex align-items-center">
-            <!--
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/MSH_Wide.png" style="max-height: 40px;" alt="Logo" />
-            -->
             <?php
                 if (function_exists('the_custom_logo') && has_custom_logo()) {
                     the_custom_logo();
@@ -38,13 +36,26 @@
                 <li class="nav-item">
                     <a class="nav-link navbar-border" href="<?php echo home_url('/about'); ?>">About</a>
                 </li>
+
+                <?php
+        // Display the custom menu
+        wp_nav_menu(array(
+            'theme_location' => 'your_custom_menu_location', // Define this in functions.php
+            'container' => false,
+            'menu_class' => 'nav-item',
+            'items_wrap' => '%3$s',
+        ));
+        ?>
             </ul>
 
+            <!--
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a class="nav-link navbar-border" href="https://github.com/stewebb/MSH" target="_blank" rel="noopener noreferrer">GitHub</a>
                 </li>
             </ul>
+            -->
         </div>
+        
     </div>
 </nav>
