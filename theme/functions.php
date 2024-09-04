@@ -99,17 +99,30 @@
                 'description' => __('Internal link (e.g., /about or /blog)', 'mytheme'),
             ));
 
-            // Description Setting
-            $wp_customize->add_setting("link_{$i}_description", array(
-                'default'           => '',
-                'sanitize_callback' => 'sanitize_textarea_field',
+            // Color picker setting
+            $wp_customize->add_setting("link_{$i}_color", array(
+                'default'           => '#E61F93', // Default color
+                'sanitize_callback' => 'sanitize_hex_color', // Sanitize as hex color
             ));
 
-            $wp_customize->add_control("link_{$i}_description", array(
-                'label'    => __("Description #{$i}", 'mytheme'),
+            $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, "link_{$i}_color", array(
+                'label'    => __("Link Color #{$i}", 'mytheme'),
                 'section'  => 'homepage_links_section',
-                'type'     => 'textarea',
-            ));
+                'settings' => "link_{$i}_color",
+                'description' => __('Choose a color for the link.', 'mytheme'),
+            )));
+
+            // Description Setting
+            //$wp_customize->add_setting("link_{$i}_description", array(
+            //    'default'           => '',
+            //    'sanitize_callback' => 'sanitize_textarea_field',
+            //));
+
+            //$wp_customize->add_control("link_{$i}_description", array(
+            //    'label'    => __("Description #{$i}", 'mytheme'),
+            //    'section'  => 'homepage_links_section',
+            //    'type'     => 'textarea',
+            //));
 
             // Cover Image Setting
             $wp_customize->add_setting("link_{$i}_image", array(
@@ -148,8 +161,8 @@
 
     // Enqueue styles
     add_action('wp_enqueue_scripts', function() {
-        $dir_uri = get_template_directory_uri();
-        wp_enqueue_style('LNB', $dir_uri . '/styles/lnb.min.css');
+        $dir_uri = get_stylesheet_uri();
+        wp_enqueue_style('LNB', $dir_uri);
         //wp_enqueue_style('Navbar', $dir_uri . '/styles/Navbar.css');
         //wp_enqueue_style('Footer', $dir_uri . '/styles/Footer.css');
         //wp_enqueue_style('LinkItem', $dir_uri . '/styles/LinkItem.css');

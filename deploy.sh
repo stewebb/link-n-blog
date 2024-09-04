@@ -20,4 +20,4 @@ sudo rm -rf "$DIST_THEME_DIR"
 sudo mkdir -p "$DIST_THEME_DIR"
 
 sudo cp -r "$SRC_THEME_DIR." "$DIST_THEME_DIR"
-sudo cp -r "$SRC_STYLE_DIR/dist" "$DIST_THEME_DIR/styles"
+sudo cp -r "$SRC_STYLE_DIR/dist/lnb.min.css" "$DIST_THEME_DIR/style.css"

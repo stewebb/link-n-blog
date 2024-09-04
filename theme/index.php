@@ -72,15 +72,20 @@
             <div class="col-xl-3 col-lg-4 col-sm-6 menu-col">
             <?php
                 $num_links = get_theme_mod('num_links', 3);
-                //if ($num_links > 0) {
                 for ($i = 1; $i <= $num_links; $i++) {
                     $link_text = get_theme_mod("link_{$i}_text", "Link $i");
-                    
-                    echo '<div class="link-item" role="button" tabindex="0" aria-disabled="true">';
+                    $image_url = get_theme_mod("link_{$i}_image");
+
+                    echo '<div class="link-item p-1" role="button" tabindex="0" aria-disabled="true">';
+                    if (!empty($image_url)) {
+                        echo '<div class="banner-container">';
+                        echo '<img src="' . esc_url($image_url) . '" alt="' . esc_attr($link_text) . '">';
+                        echo '</div>';
+                    }
                     echo '  <span class="text-primary fw-bold">' . esc_attr($link_text) . '</span>';
                     echo '</div>';
                 }
-                //}
+                
             ?>
 
             

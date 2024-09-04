@@ -15,12 +15,13 @@
 
     // Defines styles when the .event-item is hovered over.
     &:hover {
-        background-color: $primary-500;
+        background-color: $primary-600;
         cursor: pointer;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     // Styles for .event-item when it is in a disabled state.
+    /*
     &.disabled {
         background-color: var(--bs-gray-200);
         border: 1px solid var(--bs-gray-300);
@@ -47,6 +48,7 @@
             color: var(--bs-gray)!important;
         }
     }
+    */
 
     .banner-container {
         position: relative;
@@ -67,5 +69,5 @@
 }
 
 .content-container {
-    flex-grow: 1;  /* Takes up all available space */
+    flex-grow: 1;
 }

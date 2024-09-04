@@ -6,12 +6,10 @@
             <img src="<?php echo get_template_directory_uri(); ?>/assets/images/MSH_Wide.png" style="max-height: 40px;" alt="Logo" />
             -->
             <?php
-
-                // function_exists('the_custom_logo') ? the_custom_logo() : echo "Logo";
-                if (function_exists('the_custom_logo')) {
+                if (function_exists('the_custom_logo') && has_custom_logo()) {
                     the_custom_logo();
                 } else {
-                    echo "Logo";
+                    echo '<img class="custom-logo" src="' . get_template_directory_uri() . '/assets/images/LNB_Square.png" alt="LNB Default Logo">';
                 }
             ?>
         </div>
