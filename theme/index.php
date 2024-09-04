@@ -81,6 +81,7 @@ function getTextColorBasedOnBackground($hex) {
  * @param float $percentage The percentage to lighten the color by (e.g., 20 for 20%).
  * @return string The lightened color in hexadecimal format.
  */
+
 function lightenColor($hex, $percentage) {
     // Remove '#' if present
     $hex = ltrim($hex, '#');
@@ -219,10 +220,6 @@ if ($num_links > 0) {
     echo '</ul>';
 }
 ?>
-
-
-
-        
 
         <?php require_once(get_template_directory() . "/includes/Footer.php"); ?>
         <?php wp_footer(); ?>
