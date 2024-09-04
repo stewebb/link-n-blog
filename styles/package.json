@@ -7,8 +7,8 @@
     },
     "scripts": {
         "clean": "rimraf dist",
-        "build": "sass src/:dist/",
-        "minify": "postcss dist/*.css --use cssnano --dir dist/",
+        "build": "sass src/style.scss:dist/lnb.style.css --no-source-map",
+        "minify": "cleancss -o dist/lnb.min.css dist/lnb.style.css",
         "start": "npm run clean && npm run build && npm run minify"
     },
     "dependencies": {

@@ -149,9 +149,9 @@
     // Enqueue styles
     add_action('wp_enqueue_scripts', function() {
         $dir_uri = get_template_directory_uri();
-        wp_enqueue_style('Common', $dir_uri . '/styles/Common.css');
-        wp_enqueue_style('Navbar', $dir_uri . '/styles/Navbar.css');
-        wp_enqueue_style('Footer', $dir_uri . '/styles/Footer.css');
-        wp_enqueue_style('LinkItem', $dir_uri . '/styles/LinkItem.css');
+        wp_enqueue_style('LNB', $dir_uri . '/styles/lnb.min.css');
+        //wp_enqueue_style('Navbar', $dir_uri . '/styles/Navbar.css');
+        //wp_enqueue_style('Footer', $dir_uri . '/styles/Footer.css');
+        //wp_enqueue_style('LinkItem', $dir_uri . '/styles/LinkItem.css');
     });
 ?>
