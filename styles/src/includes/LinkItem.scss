@@ -16,12 +16,12 @@
 
     // Styles when the .link-item is hovered over
     &:hover {
-        cursor: pointer;
+        //cursor: pointer;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         
-        img {
-            opacity: 0.3; // Optional: fade the image out on hover
-        }
+        //img {
+        //    opacity: 0.3; // Optional: fade the image out on hover
+        //}
         
         .overlay {
             opacity: 1;
@@ -34,7 +34,8 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.7); // Dark background for the overlay
+        //background-color: rgba($primary, 0.5);
+        background-color: $primary-700;
         display: flex;
         flex-direction: column;
         justify-content: center;

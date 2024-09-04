@@ -4,7 +4,7 @@
 .navbar {
     border-bottom: 1px solid #DFDFDF;
     z-index: 1020;
-    background-color: $primary-600;
+    background-color: $primary-700;
 
     * {
         font-weight: bold !important;
@@ -38,9 +38,3 @@
         color: white !important;
     }
 }
-
-// Additional header or top bar
-//.super-header {
-//    height: 60px;
-//    z-index: 1010;  
-//}
