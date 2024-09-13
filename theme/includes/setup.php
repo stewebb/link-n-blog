@@ -16,24 +16,32 @@ class StarterSite extends Timber\Site {
     }
 
     public function theme_supports() {
-        // Theme support options here
         add_theme_support( 'post-thumbnails' );
     }
 
     public function add_to_context( $context ) {
         $context['foo'] = 'bar';
         $context['menu'] = new Timber\Menu();
+        $context['home_url'] = home_url();
+        $context['is_custom_logo'] = has_custom_logo();
+        if (function_exists('the_custom_logo') && has_custom_logo()) {
+            $context['custom_logo'] = new Timber\Image(get_theme_mod('custom_logo'));
+        } else {
+            $context['default_logo_url'] = get_template_directory_uri() . '/assets/images/LNB_Square.png';
+        }
         return $context;
     }
 
     public function add_to_twig( $twig ) {
-        // Here you can add your own functions to Twig
         $twig->addExtension( new Twig\Extension\StringLoaderExtension() );
         return $twig;
     }
 }
 
 new StarterSite();
+
+
+
 
 // Add theme support for custom logo
 function mytheme_setup() {

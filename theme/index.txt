@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html {{ language_attributes|raw }}>
+<head>
+    <meta charset="{{ bloginfo.charset }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ theme_uri }}/assets/images/LNB_Square.png" sizes="32x32" />
+    <link rel="stylesheet" href="{{ bloginfo.stylesheet_url }}">
+    <title>{{ bloginfo.description }} | {{ bloginfo.name }}</title>
+    {{ wp_head()|raw }}
+</head>
+
+<body {{ body_class()|raw }}>
+
+    <div id="app">
+        {% include 'includes/Navbar.twig' %}
+
+        <div class="container-fluid">
+
+            <!-- Hero Section -->
+            <div class="p-3 mb-3">
+                {{ get_theme_mod('hero') | raw }}
+            </div>
+
+            <!-- Main Content: Iterate all results -->
+            <div class="row">  
+                {% set num_links = get_theme_mod('num_links', 3) %}
+                {% for i in 1..num_links %}
+                    {% set link_text = get_theme_mod('link_' ~ i ~ '_text', 'Link ' ~ i) %}
+                    {% set image_url = get_theme_mod('link_' ~ i ~ '_image') %}
+                    {% set link_color = get_theme_mod('link_' ~ i ~ '_color') %}
+
+                    <!-- Div for each result -->
+                    <div class="col-xl-3 col-lg-4 col-sm-6 menu-col">
+                        <div class="link-item p-1">
+
+                            <!-- Image -->
+                            <div class="banner-container">
+                                <img src="{{ image_url }}" alt="{{ link_text }}">
+                            </div>
+
+                            {% set boxBgColor = lightenColor(link_color, 40) %}
+                            {% set btnBgColor = getTextColorBasedOnBackground(boxBgColor) %}
+
+                            <!-- Overlay when hovered -->
+                            <div class="overlay" 
+                                onmouseover="this.style.backgroundColor='{{ boxBgColor }}';"
+                                onmouseout="this.style.backgroundColor='';"
+                            >
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-outline-{{ btnBgColor }}">
+                                        Visit
+                                    </button>
+
+                                    <button type="button" class="btn btn-outline-{{ btnBgColor }}">
+                                        About
+                                    </button>
+
+                                    <button type="button" class="btn btn-outline-{{ btnBgColor }}">
+                                        Share
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                    
+            </div>
+        </div>
+    </div>
+
+    {% include 'includes/Footer.twig' %}
+    {{ wp_footer()|raw }}
+</body>
+</html>

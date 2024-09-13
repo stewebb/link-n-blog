@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-sm no-padding pt-0 pb-0">
+    <div class="container-fluid d-flex align-items-center">
+
+        <!-- Logo -->
+        <div class="d-flex align-items-center">
+            {% if is_custom_logo %}
+                <img src="{{ custom_logo.src }}" alt="{{ custom_logo.alt }}" class="custom-logo">
+            {% else %}
+                <img class="custom-logo" src="{{ default_logo_url }}" alt="LNB Default Logo">
+            {% endif %}
+        </div>
+
+        <!-- Navbar Toggler -->
+        <button
+            class="navbar-toggler ms-auto"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Items -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item px-1">
+                    <a class="nav-link navbar-border active" href="{{ home_url }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link navbar-border" href="{{ home_url('/about') }}">About</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
