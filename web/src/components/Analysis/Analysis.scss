@@ -1,0 +1,18 @@
+/**
+ * Sets the height of the statistics-box component to utilize the available vertical space effectively. 
+ * The height calculation deducts the heights of various elements from the total viewport height (100vh), 
+ * ensuring that the statistics-box does not extend beyond the visible area, avoiding unnecessary page scrolling.
+ * 
+ * Breakdown of height deductions:
+ * - Navbar: 40px
+ * - Card Header: 50px
+ * - Additional vertical padding (py-3 class): 1.5rem
+ *
+ * The overflow-y: auto property enables vertical scrolling within the .statistics-box if the content inside 
+ * exceeds the available height.
+ */
+
+.statistics-box {
+    height: calc(100vh - 40px - 50px - 1.5rem);
+    overflow-y: auto;
+}
