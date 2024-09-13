@@ -2,11 +2,31 @@
 
 // Add a custom section for homepage links in the Customizer
 add_action('customize_register', function($wp_customize) {
+
     // Add a section for custom links
     $wp_customize->add_section('homepage_links_section', array(
         'title'    => __('Homepage Links', 'mytheme'),
         'priority' => 30,
     ));
+
+    // Register the HTML editor setting
+    $wp_customize->add_setting('hero_html', array(
+        'default'           => '',
+        'sanitize_callback' => 'wp_kses_post',  // Ensures the content is safe for HTML output
+    ));
+
+    // Add the HTML editor control
+    $wp_customize->add_control(new WP_Customize_Code_Editor_Control(
+        $wp_customize,
+        'hero_html',
+        array(
+            'label'     => __('Hero HTML', 'mytheme'),
+            'section'   => 'homepage_links_section',  // Ensure this is the correct section ID
+            'settings'  => 'hero_html',
+            'code_type' => 'text/html',
+        )
+    ));
+
 
     // Add setting for the number of links
     $wp_customize->add_setting('num_links', array(
