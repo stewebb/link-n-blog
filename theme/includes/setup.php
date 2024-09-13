@@ -20,7 +20,38 @@ function register_my_custom_menus() {
 add_action('init', 'register_my_custom_menus');
 
 // Enqueue styles
-add_action('wp_enqueue_scripts', function() {
-    $dir_uri = get_stylesheet_uri();
-    wp_enqueue_style('LNB', $dir_uri);
-});
+//add_action('wp_enqueue_scripts', function() {
+//    $dir_uri = get_stylesheet_uri();
+//    wp_enqueue_style('LNB', $dir_uri);
+//});
+
+function enqueue_react_assets() {
+    $build_dir = get_template_directory() . '/build/static';
+    
+    // Scan for JS and CSS files in the build directory
+    $js_files = glob($build_dir . '/js/*.js');
+    $css_files = glob($build_dir . '/css/*.css');
+    
+    // Enqueue the JS file
+    if (!empty($js_files)) {
+        wp_enqueue_script(
+            'react-app-js',
+            get_template_directory_uri() . '/build/static/js/' . basename($js_files[0]),
+            array(), // Dependencies can be added here if needed
+            null, // No versioning, since the filename is unique due to hashing
+            true // Load in the footer
+        );
+    }
+
+    // Enqueue the CSS file
+    if (!empty($css_files)) {
+        wp_enqueue_style(
+            'react-app-css',
+            get_template_directory_uri() . '/build/static/css/' . basename($css_files[0]),
+            array(), // Dependencies can be added here if needed
+            null // No versioning, as the filename is hashed
+        );
+    }
+}
+
+add_action('wp_enqueue_scripts', 'enqueue_react_assets');
