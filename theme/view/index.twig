@@ -28,23 +28,24 @@
 
                             <!-- Overlay when hovered -->
                             <div class="overlay"
-                                onmouseover="this.style.backgroundColor = lightenColor('{{ link.color }}', 40);"
+                                onmouseover="this.style.backgroundColor = lightenColor('{{ link.color }}', 90);"
                                 onmouseout="this.style.backgroundColor='';"
                             >
 
                                 <!-- Text -->
-                                <div class="text-primary fw-bold" style="color: {{ link.color }} !important;">
-                                    {{ link.text }}
-                                </div>{{ link.color }}
+                                <div class="text-primary fw-bold pacifico-font" style="color: {{ link.color }} !important;">
+                                    <h4>{{ link.text }}</h4>                  
+                                </div>
         
+                                <!-- Buttons -->
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-outline-{{ link.btnBgColor }}">
+                                    <button type="button" class="btn btn-outline-dark">
                                         Visit
                                     </button>
-                                    <button type="button" class="btn btn-outline-{{ link.btnBgColor }}">
+                                    <button type="button" class="btn btn-outline-dark">
                                         About
                                     </button>
-                                    <button type="button" class="btn btn-outline-{{ link.btnBgColor }}">
+                                    <button type="button" class="btn btn-outline-dark">
                                         Share
                                     </button>
                                 </div>

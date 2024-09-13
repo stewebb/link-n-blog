@@ -25,21 +25,23 @@ html, body {
 }
 
 /* 
- * Font: Fraunces
- * License: Open Font License
- * Copyright (c) 2018 The Fraunces Project Authors 
- * Source: https://github.com/undercasetype/Fraunces
- */
+ * Font Name: Pacifico
+ * Authors: Vernon Adams
+ * Contributors: Jacques Le Bailly, Botjo Nikoltchev, Ani Petrova, Raphael Alegbeleye
+ * License: SIL Open Font License, Version 1.1
+ * License URL: https://scripts.sil.org/OFL
+ * Project URL: https://github.com/googlefonts/Pacifico
+*/
 
 @font-face {
-    font-family: 'Fraunces';
-    src: url('../assets/fonts/Fraunces_72pt_Soft-Bold.ttf') format('truetype');
+    font-family: 'Pacifico';
+    src: url('../fonts/Pacifico-Regular.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 }
 
-.fraunces-font {
-    font-family: 'Fraunces';
+.pacifico-font {
+    font-family: 'Pacifico';
 }
 
 ::selection {
