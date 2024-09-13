@@ -14,3 +14,4 @@
     //}
 
     Timber::render( $templates, $context );
+?>

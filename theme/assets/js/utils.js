@@ -65,6 +65,7 @@ function getTextColorBasedOnBackground(hex) {
  * @param {number} percentage The percentage to lighten the color by (e.g., 20 for 20%).
  * @returns {string} The lightened color in hexadecimal format.
  */
+
 function lightenColor(hex, percentage) {
     // Remove '#' if present
     hex = hex.replace('#', '');

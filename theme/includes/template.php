@@ -46,7 +46,7 @@ class StarterSite extends Timber\Site {
             $link = new stdClass();
             $link->text = get_theme_mod("link_{$i}_text", "Link {$i}");
             $link->image_url = get_theme_mod("link_{$i}_image", '');
-            $link->color = get_theme_mod("link_{$i}_color", '#000');
+            $link->color = get_theme_mod("link_{$i}_color", '');
     
             // Color manipulation functions should be handled in PHP
             //$link->boxBgColor = lightenColor($link->color, 40); // Assume you have a function `lightenColor`

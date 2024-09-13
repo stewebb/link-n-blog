@@ -48,6 +48,8 @@ add_action('customize_register', function($wp_customize) {
     // Add additional controls (for example, text, url, image, color)
     $num_links = get_theme_mod('num_links', 3);
     for ($i = 1; $i <= $num_links; $i++) {
+
+        // Text
         $wp_customize->add_setting("link_{$i}_text", array(
             'default'           => "Link $i",
             'sanitize_callback' => 'sanitize_text_field',
@@ -58,24 +60,44 @@ add_action('customize_register', function($wp_customize) {
             'type'     => 'text',
         ));
 
+        // URL
         $wp_customize->add_setting("link_{$i}_url", array(
             'default'           => '',
             'sanitize_callback' => 'esc_url_raw',
         ));
+
         $wp_customize->add_control("link_{$i}_url", array(
             'label'    => __("External Link #{$i}", 'mytheme'),
             'section'  => 'homepage_links_section',
             'type'     => 'url',
         ));
 
+        // Color
         $wp_customize->add_setting("link_{$i}_color", array(
             'default'           => '#E61F93',
             'sanitize_callback' => 'sanitize_hex_color',
         ));
+
         $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, "link_{$i}_color", array(
             'label'    => __("Link Color #{$i}", 'mytheme'),
             'section'  => 'homepage_links_section',
             'settings' => "link_{$i}_color",
         )));
+
+        // Image
+        $wp_customize->add_setting("link_{$i}_image", array(
+            'default'           => '',
+            'sanitize_callback' => 'esc_url_raw',
+        ));
+
+        $wp_customize->add_control(new WP_Customize_Image_Control(
+            $wp_customize,
+            "link_{$i}_image",
+            array(
+                'label'    => __("Image #{$i}", 'mytheme'),
+                'section'  => 'homepage_links_section',
+                'settings' => "link_{$i}_image",
+            )
+        ));  
     }
 });
