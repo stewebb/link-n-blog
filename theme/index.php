@@ -9,6 +9,12 @@
 
     <div id="root"></div> <!-- This is where your React app will mount -->
 
+    <?php
+    $context = Timber::get_context();
+    Timber::render('index.twig', $context);
+    
+    ?>
+
     <?php wp_footer(); ?>
 </body>
 </html>

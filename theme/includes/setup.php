@@ -20,10 +20,10 @@ function register_my_custom_menus() {
 add_action('init', 'register_my_custom_menus');
 
 // Enqueue styles
-//add_action('wp_enqueue_scripts', function() {
-//    $dir_uri = get_stylesheet_uri();
-//    wp_enqueue_style('LNB', $dir_uri);
-//});
+add_action('wp_enqueue_scripts', function() {
+    $dir_uri = get_stylesheet_uri();
+    wp_enqueue_style('LNB', $dir_uri);
+});
 
 /*
 function LNB_enqueue_assets() {
@@ -44,6 +44,7 @@ function LNB_enqueue_assets() {
 */
 //add_action('wp_enqueue_scripts', 'enqueue_react_assets');
 
+/*
 add_action('wp_enqueue_scripts', function() {
     // Path to the asset-manifest.json
     $manifest_path = get_template_directory() . '/build/asset-manifest.json';
@@ -84,3 +85,4 @@ add_action('wp_enqueue_scripts', function() {
         }
     }
 });
+*/
