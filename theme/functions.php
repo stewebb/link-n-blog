@@ -1,177 +1,79 @@
 <?php
-    //class DividerControl extends \WP_Customize_Control {
-    //    public $type = 'divider';
-    //
-    //    public function render_content() {
-    //        if ($this->label) {
-    //            echo "<hr />";
-    //            echo "<b><center>" . esc_html($this->label) . "</center></b>";
-    //        }
-    //    }
-    //}
 
-    add_action('customize_register', function($wp_customize) {
-
-        // Add a section for custom links
-        $wp_customize->add_section('homepage_links_section', array(
-            'title'    => __('Homepage Links', 'mytheme'),
-            'priority' => 30,
-        ));
-
-        // Add setting for the number of links
-        $wp_customize->add_setting('num_links', array(
-            'default'           => 3,
-            'sanitize_callback' => 'absint',
-        ));
-
-        $wp_customize->add_control('num_links', array(
-            'label'    => __('Number of Links', 'mytheme'),
-            'section'  => 'homepage_links_section',
-            'type'     => 'number',
-            'input_attrs' => array(
-                'min' => 1,
-                'max' => 10,
-                'step' => 1,
+// Register Custom Post Type for Custom Links
+function register_custom_links_post_type() {
+    register_post_type('custom_link',
+        array(
+            'labels' => array(
+                'name' => __('Custom Links'),
+                'singular_name' => __('Custom Link')
             ),
-        ));
+            'public' => true,
+            'has_archive' => true,
+            'supports' => array('title', 'editor', 'thumbnail'),
+            'rewrite' => array('slug' => 'custom-links'),
+        )
+    );
+}
+add_action('init', 'register_custom_links_post_type');
 
-        // Add a setting for the hero section
-        $wp_customize->add_setting('hero', array(
-            'default'           => '',
-            'sanitize_callback' => 'wp_kses_post',
-        ));
 
-        $wp_customize->add_control('hero', array(
-            'label'         => __('Hero Section', 'mytheme'),
-            'description'   => __('HTML is supported.', 'mytheme'),
-            'section'       => 'homepage_links_section',
-            'type'          => 'textarea',
-        ));
+// Add Meta Boxes for Custom Link Fields
+function custom_link_meta_boxes() {
+    add_meta_box(
+        'link_info',
+        __('Link Information'),
+        'link_meta_box_callback',
+        'custom_link'
+    );
+}
+add_action('add_meta_boxes', 'custom_link_meta_boxes');
 
-        $num_links = get_theme_mod('num_links', 3);
-        for ($i = 1; $i <= $num_links; $i++) {
+// Meta Box Callback Function
+function link_meta_box_callback($post) {
+    $description = get_post_meta($post->ID, '_description', true);
+    $category = get_post_meta($post->ID, '_category', true);
+    $internal_pages = get_post_meta($post->ID, '_internal_pages', true);
+    $external_link = get_post_meta($post->ID, '_external_link', true);
+    $img = get_post_meta($post->ID, '_img', true);
 
-            // Add a divider
-            //$wp_customize->add_setting('divider', array(
-            //    'default'           => '',
-            //    'sanitize_callback' => 'wp_kses_post',
-            //));
-        
-            //$wp_customize->add_control(new DividerControl($wp_customize, 'divider', array(
-            //    'label'    => __("Link #{$i}", 'mytheme'),
-            //    'section'  => 'homepage_links_section',
-            //)));
+    echo '<label for="description">Description</label>';
+    echo '<textarea id="description" name="description">'. esc_textarea($description) .'</textarea>';
 
-            // Text Setting
-            $wp_customize->add_setting("link_{$i}_text", array(
-                'default'           => "Link $i",
-                'sanitize_callback' => 'sanitize_text_field',
-            ));
-                
-            $wp_customize->add_control("link_{$i}_text", array(
-                'label'    => __("Text #{$i}", 'mytheme'),
-                'section'  => 'homepage_links_section',
-                'type'     => 'text',
-            ));
+    echo '<label for="category">Category</label>';
+    echo '<input type="text" id="category" name="category" value="'. esc_attr($category) .'" />';
 
-            // External Link Setting
-            $wp_customize->add_setting("link_{$i}_url", array(
-                'default'           => '',
-                'sanitize_callback' => 'esc_url_raw',
-            ));
+    echo '<label for="internal_pages">Internal Pages (Comma-separated IDs)</label>';
+    echo '<input type="text" id="internal_pages" name="internal_pages" value="'. esc_attr($internal_pages) .'" />';
 
-            $wp_customize->add_control("link_{$i}_url", array(
-                'label'    => __("External Link #{$i}", 'mytheme'),
-                'section'  => 'homepage_links_section',
-                'type'     => 'url',
-            ));
+    echo '<label for="external_link">External Link</label>';
+    echo '<input type="url" id="external_link" name="external_link" value="'. esc_attr($external_link) .'" />';
 
-            // Internal Link Setting
-            $wp_customize->add_setting("link_{$i}_internal", array(
-                'default'           => '',
-                'sanitize_callback' => 'sanitize_text_field',
-            ));
+    echo '<label for="img">Image URL</label>';
+    echo '<input type="url" id="img" name="img" value="'. esc_attr($img) .'" />';
+}
 
-            $wp_customize->add_control("link_{$i}_internal", array(
-                'label'    => __("Internal Blog Link #{$i}", 'mytheme'),
-                'section'  => 'homepage_links_section',
-                'type'     => 'text',
-                'description' => __('Internal link (e.g., /about or /blog)', 'mytheme'),
-            ));
-
-            // Color picker setting
-            $wp_customize->add_setting("link_{$i}_color", array(
-                'default'           => '#E61F93', // Default color
-                'sanitize_callback' => 'sanitize_hex_color', // Sanitize as hex color
-            ));
-
-            $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, "link_{$i}_color", array(
-                'label'    => __("Link Color #{$i}", 'mytheme'),
-                'section'  => 'homepage_links_section',
-                'settings' => "link_{$i}_color",
-                'description' => __('Choose a color for the link.', 'mytheme'),
-            )));
-
-            // Description Setting
-            //$wp_customize->add_setting("link_{$i}_description", array(
-            //    'default'           => '',
-            //    'sanitize_callback' => 'sanitize_textarea_field',
-            //));
-
-            //$wp_customize->add_control("link_{$i}_description", array(
-            //    'label'    => __("Description #{$i}", 'mytheme'),
-            //    'section'  => 'homepage_links_section',
-            //    'type'     => 'textarea',
-            //));
-
-            // Cover Image Setting
-            $wp_customize->add_setting("link_{$i}_image", array(
-                'default'           => '',
-                'sanitize_callback' => 'esc_url_raw',
-            ));
-
-            $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, "link_{$i}_image", array(
-                'label'    => __("Cover Picture #{$i}", 'mytheme'),
-                'section'  => 'homepage_links_section',
-                'settings' => "link_{$i}_image",
-            )));
-        }
-    });
-
-    
-
-   
-
-    add_action('after_setup_theme', 'mytheme_setup');
-
-    
-
-    function mytheme_setup() {
-        add_theme_support('custom-logo', array(
-            'width'      => 200,
-            'height'     => 100,
-            'flex-width' => true,
-            'flex-height' => true,
-        ));
+// Save Meta Box Data
+function save_custom_link_meta_data($post_id) {
+    if (isset($_POST['description'])) {
+        update_post_meta($post_id, '_description', sanitize_text_field($_POST['description']));
     }
-    
-
-    add_action('after_setup_theme', 'mytheme_setup');
-
-
-    // Enqueue styles
-    add_action('wp_enqueue_scripts', function() {
-        $dir_uri = get_stylesheet_uri();
-        wp_enqueue_style('LNB', $dir_uri);
-        //wp_enqueue_style('Navbar', $dir_uri . '/styles/Navbar.css');
-        //wp_enqueue_style('Footer', $dir_uri . '/styles/Footer.css');
-        //wp_enqueue_style('LinkItem', $dir_uri . '/styles/LinkItem.css');
-    });
-
-    function register_my_custom_menus() {
-        register_nav_menus(array(
-            'your_custom_menu_location' => __('Custom Menu'),
-        ));
+    if (isset($_POST['category'])) {
+        update_post_meta($post_id, '_category', sanitize_text_field($_POST['category']));
     }
-    add_action('init', 'register_my_custom_menus');
-?>
+    if (isset($_POST['internal_pages'])) {
+        update_post_meta($post_id, '_internal_pages', sanitize_text_field($_POST['internal_pages']));
+    }
+    if (isset($_POST['external_link'])) {
+        update_post_meta($post_id, '_external_link', esc_url($_POST['external_link']));
+    }
+    if (isset($_POST['img'])) {
+        update_post_meta($post_id, '_img', esc_url($_POST['img']));
+    }
+}
+add_action('save_post', 'save_custom_link_meta_data');
+
+add_action('wp_enqueue_scripts', function() {
+    $dir_uri = get_stylesheet_uri();
+    wp_enqueue_style('LNB', $dir_uri);
+});
