@@ -1,5 +1,40 @@
 <?php
 
+if ( ! class_exists( 'Timber' ) ) {
+    add_action( 'admin_notices', function() {
+        echo '<div class="error"><p>Timber not activated. Make sure the Timber plugin is activated.</p></div>';
+    });
+    return;
+}
+
+class StarterSite extends Timber\Site {
+    public function __construct() {
+        add_action( 'after_setup_theme', array( $this, 'theme_supports' ) );
+        add_filter( 'timber/context', array( $this, 'add_to_context' ) );
+        add_filter( 'timber/twig', array( $this, 'add_to_twig' ) );
+        parent::__construct();
+    }
+
+    public function theme_supports() {
+        // Theme support options here
+        add_theme_support( 'post-thumbnails' );
+    }
+
+    public function add_to_context( $context ) {
+        $context['foo'] = 'bar';
+        $context['menu'] = new Timber\Menu();
+        return $context;
+    }
+
+    public function add_to_twig( $twig ) {
+        // Here you can add your own functions to Twig
+        $twig->addExtension( new Twig\Extension\StringLoaderExtension() );
+        return $twig;
+    }
+}
+
+new StarterSite();
+
 // Add theme support for custom logo
 function mytheme_setup() {
     add_theme_support('custom-logo', array(

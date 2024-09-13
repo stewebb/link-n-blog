@@ -1,20 +1,16 @@
-<!DOCTYPE html>
-<html <?php language_attributes(); ?>>
-<head>
-    <meta charset="<?php bloginfo('charset'); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php wp_head(); ?>
-</head>
-<body <?php body_class(); ?>>
+<?php
 
-    <div id="root"></div> <!-- This is where your React app will mount -->
+    $context = Timber::context();
 
-    <?php
-    $context = Timber::get_context();
-    Timber::render('index.twig', $context);
-    
-    ?>
+    $timber_post = new Timber\Post();
+    $context['post'] = $timber_post;
 
-    <?php wp_footer(); ?>
-</body>
-</html>
+    $templates = array( 'index.twig' );
+
+    if ( is_home() ) {
+        array_unshift( $templates, 'home.twig' );
+    } elseif ( is_single() ) {
+        array_unshift( $templates, 'single.twig' );
+    }
+
+    Timber::render( $templates, $context );

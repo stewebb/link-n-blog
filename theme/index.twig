@@ -1,1 +1,18 @@
-hello
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ site.name }}</title>
+    <link rel="stylesheet" href="{{ site.theme.link }}/style.css">
+</head>
+<body>
+    <h1>{{ site.name }}</h1>
+    <h2>{{ foo }}</h2>
+
+    {% for post in posts %}
+        <article>
+            <h3>{{ post.title }}</h3>
+            <div>{{ content.post.content }}</div>
+        </article>
+    {% endfor %}
+</body>
+</html>
