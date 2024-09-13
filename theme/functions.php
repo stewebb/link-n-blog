@@ -1,4 +1,7 @@
 <?php
+
+require_once get_template_directory() . '/includes/template.php';
+
 // Include theme setup functions
 require_once get_template_directory() . '/includes/setup.php';
 
