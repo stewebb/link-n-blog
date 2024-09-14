@@ -1,4 +1,4 @@
-![Link 'n' Blog](./theme/assets/images/LNB_Wide.png)
+<img src="./theme/assets/images/LNB_Wide.png" alt="Link 'n' Blog" style="max-width: 400px;">
 
 **Link 'n' Blog** is a custom WordPress theme that allows users to create a personalized landing page, with advanced features such as image covers, customizable links, and the ability to bundle external links with internal WordPress pages.
 
