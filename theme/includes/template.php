@@ -1,7 +1,18 @@
 <?php
 
-if ( ! class_exists( 'Timber' ) ) {
-    add_action( 'admin_notices', function() {
+function get_current_url() {
+    // Get the protocol (http or https)
+    $protocol = is_ssl() ? 'https' : 'http';
+
+    // Get the host (domain) and request URI
+    $current_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+    return $current_url;
+}
+
+
+if (!class_exists('Timber') ) {
+    add_action('admin_notices', function() {
         echo '<div class="error"><p>Timber not activated. Make sure the Timber plugin is activated.</p></div>';
     });
     return;
@@ -20,10 +31,19 @@ class StarterSite extends Timber\Site {
     }
 
     public function add_to_context( $context ) {
-        //$context['foo'] = 'bar';
+
+        // Pages
+        $context['page'] = [
+            'home' => home_url() . '/' ,
+            'articles' => home_url() . '/articles/'
+        ];
+
+        //var_dump($context['page']);
+        $context['current_url'] = get_current_url();
+        
 
         $context['menu'] = new Timber\Menu();
-        $context['home_url'] = home_url();
+        
         $context['is_custom_logo'] = has_custom_logo();
         if (function_exists('the_custom_logo') && has_custom_logo()) {
             $context['custom_logo'] = new Timber\Image(get_theme_mod('custom_logo'));

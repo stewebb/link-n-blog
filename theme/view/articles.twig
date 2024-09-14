@@ -11,23 +11,35 @@
         {% include 'view/Navbar.twig' %}
 
         <div class="container-fluid p-3">
-
             {% block content %}
-                <h1>All Articles</h1>
-                {% for post in posts %}
-                    <article>
-                        <h2><a href="{{ post.link }}">{{ post.title }}</a></h2>
-                        <div class="entry-summary">
-                            {{ post.preview }}
+
+                <!-- Title -->
+                <div class="fs-1">
+                    <span class="fw-bold">All</span>
+                    <span class="text-primary pacifico-font">Articles</span>
+                </div>
+
+                <!-- Article List -->
+                <div class="article-list">
+                    {% for post in posts %}
+                        <div class="card my-3 shadow-sm">
+                            <div class="card-body">
+                                <h2 class="card-title">
+                                    <a href="{{ post.link }}" class="text-decoration-none text-primary">{{ post.title }}</a>
+                                </h2>
+                                <p class="card-text">
+                                    {{ post.preview }}
+                                </p>
+                                <a href="{{ post.link }}" class="btn btn-outline-primary">Read more</a>
+                            </div>
                         </div>
-                    </article>
-                {% else %}
-                    <p>No posts found.</p>
-                {% endfor %}
+                    {% else %}
+                        <p class="text-center text-muted">No posts found.</p>
+                    {% endfor %}
+                </div>
+
             {% endblock %}
-            </div>
-
-
+        </div>
         {% include 'view/Footer.twig' %}
     </div>
 </body>

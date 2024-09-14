@@ -26,9 +26,18 @@
         <!-- Navbar Items -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
+
+                
+                <!-- Home -->
                 <li class="nav-item px-1">
-                    <a class="nav-link navbar-border active" href="{{ home_url }}">Home</a>
+                    <a class="nav-link navbar-border {% if current_url == page.home %}active{% endif %}" href="{{ page.home }}">Home</a>
                 </li>
+
+                <!-- Articles -->
+                <li class="nav-item px-1">
+                    <a class="nav-link navbar-border {% if current_url == page.articles %}active{% endif %}" href="{{ page.articles }}">Articles</a>
+                </li>
+
             </ul>
         </div>
     </div>

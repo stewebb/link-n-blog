@@ -1,0 +1,33 @@
+@import 'variables.scss';
+
+.article-list {
+    .card {
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-title a {
+            color: #5a5a5a;
+            &:hover {
+                color: $primary; // Bootstrap primary color
+            }
+        }
+
+        .card-text {
+            margin-top: 1rem;
+            color: #6c757d; // Bootstrap secondary color
+        }
+
+        .btn-outline-primary {
+            margin-top: 1.5rem;
+        }
+    }
+}
