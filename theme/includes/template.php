@@ -20,7 +20,7 @@ class StarterSite extends Timber\Site {
     }
 
     public function add_to_context( $context ) {
-        $context['foo'] = 'bar';
+        //$context['foo'] = 'bar';
 
         $context['menu'] = new Timber\Menu();
         $context['home_url'] = home_url();
@@ -42,18 +42,36 @@ class StarterSite extends Timber\Site {
         $num_links = get_theme_mod('num_links', 3);
         $context['links'] = [];
 
+        /*
         for ($i = 1; $i <= $num_links; $i++) {
             $link = new stdClass();
             $link->text = get_theme_mod("link_{$i}_text", "Link {$i}");
+            $link->category = get_theme_mod("link_{$i}_category", '');
             $link->image_url = get_theme_mod("link_{$i}_image", '');
             $link->color = get_theme_mod("link_{$i}_color", '');
-    
-            // Color manipulation functions should be handled in PHP
-            //$link->boxBgColor = lightenColor($link->color, 40); // Assume you have a function `lightenColor`
-            //$link->btnBgColor = getTextColorBasedOnBackground($link->boxBgColor); // Assume you have a function `getTextColorBasedOnBackground`
-    
+
             $context['links'][] = $link;
         }
+            */
+
+            $grouped_links = [];
+for ($i = 1; $i <= $num_links; $i++) {
+    $link = new stdClass();
+    $link->text = get_theme_mod("link_{$i}_text", "Link {$i}");
+    $link->category = get_theme_mod("link_{$i}_category", '');
+    $link->image_url = get_theme_mod("link_{$i}_image", '');
+    $link->color = get_theme_mod("link_{$i}_color", '');
+
+    // Grouping links by category
+    if (!isset($grouped_links[$link->category])) {
+        $grouped_links[$link->category] = [];
+    }
+    $grouped_links[$link->category][] = $link;
+}
+
+// Pass the grouped links to the context
+$context['grouped_links'] = $grouped_links;
+
 
         
 

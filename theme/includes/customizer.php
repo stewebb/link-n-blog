@@ -60,6 +60,19 @@ add_action('customize_register', function($wp_customize) {
             'type'     => 'text',
         ));
 
+        // Add Setting for Category
+        $wp_customize->add_setting("link_{$i}_category", array(
+            'default'           => '',  // Set default value
+            'sanitize_callback' => 'sanitize_text_field',  // Use a suitable sanitization function
+        ));
+
+        // Add Control for Category
+        $wp_customize->add_control("link_{$i}_category", array(
+            'label'    => __("Category #{$i}", 'mytheme'),
+            'section'  => 'homepage_links_section',
+            'type'     => 'text',  // You can change this to 'select' if you have predefined categories
+        ));
+
         // URL
         $wp_customize->add_setting("link_{$i}_url", array(
             'default'           => '',
