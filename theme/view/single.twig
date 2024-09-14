@@ -1,30 +1,55 @@
-{# single-article.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ post.title }} - {{ site.name }}</title>
+    <link rel="stylesheet" href="{{ site.theme.link }}/assets/css/lnb.min.css">
+    <script src="{{ site.theme.link }}/assets/js/utils.js"></script>
+</head>
+<body>
+    <div id="app">
 
-<article class="article-content">
-  <header class="article-header">
-    <h1 class="article-title">{{ post.title }}</h1>
-    <p class="article-meta">
-      Published on {{ post.date('F j, Y') }} by {{ post.author.name }}
-    </p>
-  </header>
+        {% include 'view/Navbar.twig' %}
+        <div class="container-fluid p-3">
 
-  <div class="article-body">
-    {{ post.content }}
-  </div>
+            <!-- Title -->
+            <div class="fs-1 mb-3">
+                <span class="fw-bold">Article</span>
+                <span class="text-primary pacifico-font">Content</span>
+            </div>
 
-  <footer class="article-footer">
-    <div class="categories">
-      <span>Categories: </span>
-      {% for category in post.terms('category') %}
-        <a href="{{ category.link }}">{{ category.name }}</a>{% if not loop.last %}, {% endif %}
-      {% endfor %}
+            <!-- Content -->
+            <article class="article-content p-4 shadow rounded bg-white">
+                <header class="article-header text-center mb-4">
+                    <h1 class="article-title display-4 text-primary">{{ post.title }}</h1>
+                    <p class="article-meta text-muted">
+                        Published on {{ post.date('F j, Y') }} by <strong>{{ post.author.name }}</strong>
+                    </p>
+                </header>
+
+                <div class="article-body">
+                    {{ post.content }}
+                </div>
+
+                <footer class="article-footer mt-4 pt-3 border-top">
+                    <div class="categories mb-2">
+                        <span class="font-weight-bold">Categories: </span>
+                        {% for category in post.terms('category') %}
+                            <a href="{{ category.link }}" class="badge badge-secondary">{{ category.name }}</a>
+                        {% endfor %}
+                    </div>
+
+                    <div class="tags">
+                        <span class="font-weight-bold">Tags: </span>
+                        {% for tag in post.terms('post_tag') %}
+                            <a href="{{ tag.link }}" class="badge badge-info">{{ tag.name }}</a>
+                        {% endfor %}
+                    </div>
+                </footer>
+            </article>
+        
+        </div>
+
+        {% include 'view/Footer.twig' %}
     </div>
-
-    <div class="tags">
-      <span>Tags: </span>
-      {% for tag in post.terms('post_tag') %}
-        <a href="{{ tag.link }}">{{ tag.name }}</a>{% if not loop.last %}, {% endif %}
-      {% endfor %}
-    </div>
-  </footer>
-</article>
+</body>
+</html>

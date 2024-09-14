@@ -1,0 +1,47 @@
+.article-content {
+    background-color: $white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+
+    .article-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+
+    .article-meta {
+        font-size: 1rem;
+        color: $gray-600;
+    }
+
+    .article-body {
+        line-height: 1.8;
+        font-size: 1.1rem;
+
+        p {
+            margin-bottom: 1.5rem;
+        }
+    }
+
+    .article-footer {
+        .categories, .tags {
+            span {
+                font-weight: 600;
+                margin-right: 0.5rem;
+            }
+        }
+
+        a {
+            font-size: 0.9rem;
+            text-decoration: none;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .badge {
+            margin-right: 0.5rem;
+        }
+    }
+}

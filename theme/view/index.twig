@@ -11,6 +11,13 @@
 
         <div class="container-fluid p-3">
 
+            <!-- Title -->
+            <div class="fs-1 mb-3">
+                <span class="text-primary pacifico-font">Welcome</span>
+                <span class="fw-bold">to</span>
+                <span class="fw-bold">{{ site.name }}</span>
+            </div>
+
             <!-- Hero Section -->
             <div class="mb-3">
                 {{ hero | raw }}
@@ -19,7 +26,7 @@
             {% for category, links in grouped_links %}
                 <div class="row mb-3">
                     <div class="col-12">
-                        <h4 class="text-primary pacifico-font">
+                        <h4 class="text-primary fw-bold">
                             {{ category|default("Uncategorized") }}
                         </h4>
                     </div>
