@@ -1,15 +1,18 @@
 {
     "devDependencies": {
-        "cssnano": "^7.0.5",
         "clean-css-cli": "^5.6.3",
+        "cssnano": "^7.0.5",
+        "mkdirp": "^3.0.1",
         "rimraf": "^6.0.1",
-        "sass": "^1.77.8"
+        "sass": "^1.77.8",
+        "terser": "^5.16.7"
     },
     "scripts": {
         "clean": "rimraf dist",
-        "build": "sass src/style.scss:dist/lnb.style.css --no-source-map",
-        "minify": "cleancss -o dist/lnb.min.css dist/lnb.style.css",
-        "start": "npm run clean && npm run build && npm run minify"
+        "build-css": "sass styles/style.scss:dist/css/lnb.style.css --no-source-map",
+        "minify-css": "cleancss -o dist/css/lnb.min.css dist/css/lnb.style.css",
+        "minify-js": "mkdirp dist/js && terser scripts/*.js --output dist/js/lnb.min.js --compress --mangle",
+        "start": "npm run clean && npm run build-css && npm run minify-css && npm run minify-js"
     },
     "dependencies": {
         "bootstrap": "^5.3.3"
