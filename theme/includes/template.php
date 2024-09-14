@@ -40,40 +40,29 @@ class StarterSite extends Timber\Site {
 
         // Links
         $num_links = get_theme_mod('num_links', 3);
-        $context['links'] = [];
+        //$context['links'] = [];
 
-        /*
+        $grouped_links = [];
         for ($i = 1; $i <= $num_links; $i++) {
+
             $link = new stdClass();
             $link->text = get_theme_mod("link_{$i}_text", "Link {$i}");
             $link->category = get_theme_mod("link_{$i}_category", '');
+            $link->url = get_theme_mod("link_{$i}_url", '');
+            $link->page = get_theme_mod("link_{$i}_page", '');
             $link->image_url = get_theme_mod("link_{$i}_image", '');
             $link->color = get_theme_mod("link_{$i}_color", '');
 
-            $context['links'][] = $link;
+            // Grouping links by category
+            if (!isset($grouped_links[$link->category])) {
+                $grouped_links[$link->category] = [];
+            }
+
+            $grouped_links[$link->category][] = $link;
         }
-            */
 
-            $grouped_links = [];
-for ($i = 1; $i <= $num_links; $i++) {
-    $link = new stdClass();
-    $link->text = get_theme_mod("link_{$i}_text", "Link {$i}");
-    $link->category = get_theme_mod("link_{$i}_category", '');
-    $link->image_url = get_theme_mod("link_{$i}_image", '');
-    $link->color = get_theme_mod("link_{$i}_color", '');
-
-    // Grouping links by category
-    if (!isset($grouped_links[$link->category])) {
-        $grouped_links[$link->category] = [];
-    }
-    $grouped_links[$link->category][] = $link;
-}
-
-// Pass the grouped links to the context
-$context['grouped_links'] = $grouped_links;
-
-
-        
+        // Pass the grouped links to the context
+        $context['grouped_links'] = $grouped_links;
 
         return $context;
     }

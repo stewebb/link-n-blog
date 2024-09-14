@@ -7,11 +7,7 @@
 
     $templates = array('view/index.twig' );
 
-    //if ( is_home() ) {
-    //    array_unshift( $templates, 'home.twig' );
-    //} elseif ( is_single() ) {
-    //    array_unshift( $templates, 'single.twig' );
-    //}
+    //wp_nav_menu(array('theme_location' => 'primary'));
 
     Timber::render( $templates, $context );
 ?>

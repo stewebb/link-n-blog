@@ -9,10 +9,10 @@
     <div id="app">
         {% include 'view/Navbar.twig' %}
 
-        <div class="container-fluid">
+        <div class="container-fluid p-3">
 
             <!-- Hero Section -->
-            <div class="p-3 mb-3">
+            <div class="mb-3">
                 {{ hero | raw }}
             </div>
 
@@ -38,22 +38,35 @@
                                     onmouseout="this.style.backgroundColor='';"
                                 >
                                     <!-- Text -->
-                                    <div class="text-primary fw-bold" style="color: {{ link.color }} !important;">
-                                        <h4>{{ link.text }}</h4>                  
+                                    <div class="text-primary" style="color: {{ link.color }} !important;">
+                                        <h4 class="fw-bold">{{ link.text }}</h4>                  
                                     </div>
 
                                     <!-- Buttons -->
-                                    <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-outline-dark">
-                                            Visit
+                                    <div class="d-grid gap-0 col-6 mx-auto">
+                                        <button 
+                                            type="button" 
+                                            class="btn btn-outline-dark"
+                                            onclick="window.open('{{ link.url }}', '_blank')"
+                                            {% if link.url == '' %}disabled{% endif %}
+                                        >
+                                            Visit Site
                                         </button>
-                                        <button type="button" class="btn btn-outline-dark">
-                                            About
+
+                                        <button 
+                                            type="button" 
+                                            class="btn btn-outline-dark"
+                                            onclick="window.open('{{ link.page }}')"
+                                            {% if link.page == '' %}disabled{% endif %}
+                                        >
+                                           Learn More
                                         </button>
-                                        <button type="button" class="btn btn-outline-dark">
+
+                                        <button type="button" class="btn btn-outline-dark" disabled>
                                             Share
-                                        </button>
+                                        </button>                                   
                                     </div>
+
                                 </div>
                             </div>
                         </div>

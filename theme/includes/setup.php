@@ -12,12 +12,16 @@ function mytheme_setup() {
 add_action('after_setup_theme', 'mytheme_setup');
 
 // Register custom menus
-function register_my_custom_menus() {
-    register_nav_menus(array(
-        'your_custom_menu_location' => __('Custom Menu'),
-    ));
-}
-add_action('init', 'register_my_custom_menus');
+//function register_my_custom_menus() {
+//    register_nav_menus(array(
+//        'your_custom_menu_location' => __('Custom Menu'),
+//    ));
+//}
+//add_action('init', 'register_my_custom_menus');
+
+add_action('init', function() {
+    register_nav_menu('primary', __('Primary Menu'));
+});
 
 // Enqueue styles
 add_action('wp_enqueue_scripts', function() {

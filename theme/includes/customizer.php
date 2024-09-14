@@ -60,20 +60,19 @@ add_action('customize_register', function($wp_customize) {
             'type'     => 'text',
         ));
 
-        // Add Setting for Category
+        // Category
         $wp_customize->add_setting("link_{$i}_category", array(
-            'default'           => '',  // Set default value
-            'sanitize_callback' => 'sanitize_text_field',  // Use a suitable sanitization function
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
         ));
 
-        // Add Control for Category
         $wp_customize->add_control("link_{$i}_category", array(
             'label'    => __("Category #{$i}", 'mytheme'),
             'section'  => 'homepage_links_section',
-            'type'     => 'text',  // You can change this to 'select' if you have predefined categories
+            'type'     => 'text',
         ));
 
-        // URL
+        // External URL
         $wp_customize->add_setting("link_{$i}_url", array(
             'default'           => '',
             'sanitize_callback' => 'esc_url_raw',
@@ -84,6 +83,18 @@ add_action('customize_register', function($wp_customize) {
             'section'  => 'homepage_links_section',
             'type'     => 'url',
         ));
+
+        // Internal Page
+        $wp_customize->add_setting("link_{$i}_page", array(
+            'default'           => '',
+            'sanitize_callback' => 'esc_url_raw',
+        ));
+        
+        $wp_customize->add_control("link_{$i}_page", array(
+            'label'    => __("Internal Link #{$i}", 'mytheme'),
+            'section'  => 'homepage_links_section',
+            'type'     => 'url',
+        ));        
 
         // Color
         $wp_customize->add_setting("link_{$i}_color", array(
