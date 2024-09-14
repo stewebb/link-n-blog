@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ site.name }}</title>
+    <link rel="stylesheet" href="{{ site.theme.link }}/assets/css/lnb.min.css">
+    <script src="{{ site.theme.link }}/assets/js/utils.js"></script>
+</head>
+<body>
+    <div id="app">
+        {% include 'view/Navbar.twig' %}
+
+        <div class="container-fluid p-3">
+
+            {% block content %}
+                <h1>All Articles</h1>
+                {% for post in posts %}
+                    <article>
+                        <h2><a href="{{ post.link }}">{{ post.title }}</a></h2>
+                        <div class="entry-summary">
+                            {{ post.preview }}
+                        </div>
+                    </article>
+                {% else %}
+                    <p>No posts found.</p>
+                {% endfor %}
+            {% endblock %}
+            </div>
+
+
+        {% include 'view/Footer.twig' %}
+    </div>
+</body>
+</html>

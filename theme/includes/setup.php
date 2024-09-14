@@ -23,6 +23,12 @@ add_action('init', function() {
     register_nav_menu('primary', __('Primary Menu'));
 });
 
+function custom_rewrite_rule() {
+    add_rewrite_rule('^articles/', 'index.php?pagename=articles', 'top');
+}
+add_action('init', 'custom_rewrite_rule', 10, 0);
+
+
 // Enqueue styles
 add_action('wp_enqueue_scripts', function() {
     wp_enqueue_style('LNB_styles', get_template_directory_uri() . 'assets/css/lnb.min.css', array(), '1.0.0', 'all');
