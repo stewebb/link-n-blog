@@ -1,0 +1,30 @@
+{# single-article.twig #}
+
+<article class="article-content">
+  <header class="article-header">
+    <h1 class="article-title">{{ post.title }}</h1>
+    <p class="article-meta">
+      Published on {{ post.date('F j, Y') }} by {{ post.author.name }}
+    </p>
+  </header>
+
+  <div class="article-body">
+    {{ post.content }}
+  </div>
+
+  <footer class="article-footer">
+    <div class="categories">
+      <span>Categories: </span>
+      {% for category in post.terms('category') %}
+        <a href="{{ category.link }}">{{ category.name }}</a>{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="tags">
+      <span>Tags: </span>
+      {% for tag in post.terms('post_tag') %}
+        <a href="{{ tag.link }}">{{ tag.name }}</a>{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    </div>
+  </footer>
+</article>

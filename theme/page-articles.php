@@ -12,6 +12,4 @@ $args = array(
 );
 $context['posts'] = new Timber\PostQuery($args);
 
-$templates = array('view/articles.twig');
-
-Timber::render($templates, $context);
+Timber::render(array('view/articles.twig'), $context);

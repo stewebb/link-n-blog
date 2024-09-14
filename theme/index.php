@@ -5,9 +5,8 @@
     $timber_post = new Timber\Post();
     $context['post'] = $timber_post;
 
-    $templates = array('view/index.twig' );
-
+    //$templates = array('view/index.twig' );
     //wp_nav_menu(array('theme_location' => 'primary'));
 
-    Timber::render( $templates, $context );
+    Timber::render(array('view/index.twig'), $context );
 ?>
