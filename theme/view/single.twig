@@ -2,8 +2,13 @@
 <html>
 <head>
     <title>{{ post.title }} - {{ site.name }}</title>
+
+    <!--
     <link rel="stylesheet" href="{{ site.theme.link }}/assets/css/lnb.min.css">
     <script src="{{ site.theme.link }}/assets/js/utils.js"></script>
+    -->
+
+    {{ function('wp_head') }}
 </head>
 <body>
     <div id="app">
@@ -50,6 +55,7 @@
         </div>
 
         {% include 'view/Footer.twig' %}
+        {{ function('wp_footer') }}
     </div>
 </body>
 </html>

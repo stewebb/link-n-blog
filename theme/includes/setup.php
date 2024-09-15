@@ -31,13 +31,19 @@ add_action('init', function() {
 
 // Enqueue styles
 add_action('wp_enqueue_scripts', function() {
-    wp_enqueue_style('LNB_styles', get_template_directory_uri() . 'assets/css/lnb.min.css', array(), '1.0.0', 'all');
+    wp_enqueue_style('LNB_styles', get_template_directory_uri() . '/assets/css/lnb.min.css', array(), '1.0.0', 'all');
 });
 
 // Enqueue scripts
 add_action('wp_enqueue_scripts', function() {
-    wp_enqueue_script('LNB_scripts', get_template_directory_uri() . 'assets/js/utils.js', array(), '1.0.0', true);
+    wp_enqueue_script('jquery');
+    wp_enqueue_script('bootstrap-js', get_template_directory_uri() .'/assets/js/bootstrap.min.js', array('jquery'), null, true);
+    wp_enqueue_script('LNB_scripts', get_template_directory_uri() . '/assets/js/lnb.min.js', array(), '1.0.0', true);
 });
+
+//add_action('wp_enqueue_scripts', function() {
+//    
+//});
 
 add_action('after_switch_theme', function () {
     $page_title = 'Articles';

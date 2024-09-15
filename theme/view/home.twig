@@ -2,8 +2,13 @@
 <html>
 <head>
     <title>{{ site.name }}</title>
+
+    <!--
     <link rel="stylesheet" href="{{ site.theme.link }}/assets/css/lnb.min.css">
     <script src="{{ site.theme.link }}/assets/js/utils.js"></script>
+    -->
+
+    {{ function('wp_head') }}
 </head>
 <body>
     <div id="app">
@@ -11,19 +16,18 @@
 
         <div class="container-fluid p-3">
 
-            
-
-
             <!-- Hero Section -->
             <div class="mb-3">
 
                 <!-- Default Welcome Title -->
                 {% if hero is empty %}
+                <div class="d-flex justify-content-center">
                     <div class="fs-1 mb-3">
                         <span class="text-primary pacifico-font">Welcome</span>
                         <span class="fw-bold">to</span>
                         <span class="fw-bold">{{ site.name }}</span>
                     </div>
+                </div>
 
                 <!-- User Defined Hero -->
                 {% else %}
@@ -93,8 +97,8 @@
             {% endfor %}
         </div>
 
-
         {% include 'view/Footer.twig' %}
+        {{ function('wp_footer') }}
     </div>
 </body>
 </html>
