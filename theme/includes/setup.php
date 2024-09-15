@@ -37,3 +37,31 @@ add_action('wp_enqueue_scripts', function() {
 add_action('wp_enqueue_scripts', function() {
     wp_enqueue_script('LNB_utils', get_template_directory_uri() . 'assets/js/utils.js', array(), '1.0.0', true);
 });
+
+function create_custom_page_on_theme_activation() {
+    // Define the page title and content
+    $page_title = 'My Custom Page';
+    $page_content = 'This is the content of the custom page.';
+    $page_template = 'page-articles.php'; // The template file for the page
+
+    // Check if the page already exists
+    $page_check = get_page_by_title($page_title);
+    if (!isset($page_check->ID)) {
+        // Create post object
+        $new_page = array(
+            'post_title'   => $page_title,
+            'post_content' => $page_content,
+            'post_status'  => 'publish',
+            'post_type'    => 'page',
+        );
+
+        // Insert the page into the database
+        $new_page_id = wp_insert_post($new_page);
+
+        // Assign the custom template to the new page
+        if (!empty($page_template)) {
+            update_post_meta($new_page_id, '_wp_page_template', $page_template);
+        }
+    }
+}
+add_action('after_switch_theme', 'create_custom_page_on_theme_activation');
