@@ -11,16 +11,24 @@
 
         <div class="container-fluid p-3">
 
-            <!-- Title -->
-            <div class="fs-1 mb-3">
-                <span class="text-primary pacifico-font">Welcome</span>
-                <span class="fw-bold">to</span>
-                <span class="fw-bold">{{ site.name }}</span>
-            </div>
+            
+
 
             <!-- Hero Section -->
             <div class="mb-3">
-                {{ hero | raw }}
+
+                <!-- Default Welcome Title -->
+                {% if hero is empty %}
+                    <div class="fs-1 mb-3">
+                        <span class="text-primary pacifico-font">Welcome</span>
+                        <span class="fw-bold">to</span>
+                        <span class="fw-bold">{{ site.name }}</span>
+                    </div>
+
+                <!-- User Defined Hero -->
+                {% else %}
+                    {{ hero | raw }}
+                {% endif %}
             </div>
 
             {% for category, links in grouped_links %}

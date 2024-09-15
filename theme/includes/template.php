@@ -56,7 +56,7 @@ class StarterSite extends Timber\Site {
         $context['blog_name'] = get_bloginfo('name');
         
         // Hero
-        $context['hero'] = get_theme_mod('hero_html', 'Default hero content');
+        $context['hero'] = get_theme_mod('hero_html', '');
 
         // Links
         $num_links = get_theme_mod('num_links', 3);

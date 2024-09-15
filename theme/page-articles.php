@@ -1,7 +1,4 @@
 <?php
-/*
-Template Name: Articles Page
-*/
 
 $context = Timber::context();
 

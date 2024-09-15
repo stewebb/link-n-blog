@@ -23,10 +23,10 @@ add_action('init', function() {
     register_nav_menu('primary', __('Primary Menu'));
 });
 
-function custom_rewrite_rule() {
-    add_rewrite_rule('^articles/', 'index.php?pagename=articles', 'top');
-}
-add_action('init', 'custom_rewrite_rule', 10, 0);
+//function custom_rewrite_rule() {
+//    add_rewrite_rule('^articles/', 'index.php?pagename=articles', 'top');
+//}
+//add_action('init', 'custom_rewrite_rule', 10, 0);
 
 
 // Enqueue styles
@@ -34,23 +34,23 @@ add_action('wp_enqueue_scripts', function() {
     wp_enqueue_style('LNB_styles', get_template_directory_uri() . 'assets/css/lnb.min.css', array(), '1.0.0', 'all');
 });
 
+// Enqueue scripts
 add_action('wp_enqueue_scripts', function() {
-    wp_enqueue_script('LNB_utils', get_template_directory_uri() . 'assets/js/utils.js', array(), '1.0.0', true);
+    wp_enqueue_script('LNB_scripts', get_template_directory_uri() . 'assets/js/utils.js', array(), '1.0.0', true);
 });
 
-function create_custom_page_on_theme_activation() {
-    // Define the page title and content
-    $page_title = 'My Custom Page';
-    $page_content = 'This is the content of the custom page.';
-    $page_template = 'page-articles.php'; // The template file for the page
+add_action('after_switch_theme', function () {
+    $page_title = 'Articles';
+    $page_template = 'page-articles.php';
 
     // Check if the page already exists
     $page_check = get_page_by_title($page_title);
     if (!isset($page_check->ID)) {
+
         // Create post object
         $new_page = array(
-            'post_title'   => $page_title,
-            'post_content' => $page_content,
+            'post_title'   => 'Articles',
+            'post_content' => '',
             'post_status'  => 'publish',
             'post_type'    => 'page',
         );
@@ -63,5 +63,4 @@ function create_custom_page_on_theme_activation() {
             update_post_meta($new_page_id, '_wp_page_template', $page_template);
         }
     }
-}
-add_action('after_switch_theme', 'create_custom_page_on_theme_activation');
+});

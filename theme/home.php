@@ -8,5 +8,5 @@
     //$templates = array('view/index.twig' );
     //wp_nav_menu(array('theme_location' => 'primary'));
 
-    Timber::render(array('view/index.twig'), $context );
+    Timber::render(array('view/home.twig'), $context );
 ?>
