@@ -23,12 +23,6 @@ add_action('init', function() {
     register_nav_menu('primary', __('Primary Menu'));
 });
 
-//function custom_rewrite_rule() {
-//    add_rewrite_rule('^articles/', 'index.php?pagename=articles', 'top');
-//}
-//add_action('init', 'custom_rewrite_rule', 10, 0);
-
-
 // Enqueue styles
 add_action('wp_enqueue_scripts', function() {
     wp_enqueue_style('LNB_styles', get_template_directory_uri() . '/assets/css/lnb.min.css', array(), '1.0.0', 'all');
@@ -37,8 +31,10 @@ add_action('wp_enqueue_scripts', function() {
 // Enqueue scripts
 add_action('wp_enqueue_scripts', function() {
     wp_enqueue_script('jquery');
-    wp_enqueue_script('bootstrap-js', get_template_directory_uri() .'/assets/js/bootstrap.min.js', array('jquery'), null, true);
-    wp_enqueue_script('LNB_scripts', get_template_directory_uri() . '/assets/js/lnb.min.js', array(), '1.0.0', true);
+    wp_enqueue_script('trianglify', get_template_directory_uri() .'/assets/js/trianglify.min.js', array(), null, true);
+
+    wp_enqueue_script('bootstrap', get_template_directory_uri() .'/assets/js/bootstrap.min.js', array('jquery'), null, true);
+    wp_enqueue_script('LNB_scripts', get_template_directory_uri() . '/assets/js/lnb.min.js', array('trianglify'), '1.0.0', true);
 });
 
 //add_action('wp_enqueue_scripts', function() {

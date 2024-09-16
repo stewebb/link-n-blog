@@ -97,6 +97,21 @@
             {% endfor %}
         </div>
 
+        <canvas id="trianglifyCanvas"></canvas>
+        <script>
+        function drawPattern() {
+            const canvas = document.getElementById('trianglifyCanvas');
+            const ctx = canvas.getContext('2d');
+            const patternCanvas = bgPatterns('yourSeed', 'YlGnBu');
+
+            ctx.drawImage(patternCanvas, 0, 0);
+        }
+
+        // Load the pattern once the window is fully loaded
+        window.onload = drawPattern;
+    </script>
+
+
         {% include 'view/Footer.twig' %}
         {{ function('wp_footer') }}
     </div>
