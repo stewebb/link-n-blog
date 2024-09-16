@@ -1,10 +1,20 @@
 /**
  * This class provides methods to manipulate the brightness of hexadecimal colors.
- *
+ * 
  * Methods include lightening and darkening the color based on a specified percentage.
+ * Dependencies: None, but assumes ES6+ JavaScript environment for proper function.
+ *
+ * The formulas used for lightening and darkening are:
+ * - Lightening: \( C_{new} = C + (255 - C) \times \frac{percentage}{100} \)
+ * - Darkening: \( C_{new} = C \times \left(1 - \frac{percentage}{100}\right) \)
+ * Where:
+ *  - \( C \) is the original color component (Red, Green, or Blue).
+ *  - \( C_{new} \) is the adjusted color component.
+ *  - \( percentage \) is the percentage by which to lighten or darken the color.
  */
 
 class ColorManipulator {
+    
     /**
      * Lightens a given hexadecimal color by a specified percentage.
      *
@@ -12,8 +22,9 @@ class ColorManipulator {
      * @param {number} percentage The percentage to lighten the color by (e.g., 20 for 20%).
      * @returns {string} The lightened color in hexadecimal format.
      */
-    lightenColor(hex, percentage) {
-        return this.adjustColorBrightness(hex, percentage, 'lighten');
+
+    lighten(hex, percentage) {
+        return this.adjustColorBrightness(hex, percentage, true);
     }
 
     /**
@@ -23,8 +34,9 @@ class ColorManipulator {
      * @param {number} percentage The percentage to darken the color by (e.g., 20 for 20%).
      * @returns {string} The darkened color in hexadecimal format.
      */
-    darkenColor(hex, percentage) {
-        return this.adjustColorBrightness(hex, percentage, 'darken');
+
+    darken(hex, percentage) {
+        return this.adjustColorBrightness(hex, percentage, false);
     }
 
     /**
@@ -32,10 +44,11 @@ class ColorManipulator {
      *
      * @param {string} hex The hexadecimal color code.
      * @param {number} percentage The percentage to adjust the brightness by.
-     * @param {string} mode Either "lighten" or "darken".
+     * @param {boolean} isLighten Determines if the adjustment is to lighten (true) or darken (false).
      * @returns {string} The adjusted color in hexadecimal format.
      */
-    adjustColorBrightness(hex, percentage, mode) {
+
+    adjustColorBrightness(hex, percentage, isLighten) {
         // Remove '#' if present
         hex = hex.replace('#', '');
 
@@ -54,13 +67,13 @@ class ColorManipulator {
             return `#${hex}`;
         }
 
-        // Convert percentage to a decimal and determine factor based on mode
+        // Convert percentage to a decimal and determine factor based on isLighten
         const factor = percentage / 100;
-        if (mode === 'lighten') {
+        if (isLighten) {
             r = Math.min(255, Math.round(r + (255 - r) * factor));
             g = Math.min(255, Math.round(g + (255 - g) * factor));
             b = Math.min(255, Math.round(b + (255 - b) * factor));
-        } else if (mode === 'darken') {
+        } else {
             r = Math.max(0, Math.round(r * (1 - factor)));
             g = Math.max(0, Math.round(g * (1 - factor)));
             b = Math.max(0, Math.round(b * (1 - factor)));

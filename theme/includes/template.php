@@ -73,8 +73,8 @@ class StarterSite extends Timber\Site {
             $link->image_url = get_theme_mod("link_{$i}_image", '');
             $link->color = get_theme_mod("link_{$i}_color", '');
 
-            $link->id = md5($link->text + $link->category + $link->url + $link->page + $link->image_url + $link->color);
-
+            $link->id = md5($link->text . $link->category . $link->url . $link->page . $link->image_url . $link->color);
+            
             // Grouping links by category
             if (!isset($grouped_links[$link->category])) {
                 $grouped_links[$link->category] = [];

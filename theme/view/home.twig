@@ -2,17 +2,23 @@
 <html>
 <head>
     <title>{{ site.name }}</title>
-
-    <!--
-    <link rel="stylesheet" href="{{ site.theme.link }}/assets/css/lnb.min.css">
-    <script src="{{ site.theme.link }}/assets/js/utils.js"></script>
-    -->
-
     {{ function('wp_head') }}
 </head>
 <body>
     <div id="app">
         {% include 'view/Navbar.twig' %}
+
+        <script>
+            const colorManipulator = new ColorManipulator();
+
+            function applyHoverColor(element, color) {
+                element.style.backgroundColor = colorManipulator.lighten(color, 90);
+            }
+
+            function clearHoverColor(element) {
+                element.style.backgroundColor = '';
+            }
+        </script>
 
         <div class="container-fluid p-3">
 
@@ -35,14 +41,6 @@
                 {% endif %}
             </div>
 			
-			<style>
-			 canvas {
-            display: block;
-            width: 100%;  /* This makes the canvas fill the div's width */
-            height: 100%; /* This makes the canvas fill the div's height */
-        }
-			</style>
-
             {% for category, links in grouped_links %}
                 <div class="row mb-3">
                     <div class="col-12">
@@ -58,7 +56,9 @@
                                 <!-- Image -->
                                 <div class="banner-container">
 									{% if link.image_url is empty %}
-										<canvas id="myCanvas" width="100%" height="100%"></canvas>
+										<canvas id="link-{{ link.id }}" class="responsive-canvas"></canvas>
+										<script>(new PatternGenerator(colorManipulator.lighten('{{ link.color }}', 75))).drawPattern('link-{{ link.id }}', '{{ link.id }}', 512, 512);</script>
+										<!-- TODO: Adjust size dymatically -->
 									{% else %}
 										<img src="{{ link.image_url }}" alt="{{ link.text }}">
 									{% endif %}									
@@ -66,9 +66,10 @@
 
                                 <!-- Overlay when hovered -->
                                 <div class="overlay"
-                                    onmouseover="this.style.backgroundColor = lightenColor('{{ link.color }}', 90);"
-                                    onmouseout="this.style.backgroundColor='';"
+                                    onmouseover="applyHoverColor(this, '{{ link.color }}')"
+                                    onmouseout="clearHoverColor(this)"
                                 >
+
                                     <!-- Text -->
                                     <div class="text-primary" style="color: {{ link.color }} !important;">
                                         <h4 class="fw-bold">{{ link.text }}</h4>                  
@@ -111,8 +112,29 @@
         </div>
 
         <script>
-			const patternGenerator = new PatternGenerator('#FF6347');
-			patternGenerator.drawPattern('myCanvas', 'test123');
+			//const patternGenerator = new PatternGenerator('#FF6347');
+			//patternGenerator.drawPattern('myCanvas', 'test123', 300, 300);
+
+			jQuery(document).ready(function($) {  // '$' can be used safely inside this function
+				//$(window).resize(function() {
+					$('.link-item').each(function(index, element) {
+						var width = $(element).width();
+						var height = $(element).height();
+						console.log(`Div ${index + 1} - New Width: ${width}, New Height: ${height}`);
+						
+						$('.responsive-canvas').css({
+            'width': width + 'px',
+            'height': height + 'px'
+        });
+		
+						// Additional actions based on size can be added here
+					});
+				//});
+
+				//$(window).resize();  // Trigger resize to get initial sizes
+			});
+
+
 		</script>
 
 

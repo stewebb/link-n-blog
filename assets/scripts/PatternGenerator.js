@@ -72,17 +72,21 @@ class PatternGenerator {
      * 
      * @param {string} canvasId - The ID of the canvas element on which to draw.
      * @param {string} seed - The seed string used to select the pattern.
+     * @param {int} width - The width of the canvas.
+     * @param {int} height - The height of the canvas.
      */
 
-    drawPattern(canvasId, seed) {
+    drawPattern(canvasId, seed, width, height) {
         const canvas = document.getElementById(canvasId);
         if (!canvas) {
             console.error('Canvas with id "' + canvasId + '" not found.');
             return;
         }
+        //const canvas_size = Math.max(canvas.width, canvas.height);
+
         const ctx = canvas.getContext('2d');
         ctx.fillStyle = this.selectPattern(seed);
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        console.log(canvas.width + ' ' + canvas.height);
+        ctx.fillRect(0, 0, width, height);
+        //console.log(canvas_size);
     }
 }
