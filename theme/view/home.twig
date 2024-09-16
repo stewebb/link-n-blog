@@ -58,7 +58,8 @@
 									{% if link.image_url is empty %}
 										<canvas id="link-{{ link.id }}" class="responsive-canvas"></canvas>
 										<script>(new PatternGenerator(colorManipulator.lighten('{{ link.color }}', 75))).drawPattern('link-{{ link.id }}', '{{ link.id }}', 512, 512);</script>
-										<!-- TODO: Adjust size dymatically -->
+										<span class="centered-text">{{ link.text }}</span>
+                                        <!-- TODO: Adjust size dymatically -->
 									{% else %}
 										<img src="{{ link.image_url }}" alt="{{ link.text }}">
 									{% endif %}									
