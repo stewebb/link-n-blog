@@ -1,5 +1,5 @@
-#toplevel_page_hello-world .wp-menu-image img {
+#toplevel_page_link-n-blog .wp-menu-image img {
     width: 20px;
     height: 20px;
-    object-fit: contain; /* Ensures the image scales properly */
+    object-fit: contain;
 }
