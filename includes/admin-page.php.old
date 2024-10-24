@@ -1,0 +1,102 @@
+<?php
+// Add menu
+add_action('admin_menu', function () {
+    add_menu_page(
+        "Link 'n' Blog",
+        "Link 'n' Blog",
+        'manage_options',
+        'link-n-blog',
+        'page_lnb_link_list',
+        plugins_url('../assets/LNB_Square.svg', __FILE__),
+        '99'
+    );
+
+    // Add submenu for Link List (the first page)
+    add_submenu_page(
+        'link-n-blog',           // Parent slug
+        'Link List',             // Page title
+        'Link List',             // Menu title
+        'manage_options',        // Capability
+        'link-n-blog',           // Menu slug (reuse the parent slug for the main page)
+        'page_lnb_link_list'     // Function that renders the page
+    );
+
+    // Add submenu for Settings (the second page)
+    add_submenu_page(
+        'link-n-blog',           // Parent slug
+        'Settings',              // Page title
+        'Settings',              // Menu title
+        'manage_options',        // Capability
+        'link-n-blog-settings',  // Menu slug for this submenu page
+        'page_lnb_settings'      // Function that renders the settings page
+    );
+});
+
+// Callback function for the Link List page
+function page_lnb_link_list(): void
+{
+    ?>
+
+    <div class="wrap">
+        <h1 class="wp-heading-inline">Link List</h1>
+        <hr class="wp-header-end">
+
+        <table class="widefat fixed striped">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">URL</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>Example Link</td>
+                <td><a href="#">https://example.com</a></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Another Link</td>
+                <td><a href="#">https://another.com</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <?php
+}
+
+// Callback function for the Settings page
+function page_lnb_settings(): void
+{
+    ?>
+
+    <div class="wrap">
+        <h1 class="wp-heading-inline">Settings</h1>
+        <hr class="wp-header-end">
+
+        <form method="post" action="options.php">
+            <?php
+            // Display WordPress settings fields
+            settings_fields('lnb-settings-group');
+            do_settings_sections('lnb-settings-group');
+            ?>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">Example Setting</th>
+                    <td><input type="text" name="example_setting" value="<?php echo esc_attr(get_option('example_setting')); ?>" /></td>
+                </tr>
+            </table>
+
+            <?php submit_button(); ?>
+        </form>
+    </div>
+
+    <?php
+}
+
+// Register the settings (this should be added to your plugin activation hook)
+add_action('admin_init', function () {
+    register_setting('lnb-settings-group', 'example_setting');
+});
