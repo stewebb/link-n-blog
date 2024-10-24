@@ -1,3 +1,52 @@
 wordpress/
-node_modules/
+#node_modules/
 dist/
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore hidden files
+*.swp
+*.swo
+.sass-cache/
+*.idea
+*.vscode
+.env
+node_modules/
+
+# Ignore Composer dependencies if Composer was used (you can skip this if not applicable)
+composer.lock
+/vendor/
+
+# Ignore downloaded libraries or Twig directory (since you downloaded it manually)
+lib/twig/
+
+# Ignore any compiled or minified files if you plan to generate them automatically
+*.min.js
+*.min.css
+*.map
+
+# Ignore WordPress core and config files (for development environments)
+wp-config.php
+.htaccess
+
+# Ignore the plugin ZIP if you create it for deployment
+*.zip
+
+# Ignore any database backups or dumps
+*.sql
+*.sqlite
+
+# Ignore IDE-specific project files
+*.iml
+.idea/
+.vscode/
+
+# Ignore other temporary files
+*.bak
+*.backup
