@@ -1,6 +1,7 @@
 <?php
 
 include_once "page-list.php";
+include_once "page-details.php";
 include_once "page-settings.php";
 
 add_action('admin_menu', function () {
@@ -17,21 +18,31 @@ add_action('admin_menu', function () {
 
     // Link list sub-menu
     add_submenu_page(
-        'link-n-blog',           // Parent slug
-        'Link List',             // Page title
-        'Link List',             // Menu title
-        'manage_options',        // Capability
-        'link-n-blog',           // Menu slug (reuse the parent slug for the main page)
-        'page_lnb_list'     // Function that renders the page
+        'link-n-blog',
+        'Link List',
+        'Link List',
+        'manage_options',
+        'link-n-blog',
+        'page_lnb_list'
+    );
+
+    // Link details sub-menu
+    add_submenu_page(
+        'link-n-blog',
+        'Add a Link',
+        'Add a Link',
+        'manage_options',
+        'link-n-blog-details',
+        'page_lnb_details'
     );
 
     // Settings sub-menu
     add_submenu_page(
-        'link-n-blog',           // Parent slug
-        'Settings',              // Page title
-        'Settings',              // Menu title
-        'manage_options',        // Capability
-        'link-n-blog-settings',  // Menu slug for this submenu page
-        'page_lnb_settings'      // Function that renders the settings page
+        'link-n-blog',
+        'Settings',
+        'Settings',
+        'manage_options',
+        'link-n-blog-settings',
+        'page_lnb_settings'
     );
 });

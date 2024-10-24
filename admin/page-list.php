@@ -4,7 +4,10 @@ function page_lnb_list(): void
     ?>
 
     <div class="wrap">
-        <h1 class="wp-heading-inline">Link List</h1>
+        <h1 class="wp-heading-inline">
+            Link List&nbsp;
+            <a class="button button-secondary" href="admin.php?page=link-n-blog-details">Add New</a>
+        </h1>
         <hr class="wp-header-end">
 
         <table class="widefat fixed striped">
