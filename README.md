@@ -1,26 +1,31 @@
 <img src="./theme/assets/images/LNB_Wide.png" alt="Link 'n' Blog" style="max-width: 400px;">
 
 ## Database Schema
+
 ### wp_lnb_categories Table
 
-| Column    | Type         | Null | Key           | Default        | Description              |
-|-----------|--------------|------|---------------|----------------|--------------------------|
-| id        | INT          | NO   | PRIMARY KEY   | AUTO_INCREMENT | Category ID              |
-| name      | VARCHAR(255) | NO   |               |                | Name of the category     |
+| Column    | Type         | Null | Key         | Default        | Description              |
+|-----------|--------------|------|-------------|----------------|--------------------------|
+| id        | INT          | NO   | PRIMARY KEY | AUTO_INCREMENT | Category ID              |
+| name      | VARCHAR(255) | NO   |             |                | Name of the category     |
 
 ### wp_lnb_links Table
 
-| Column         | Type                     | Null | Key            | Default        | Description                                         |
-|----------------|--------------------------|------|----------------|----------------|-----------------------------------------------------|
-| id             | INT                      | NO   | PRIMARY KEY    | AUTO_INCREMENT | Unique ID for each link                             |
-| link_name      | VARCHAR(255)             | NO   |                |                | Name of the link                                    |
-| label_text     | VARCHAR(255)             | YES  |                |                | Label text displayed for the link                   |
-| category       | INT                      | YES  | FOREIGN KEY    |                | Category ID linking to the categories table         |
-| wp_page_id     | BIGINT UNSIGNED          | YES  |                |                | ID of the associated WordPress page                 |
-| url            | VARCHAR(2083)            | YES  |                |                | The URL of the link                                 |
-| target         | ENUM('_self', '_blank')  | YES  |                | '_self'       | Specifies if the link opens in the same or new tab  |
-| color          | VARCHAR(7)               | YES  |                |                | Hex code for link color                             |
-| cover_image_id | BIGINT UNSIGNED          | YES  |                |                | WordPress asset (attachment) ID for cover image     |
+| Column         | Type                     | Null | Key            | Default                         | Description                                         |
+|----------------|--------------------------|------|----------------|---------------------------------|-----------------------------------------------------|
+| id             | INT                      | NO   | PRIMARY KEY    | AUTO_INCREMENT                  | Unique ID for each link                             |
+| link_name      | VARCHAR(255)             | NO   |                |                                 | Name of the link                                    |
+| label_text     | VARCHAR(255)             | YES  |                |                                 | Label text displayed for the link                   |
+| category       | INT                      | YES  | FOREIGN KEY    |                                 | Category ID linking to the categories table         |
+| wp_page_id     | BIGINT UNSIGNED          | YES  |                |                                 | ID of the associated WordPress page                 |
+| url            | VARCHAR(2083)            | NO   |                |                                 | The URL of the link                                 |
+| target         | ENUM('_self', '_blank')  | YES  |                | '_blank'                        | Specifies if the link opens in the same or new tab  |
+| color          | VARCHAR(7)               | YES  |                |                                 | Hex code for link color                             |
+| cover_image_id | BIGINT UNSIGNED          | YES  |                |                                 | WordPress asset (attachment) ID for cover image     |
+| hit_num        | INT                      | YES  |                | 0                               | Number of times the link has been accessed          |
+| last_visit     | DATETIME                 | YES  |                | NULL                            | Date and time of the most recent visit              |
+| created_at     | DATETIME                 | NO   |                | CURRENT_TIMESTAMP               | Timestamp for when the link was created             |
+| updated_at     | DATETIME                 | NO   |                | CURRENT_TIMESTAMP               | Timestamp for the last update to the link           |
 
 ### Relationships
 - `category` in `wp_lnb_links` is a foreign key referencing `id` in `wp_lnb_categories`.

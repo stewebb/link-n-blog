@@ -3,13 +3,7 @@
 // Register the activation hook
 function create_database_tables(): void
 {
-
-    //echo "hello";
-
     global $wpdb;
-    //$wpdb->show_errors();
-
-    // Define table names
     $table_categories = $wpdb->prefix . 'lnb_categories';
     $table_links = $wpdb->prefix . 'lnb_links';
 
@@ -27,10 +21,14 @@ function create_database_tables(): void
         label_text VARCHAR(255),
         category INT,
         wp_page_id BIGINT UNSIGNED,
-        url VARCHAR(2083),
-        target ENUM('_self', '_blank') DEFAULT '_self',
+        url VARCHAR(2083) NOT NULL,
+        target ENUM('_self', '_blank') DEFAULT '_blank',
         color VARCHAR(7),
         cover_image_id BIGINT UNSIGNED,
+        hit_num INT DEFAULT 0,
+        last_visit DATETIME NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY (id),
         FOREIGN KEY (category) REFERENCES $table_categories(id)
         ON DELETE SET NULL
@@ -42,11 +40,4 @@ function create_database_tables(): void
     // Execute the SQL to create tables
     dbDelta($sql_categories);
     dbDelta($sql_links);
-    //$wpdb->print_error();
-
-    //if ($wpdb->last_error) {
-    //    error_log("Database error during plugin activation: " . $wpdb->last_error);
-    //} else {
-    //    error_log("Plugin activated successfully - tables created or already exist.");
-    //}
 }
