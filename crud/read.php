@@ -12,6 +12,13 @@ function get_lnb_links($page_num = 1, $per_page = 10, $sort_by = 'id', $sort_ord
     $sort_by = in_array($sort_by, $allowed_sort_by) ? $sort_by : 'id';
     $sort_order = strtoupper($sort_order) === 'DESC' ? 'DESC' : 'ASC';
 
+    //if ($page_num <= 1) {
+    //    $page_num = 1;
+    //}
+
+    $page_num = max($page_num, 1);
+    $per_page = max($per_page, 1);
+
     // Calculate offset for pagination
     $offset = ($page_num - 1) * $per_page;
 
@@ -29,4 +36,16 @@ function get_lnb_links($page_num = 1, $per_page = 10, $sort_by = 'id', $sort_ord
     );
 
     return $wpdb->get_results($sql);
+}
+
+// Function to get the total count of links for pagination
+function get_lnb_links_count(): int
+{
+    global $wpdb;
+    $table_links = $wpdb->prefix . 'lnb_links';
+
+    // Query to count all links
+    $sql = "SELECT COUNT(*) FROM $table_links";
+
+    return (int) $wpdb->get_var($sql);
 }
