@@ -7,7 +7,7 @@ function create_database_tables(): void
     //echo "hello";
 
     global $wpdb;
-    $wpdb->show_errors();
+    //$wpdb->show_errors();
 
     // Define table names
     $table_categories = $wpdb->prefix . 'lnb_categories';
@@ -44,9 +44,9 @@ function create_database_tables(): void
     dbDelta($sql_links);
     //$wpdb->print_error();
 
-    if ($wpdb->last_error) {
-        error_log("Database error during plugin activation: " . $wpdb->last_error);
-    } else {
-        error_log("Plugin activated successfully - tables created or already exist.");
-    }
+    //if ($wpdb->last_error) {
+    //    error_log("Database error during plugin activation: " . $wpdb->last_error);
+    //} else {
+    //    error_log("Plugin activated successfully - tables created or already exist.");
+    //}
 }

@@ -6,6 +6,7 @@ Version: 1.0
 Author: Steven Webb
 */
 
+// Activate plugin
 include_once(plugin_dir_path(__FILE__) . 'includes/activation.php');
 register_activation_hook(__FILE__, 'create_database_tables');
 

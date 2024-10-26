@@ -3,3 +3,11 @@
     height: 20px;
     object-fit: contain;
 }
+
+.text-gray {
+    color: #808080;
+}
+
+.text-light-gray {
+    color: #BFBFBF;
+}
