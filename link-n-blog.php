@@ -3,8 +3,11 @@
 Plugin Name: Link 'n' Blog
 Description: A plugin to manage custom post types with CRUD functionality.
 Version: 1.0
-Author: Your Name
+Author: Steven Webb
 */
+
+include_once(plugin_dir_path(__FILE__) . 'includes/activation.php');
+register_activation_hook(__FILE__, 'create_database_tables');
 
 include_once(plugin_dir_path(__FILE__) . 'admin/admin.php');
 
