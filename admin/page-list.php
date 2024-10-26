@@ -2,6 +2,25 @@
 
 require_once(plugin_dir_path(__FILE__) . '../crud/read.php');
 
+// Helper function to generate table headers with sorting links
+function generate_sortable_header($column_name, $sort_field, $current_sort_by, $current_sort_order, $page_num): string
+{
+    $new_sort_order = $current_sort_order === 'ASC' ? 'DESC' : 'ASC';
+    $is_current_sort = $sort_field === $current_sort_by;
+
+    // Choose arrow symbol based on current sorting order
+    $sort_symbol = '';
+    if ($is_current_sort) {
+        $sort_symbol = $current_sort_order === 'ASC' ? ' ▲' : ' ▼';
+    }
+
+    return "<th scope='col' class='" . ($is_current_sort ? 'sorted ' . strtolower($current_sort_order) : '') . "'>
+                <a href='?page=link-n-blog&sort_by=$sort_field&sort_order=$new_sort_order&page_num=$page_num'>
+                    $column_name $sort_symbol
+                </a>
+            </th>";
+}
+
 // Function to display the link list page in the admin panel with pagination and sorting
 function page_lnb_list(): void
 {
@@ -15,27 +34,17 @@ function page_lnb_list(): void
 
     ?>
     <div class="wrap">
-        <h1 class="wp-heading-inline">
-            Link List&nbsp;
-            <a class="button button-secondary" href="admin.php?page=link-n-blog-details">Add New</a>
-        </h1>
+        <h1 class="wp-heading-inline">Link List</h1>
+        <a href="admin.php?page=link-n-blog-details" class="page-title-action">Add New</a>
         <hr class="wp-header-end">
 
-        <table class="widefat fixed striped">
+        <table class="widefat fixed striped table-view-list">
             <thead>
             <tr>
-                <th scope="col">
-                    <a href="?page=link-n-blog&sort_by=id&sort_order=<?= $sort_order === 'ASC' ? 'DESC' : 'ASC' ?>&page_num=<?= $page_num ?>">ID</a>
-                </th>
-                <th scope="col">
-                    <a href="?page=link-n-blog&sort_by=link_name&sort_order=<?= $sort_order === 'ASC' ? 'DESC' : 'ASC' ?>&page_num=<?= $page_num ?>">Name</a>
-                </th>
-                <th scope="col">
-                    <a href="?page=link-n-blog&sort_by=category&sort_order=<?= $sort_order === 'ASC' ? 'DESC' : 'ASC' ?>&page_num=<?= $page_num ?>">Category</a>
-                </th>
-                <th scope="col">
-                    <a href="?page=link-n-blog&sort_by=category&sort_order=<?= $sort_order === 'ASC' ? 'DESC' : 'ASC' ?>&page_num=<?= $page_num ?>">Hit Num</a>
-                </th>
+                <?= generate_sortable_header('ID', 'id', $sort_by, $sort_order, $page_num); ?>
+                <?= generate_sortable_header('Name', 'link_name', $sort_by, $sort_order, $page_num); ?>
+                <?= generate_sortable_header('Category', 'category', $sort_by, $sort_order, $page_num); ?>
+                <?= generate_sortable_header('Hit Num', 'hit_num', $sort_by, $sort_order, $page_num); ?>
                 <th scope="col">Action</th>
             </tr>
             </thead>
@@ -43,18 +52,18 @@ function page_lnb_list(): void
             <?php if ($links): ?>
                 <?php foreach ($links as $link): ?>
                     <tr>
-                        <td><?= $link->id ?></td>
+                        <td><?= esc_html($link->id) ?></td>
                         <td>
-                            <a href="admin.php?page=link-n-blog-details&id=<?= $link->id ?>"><?= $link->link_name ?></a>
+                            <strong><a class="row-title" href="admin.php?page=link-n-blog-details&id=<?= esc_attr($link->id) ?>"><?= esc_html($link->link_name) ?></a></strong>
                         </td>
                         <td>
-                            <?= $link->category_name ?? '<span class="text-light-gray">Uncategorized</span>' ?>
+                            <?= !empty($link->category_name) ? esc_html($link->category_name) : '<span class="text-light-gray">Uncategorized</span>' ?>
                         </td>
                         <td>
                             <a href="<?= esc_url($link->hit_num) ?>" target="_blank"><?= esc_html($link->hit_num) ?></a>
                         </td>
                         <td>
-                            <a href="admin.php?page=link-n-blog-details&id=<?= $link->id ?>">Edit</a>
+                            <a href="admin.php?page=link-n-blog-details&id=<?= esc_attr($link->id) ?>" class="button-link">Edit</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -67,12 +76,16 @@ function page_lnb_list(): void
         </table>
 
         <!-- Pagination -->
-        <div class="pagination">
-            <?php if ($page_num > 1): ?>
-                <a href="?page=link-n-blog&page_num=<?= $page_num - 1 ?>&sort_by=<?= $sort_by ?>&sort_order=<?= $sort_order ?>" class="button">Previous</a>
-            <?php endif; ?>
-            <span>Page <?= $page_num ?></span>
-            <a href="?page=link-n-blog&page_num=<?= $page_num + 1 ?>&sort_by=<?= $sort_by ?>&sort_order=<?= $sort_order ?>" class="button">Next</a>
+        <div class="tablenav">
+            <div class="tablenav-pages">
+                <?php if ($page_num > 1): ?>
+                    <a href="?page=link-n-blog&page_num=<?= $page_num - 1 ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>" class="button">Previous</a>
+                <?php endif; ?>
+                <span class="pagination-links">
+                    <span>Page <?= esc_html($page_num) ?></span>
+                </span>
+                <a href="?page=link-n-blog&page_num=<?= $page_num + 1 ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>" class="button">Next</a>
+            </div>
         </div>
     </div>
     <?php
