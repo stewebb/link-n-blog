@@ -46,10 +46,8 @@ function get_link_count(): int
     return (int) $wpdb->get_var($sql);
 }
 
-function get_link_details_by_id($link_id)
-{
+function get_link_details_by_id($link_id) {
     global $wpdb;
-
     $table_links = $wpdb->prefix . 'lnb_links';
     $table_categories = $wpdb->prefix . 'lnb_categories';
 
@@ -61,12 +59,12 @@ function get_link_details_by_id($link_id)
     ", $link_id);
 
     return $wpdb->get_row($query);
-
-
-    //if ($result) {
-    //    return $result;
-    //} else {
-    //    return null; // Handle case where link is not found
-    //}
 }
 
+
+function get_category_list() {
+    global $wpdb;
+    $table_categories = $wpdb->prefix . 'lnb_categories';
+    $query = "SELECT id, name FROM $table_categories";
+    return $wpdb->get_results($query);
+}
