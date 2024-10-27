@@ -12,10 +12,6 @@ function get_lnb_links($page_num = 1, $per_page = 10, $sort_by = 'id', $sort_ord
     $sort_by = in_array($sort_by, $allowed_sort_by) ? $sort_by : 'id';
     $sort_order = strtoupper($sort_order) === 'DESC' ? 'DESC' : 'ASC';
 
-    //if ($page_num <= 1) {
-    //    $page_num = 1;
-    //}
-
     $page_num = max($page_num, 1);
     $per_page = max($per_page, 1);
 
@@ -25,7 +21,7 @@ function get_lnb_links($page_num = 1, $per_page = 10, $sort_by = 'id', $sort_ord
     // Query to get paginated and sorted links with the category name
     $sql = $wpdb->prepare(
         "
-        SELECT l.id, l.link_name, l.category, l.hit_num, c.name AS category_name
+        SELECT l.id, l.link_name, l.category, l.hit_num, l.url, c.name AS category_name
         FROM $table_links AS l
         LEFT JOIN $table_categories AS c ON l.category = c.id
         ORDER BY l.$sort_by $sort_order

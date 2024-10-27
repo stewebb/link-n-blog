@@ -21,6 +21,7 @@ function generate_sortable_header($column_name, $sort_field, $current_sort_by, $
             </th>";
 }
 
+
 // Function to display the link list page in the admin panel with pagination and sorting
 function page_lnb_list(): void
 {
@@ -33,8 +34,9 @@ function page_lnb_list(): void
     $links = get_lnb_links($page_num, $per_page, $sort_by, $sort_order);
 
     // Calculate total pages
-    $total_items = get_lnb_links_count(); // Ensure this function returns the total number of link items
+    $total_items = get_lnb_links_count();
     $total_pages = ceil($total_items / $per_page);
+    $split_symbol = '&nbsp;<span class="text-light-gray">|</span>&nbsp;';
 
     ?>
     <div class="wrap">
@@ -43,7 +45,7 @@ function page_lnb_list(): void
         <hr class="wp-header-end">
 
         <!-- Per Page Selector -->
-        <div  class="per-page-selector mb-3">
+        <div class="per-page-selector mb-3">
             <form method="GET" style="display: inline;">
                 <input type="hidden" name="page" value="link-n-blog">
                 <label for="per_page">Links per page:</label>
@@ -71,14 +73,24 @@ function page_lnb_list(): void
                     <tr>
                         <td><?= esc_html($link->id) ?></td>
                         <td>
-                            <strong><a class="row-title" href="admin.php?page=link-n-blog-details&id=<?= esc_attr($link->id) ?>"><?= esc_html($link->link_name) ?></a></strong>
+                            <a class="row-title" href="<?= esc_attr($link->url) ?>" target="_blank">
+                                <strong><?= esc_html($link->link_name) ?></strong>
+                                <span class="dashicons dashicons-external"></span>
+                            </a>
                         </td>
                         <td>
                             <?= !empty($link->category_name) ? esc_html($link->category_name) : '<span class="text-light-gray">Uncategorized</span>' ?>
                         </td>
                         <td><?= esc_html($link->hit_num) ?></td>
                         <td>
-                            <a href="admin.php?page=link-n-blog-details&id=<?= esc_attr($link->id) ?>" class="button-link">Edit</a>
+                            <a href="admin.php?page=link-n-blog-details&id=<?= esc_attr($link->id) ?>"
+                               class="button-link">Edit</a><?= $split_symbol; ?>
+                            <a href="admin.php?page=link-n-blog-details&id=<?= esc_attr($link->id) ?>"
+                               class="button-link">Delete</a>
+                            <!--
+                            <?= $split_symbol; ?>
+                            <a href="<?= esc_attr($link->url) ?>" target="_blank" class="button-link">Visit</a>
+                            -->
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -90,16 +102,18 @@ function page_lnb_list(): void
             </tbody>
         </table>
 
-        <!-- Bootstrap-style Pagination -->
+        <!-- Pagination -->
         <div class="pagination">
             <ul class="pagination-links">
                 <li>
-                    <a href="?page=link-n-blog&page_num=<?= max(1, $page_num - 1) ?>&per_page=<?= $per_page ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>" class="button <?= $page_num === 1 ? 'disabled' : '' ?>">Prev</a>
+                    <a href="?page=link-n-blog&page_num=<?= max(1, $page_num - 1) ?>&per_page=<?= $per_page ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>"
+                       class="button <?= $page_num === 1 ? 'disabled' : '' ?>">Prev</a>
                 </li>
                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                     <?php if ($i == 1 || $i == $total_pages || ($i >= $page_num - 1 && $i <= $page_num + 1)): ?>
                         <li>
-                            <a href="?page=link-n-blog&page_num=<?= $i ?>&per_page=<?= $per_page ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>" class="button <?= $i == $page_num ? 'active' : '' ?>">
+                            <a href="?page=link-n-blog&page_num=<?= $i ?>&per_page=<?= $per_page ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>"
+                               class="button <?= $i == $page_num ? 'active' : '' ?>">
                                 <?= $i ?>
                             </a>
                         </li>
@@ -108,7 +122,8 @@ function page_lnb_list(): void
                     <?php endif; ?>
                 <?php endfor; ?>
                 <li>
-                    <a href="?page=link-n-blog&page_num=<?= min($total_pages, $page_num + 1) ?>&per_page=<?= $per_page ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>" class="button <?= $page_num == $total_pages ? 'disabled' : '' ?>">Next</a>
+                    <a href="?page=link-n-blog&page_num=<?= min($total_pages, $page_num + 1) ?>&per_page=<?= $per_page ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>"
+                       class="button <?= $page_num == $total_pages ? 'disabled' : '' ?>">Next</a>
                 </li>
             </ul>
         </div>
