@@ -1,7 +1,7 @@
 <?php
 
 // Function to get paginated and sorted links data with category name
-function get_lnb_links($page_num = 1, $per_page = 10, $sort_by = 'id', $sort_order = 'ASC'): array|object|null
+function get_link_list($page_num = 1, $per_page = 10, $sort_by = 'id', $sort_order = 'ASC'): array|object|null
 {
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
@@ -35,7 +35,7 @@ function get_lnb_links($page_num = 1, $per_page = 10, $sort_by = 'id', $sort_ord
 }
 
 // Function to get the total count of links for pagination
-function get_lnb_links_count(): int
+function get_link_count(): int
 {
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
@@ -45,3 +45,28 @@ function get_lnb_links_count(): int
 
     return (int) $wpdb->get_var($sql);
 }
+
+function get_link_details_by_id($link_id)
+{
+    global $wpdb;
+
+    $table_links = $wpdb->prefix . 'lnb_links';
+    $table_categories = $wpdb->prefix . 'lnb_categories';
+
+    $query = $wpdb->prepare("
+        SELECT links.*, categories.name AS category_name
+        FROM $table_links AS links
+        LEFT JOIN $table_categories AS categories ON links.category = categories.id
+        WHERE links.id = %d
+    ", $link_id);
+
+    return $wpdb->get_row($query);
+
+
+    //if ($result) {
+    //    return $result;
+    //} else {
+    //    return null; // Handle case where link is not found
+    //}
+}
+

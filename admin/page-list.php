@@ -31,10 +31,10 @@ function page_lnb_list(): void
     $per_page = isset($_GET['per_page']) ? intval($_GET['per_page']) : 10;
 
     // Retrieve the paginated, sorted links data
-    $links = get_lnb_links($page_num, $per_page, $sort_by, $sort_order);
+    $links = get_link_list($page_num, $per_page, $sort_by, $sort_order);
 
     // Calculate total pages
-    $total_items = get_lnb_links_count();
+    $total_items = get_link_count();
     $total_pages = ceil($total_items / $per_page);
     $split_symbol = '&nbsp;<span class="text-light-gray">|</span>&nbsp;';
 
@@ -105,10 +105,17 @@ function page_lnb_list(): void
         <!-- Pagination -->
         <div class="pagination">
             <ul class="pagination-links">
+                <!-- Previous Button -->
                 <li>
-                    <a href="?page=link-n-blog&page_num=<?= max(1, $page_num - 1) ?>&per_page=<?= $per_page ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>"
-                       class="button <?= $page_num === 1 ? 'disabled' : '' ?>">Prev</a>
+                    <?php if ($page_num > 1): ?>
+                        <a href="?page=link-n-blog&page_num=<?= max(1, $page_num - 1) ?>&per_page=<?= $per_page ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>"
+                           class="button">Prev</a>
+                    <?php else: ?>
+                        <span class="button disabled">Prev</span>
+                    <?php endif; ?>
                 </li>
+
+                <!-- Page Numbers -->
                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                     <?php if ($i == 1 || $i == $total_pages || ($i >= $page_num - 1 && $i <= $page_num + 1)): ?>
                         <li>
@@ -121,12 +128,19 @@ function page_lnb_list(): void
                         <li><span class="button disabled">...</span></li>
                     <?php endif; ?>
                 <?php endfor; ?>
+
+                <!-- Next Button -->
                 <li>
-                    <a href="?page=link-n-blog&page_num=<?= min($total_pages, $page_num + 1) ?>&per_page=<?= $per_page ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>"
-                       class="button <?= $page_num == $total_pages ? 'disabled' : '' ?>">Next</a>
+                    <?php if ($page_num < $total_pages): ?>
+                        <a href="?page=link-n-blog&page_num=<?= min($total_pages, $page_num + 1) ?>&per_page=<?= $per_page ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>"
+                           class="button">Next</a>
+                    <?php else: ?>
+                        <span class="button disabled">Next</span>
+                    <?php endif; ?>
                 </li>
             </ul>
         </div>
+
     </div>
     <?php
 }

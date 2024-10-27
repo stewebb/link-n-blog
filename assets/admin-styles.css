@@ -47,8 +47,8 @@
 
 /* Active Page Number Styling */
 .pagination-links .active {
-    background-color: #0073aa!important;
-    color: #fff!important;
+    background-color: #0073aa !important;
+    color: #fff !important;
     font-weight: bold;
 }
 
@@ -57,6 +57,7 @@
     color: #ccc;
     border-color: #ccc;
     cursor: not-allowed;
+    pointer-events: none;
 }
 
 /* Items per Page Selector - Right-aligned */
