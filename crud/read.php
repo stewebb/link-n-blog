@@ -61,7 +61,6 @@ function get_link_details_by_id($link_id) {
     return $wpdb->get_row($query);
 }
 
-
 function get_category_list() {
     global $wpdb;
     $table_categories = $wpdb->prefix . 'lnb_categories';
