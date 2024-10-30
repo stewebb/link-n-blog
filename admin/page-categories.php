@@ -36,8 +36,7 @@ function categories_page()
             }
         }
 
-        // TODO: Delete Category
-
+        // Delete Category
         if (isset($_POST['delete_category']) && $category_id) {
             if (delete_category($category_id)) {
                 echo "<div class='updated'><p>Category deleted successfully.</p></div>";
@@ -62,21 +61,29 @@ function categories_page()
                     <div class="category-card card">
                         <form method="POST" action="">
                             <?php wp_nonce_field('category_action_nonce'); ?>
-                            <input type="hidden" name="category_id" value="<?php echo esc_attr($category->id); ?>">
+                            <input type="hidden" name="category_id" value="<?= esc_attr($category->id); ?>">
 
-                            <h2 class="card-title">Category #<?php echo esc_html($category->id); ?></h2>
 
+                            <h2 class="card-title">Edit category: <?= esc_attr($category->name);  ?></h2>
                             <!--
                             <p>Used in <?php echo esc_html($usage_count); ?> links</p>
                             -->
 
                             <table class="form-table">
+
                                 <tr>
                                     <th scope="row">
-                                        <label for="category-name-<?php echo esc_attr($category->id); ?>">Name</label>
+                                        <label>Category ID</label>
+                                    </th>
+                                    <td><?= esc_attr($category->id) ?></td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">
+                                        <label for="category-name-<?= esc_attr($category->id); ?>">Name</label>
                                     </th>
                                     <td>
-                                        <input type="text" name="category_name" id="category-name-<?php echo esc_attr($category->id); ?>" value="<?php echo esc_attr($category->name); ?>" class="full-width" required>
+                                        <input type="text" name="category_name" id="category-name-<?= esc_attr($category->id); ?>" value="<?=esc_attr($category->name); ?>" class="full-width" required>
                                     </td>
                                 </tr>
 
@@ -118,6 +125,8 @@ function categories_page()
                                 <input type="text" name="category_name" id="category_name" class="regular-text" placeholder="Input category name" required>
                             </td>
                         </tr>
+
+                        <!--
                         <tr>
                             <th scope="row">
                                 <label for="url">URL</label>
@@ -126,6 +135,7 @@ function categories_page()
                                 <input type="url" name="url" id="url" class="regular-text" placeholder="Input category URL" required>
                             </td>
                         </tr>
+                        -->
                     </table>
 
                     <p class="submit">
