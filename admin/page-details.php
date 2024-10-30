@@ -1,9 +1,9 @@
 <?php
 
 require_once(plugin_dir_path(__FILE__) . '../crud/read.php');
-require_once(plugin_dir_path(__FILE__) . '../crud/create.php'); // Assuming create.php has functions for adding/updating links
+require_once(plugin_dir_path(__FILE__) . '../crud/create.php');
 
-function page_lnb_details(): void
+function link_details_page(): void
 {
     $categories = get_category_list();
 
@@ -74,14 +74,14 @@ function page_lnb_details(): void
                     <th scope="row"><label for="link_name">Link Name</label></th>
                     <td>
                         <input type="text" name="link_name" id="link_name" value="<?= $link_data['link_name']; ?>" class="regular-text" required />
-                        <p class="description">The name that will appear for this link.</p>
                     </td>
                 </tr>
+
                 <tr>
                     <th scope="row"><label for="label_text">Label Text</label></th>
                     <td>
                         <input type="text" name="label_text" id="label_text" value="<?= $link_data['label_text']; ?>" class="regular-text" required />
-                        <p class="description">Text to display as the label for this link.</p>
+                        <p class="description">Leave blank to use the link name as the label text.</p>
                     </td>
                 </tr>
                 <tr>
@@ -95,7 +95,6 @@ function page_lnb_details(): void
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                        <p class="description">Select a category for the link, or choose "Uncategorized".</p>
                     </td>
                 </tr>
 
@@ -103,21 +102,19 @@ function page_lnb_details(): void
                     <th scope="row"><label for="url">URL</label></th>
                     <td>
                         <input type="url" name="url" id="url" value="<?= $link_data['url']; ?>" class="regular-text" required />
-                        <p class="description">The URL this link will direct to.</p>
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row"><label for="wp_page_id">WordPress Page/Post</label></th>
+                    <th scope="row"><label for="wp_page_id">WordPress Page</label></th>
                     <td>
                         <select name="wp_page_id" id="wp_page_id">
-                            <option value="">Select a WordPress page or post</option>
+                            <option value="">Keep it blank...</option>
                             <?php foreach ($pages_posts as $page_post): ?>
                                 <option value="<?= $page_post->ID; ?>" <?= selected($link_data['wp_page_id'], $page_post->ID, false); ?>>
                                     <?= esc_html($page_post->post_title); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                        <p class="description">Select a WordPress page or post to associate with this link.</p>
                     </td>
                 </tr>
                 <tr>
@@ -125,14 +122,12 @@ function page_lnb_details(): void
                     <td>
                         <label><input type="radio" name="target" value="_self" <?= checked($link_data['target'], '_self'); ?>> Same Tab</label><br>
                         <label><input type="radio" name="target" value="_blank" <?= checked($link_data['target'], '_blank'); ?>> New Tab</label>
-                        <p class="description">Choose whether the link opens in the same tab or a new tab.</p>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="color">Color</label></th>
                     <td>
                         <input type="text" name="color" id="color" value="<?= $link_data['color']; ?>" class="regular-text color-picker" />
-                        <p class="description">Choose a color for the link label.</p>
                     </td>
                 </tr>
                 <tr>
@@ -145,18 +140,17 @@ function page_lnb_details(): void
                                 <?= wp_get_attachment_image($link_data['cover_image_id'], 'thumbnail'); ?>
                             <?php endif; ?>
                         </div>
-                        <p class="description">Select an image to display as the cover for this link.</p>
                     </td>
                 </tr>
 
                 <?php if ($is_edit_mode): ?>
                     <tr>
                         <th scope="row"><label for="hit_num">Hit Number</label></th>
-                        <td><?= $link_data['hit_num']; ?></td>
+                        <td><?= $link_data['hit_num'] ?></td>
                     </tr>
                     <tr>
                         <th scope="row"><label for="last_visit">Last Visit</label></th>
-                        <td><?= $link_data['last_visit']; ?></td>
+                        <td><?= !empty($link_data['last_visit']) ? $link_data['last_visit'] : "Never" ?></td>
                     </tr>
                 <?php endif; ?>
             </table>

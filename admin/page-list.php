@@ -23,7 +23,7 @@ function generate_sortable_header($column_name, $sort_field, $current_sort_by, $
 
 
 // Function to display the link list page in the admin panel with pagination and sorting
-function page_lnb_list(): void
+function link_list_page(): void
 {
     $page_num = isset($_GET['page_num']) ? max(1, intval($_GET['page_num'])) : 1;
     $sort_by = $_GET['sort_by'] ?? 'id';

@@ -1,5 +1,5 @@
 <?php
-function page_lnb_settings(): void
+function settings_page(): void
 {
     ?>
 

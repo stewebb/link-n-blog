@@ -2,6 +2,7 @@
 
 include_once "page-list.php";
 include_once "page-details.php";
+include_once "page-categories.php";
 include_once "page-settings.php";
 
 add_action('admin_menu', function () {
@@ -11,7 +12,7 @@ add_action('admin_menu', function () {
         "Link 'n' Blog",
         'manage_options',
         'link-n-blog',
-        'page_lnb_list',
+        'link_list_page',
         plugins_url('../assets/LNB_Square.svg', __FILE__),
         '99'
     );
@@ -23,7 +24,7 @@ add_action('admin_menu', function () {
         'Link List',
         'manage_options',
         'link-n-blog',
-        'page_lnb_list'
+        'link_list_page'
     );
 
     // Link details sub-menu
@@ -33,7 +34,17 @@ add_action('admin_menu', function () {
         'Add a Link',
         'manage_options',
         'link-n-blog-details',
-        'page_lnb_details'
+        'link_details_page'
+    );
+
+    // Categories sub-menu
+    add_submenu_page(
+        'link-n-blog',
+        'Categories',
+        'Categories',
+        'manage_options',
+        'link-n-blog-categories',
+        'categories_page'
     );
 
     // Settings sub-menu
@@ -43,6 +54,6 @@ add_action('admin_menu', function () {
         'Settings',
         'manage_options',
         'link-n-blog-settings',
-        'page_lnb_settings'
+        'settings_page'
     );
 });
