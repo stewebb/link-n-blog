@@ -57,20 +57,43 @@ function categories_page()
             $categories = get_category_list();
             if ($categories) {
                 foreach ($categories as $category) {
+                    $usage_count = get_category_usage_count($category->id);
                     ?>
                     <div class="category-card card">
-                        <h2 class="card-title">
-                            Category #<?php echo esc_html($category->id); ?>
-                        </h2>
-
                         <form method="POST" action="">
                             <?php wp_nonce_field('category_action_nonce'); ?>
                             <input type="hidden" name="category_id" value="<?php echo esc_attr($category->id); ?>">
-                            <div class="mb-3">
-                                <input type="text" name="category_name" class="full-width" placeholder="Update category name" value="<?php echo esc_attr($category->name); ?>" required>
-                            </div>
-                            <button type="submit" name="update_category" class="button button-primary">Update</button>
-                            <button type="submit" name="delete_category" class="button button-secondary">Delete</button>
+
+                            <h2 class="card-title">Category #<?php echo esc_html($category->id); ?></h2>
+
+                            <!--
+                            <p>Used in <?php echo esc_html($usage_count); ?> links</p>
+                            -->
+
+                            <table class="form-table">
+                                <tr>
+                                    <th scope="row">
+                                        <label for="category-name-<?php echo esc_attr($category->id); ?>">Name</label>
+                                    </th>
+                                    <td>
+                                        <input type="text" name="category_name" id="category-name-<?php echo esc_attr($category->id); ?>" value="<?php echo esc_attr($category->name); ?>" class="full-width" required>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">
+                                        <label>Usage Count</label>
+                                    </th>
+                                    <td>
+                                        <?= esc_html($usage_count) ?> links
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p class="submit">
+                                <button type="submit" name="update_category" class="button button-primary">Update</button>
+                                <button type="submit" name="delete_category" class="button button-secondary">Delete</button>
+                            </p>
                         </form>
                     </div>
                     <?php
@@ -85,12 +108,32 @@ function categories_page()
                 <form method="POST" action="">
                     <?php wp_nonce_field('category_action_nonce'); ?>
                     <input type="hidden" name="category_id">
-                    <div class="mb-3">
-                        <input type="text" name="category_name" class="full-width" placeholder="Input category name" required>
-                    </div>
-                    <button type="submit" name="update_category" class="button button-primary">Add</button>
+
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row">
+                                <label for="category_name">Name</label>
+                            </th>
+                            <td>
+                                <input type="text" name="category_name" id="category_name" class="regular-text" placeholder="Input category name" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <label for="url">URL</label>
+                            </th>
+                            <td>
+                                <input type="url" name="url" id="url" class="regular-text" placeholder="Input category URL" required>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p class="submit">
+                        <button type="submit" name="update_category" class="button button-primary">Add</button>
+                    </p>
                 </form>
             </div>
+
         </div>
     </div>
     <?php

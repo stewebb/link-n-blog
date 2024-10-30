@@ -67,3 +67,11 @@ function get_category_list() {
     $query = "SELECT id, name FROM $table_categories";
     return $wpdb->get_results($query);
 }
+
+function get_category_usage_count($category_id) {
+    global $wpdb;
+    $table_links = $wpdb->prefix . 'lnb_links';
+    $query = $wpdb->prepare("SELECT COUNT(*) FROM $table_links WHERE category = %d", $category_id);
+    return $wpdb->get_var($query);
+}
+
