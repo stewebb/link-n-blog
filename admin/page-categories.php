@@ -114,6 +114,4 @@ function categories_page()
     </div>
     <?php
 }
-
-// CSS
 ?>
