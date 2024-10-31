@@ -141,12 +141,14 @@ function link_details_page(): void
                 <tr>
                     <th scope="row">Cover Image</th>
                     <td>
-                        <input type="hidden" name="cover_image_id" id="cover_image_id"
-                               value="<?= $link_data['cover_image_id']; ?>"/>
-                        <button type="button" class="button" id="select-cover-image">Select Cover Image</button>
+                        <div class="mb-3">
+                            <input type="hidden" name="cover_image_id" id="cover_image_id"
+                                   value="<?= $link_data['cover_image_id']; ?>"/>
+                            <button type="button" class="button" id="select-cover-image">Select Cover Image</button>
+                        </div>
                         <div id="cover-image-preview">
                             <?php if ($link_data['cover_image_id']): ?>
-                                <?= wp_get_attachment_image($link_data['cover_image_id'], 'thumbnail'); ?>
+                                <?= wp_get_attachment_image($link_data['cover_image_id']); ?>
                             <?php endif; ?>
                         </div>
                     </td>
@@ -192,12 +194,12 @@ function link_details_page(): void
         ?>
     </div>
 
+    <!--
     <script>
-        jQuery(document).ready(function () {
-            initializeColorPicker();
-            initializeCoverImagePicker();
-        });
+
     </script>
+    -->
     <?php
 }
+
 ?>

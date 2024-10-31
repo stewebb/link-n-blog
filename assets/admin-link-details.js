@@ -18,3 +18,8 @@ function initializeCoverImagePicker() {
         imageFrame.open();
     });
 }
+
+jQuery(document).ready(function () {
+    initializeColorPicker();
+    initializeCoverImagePicker();
+});
