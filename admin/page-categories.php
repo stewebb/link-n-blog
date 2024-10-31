@@ -36,11 +36,21 @@ function categories_page()
 
         // Delete Category
         if (isset($_POST['delete_category']) && $category_id) {
-            if (delete_category($category_id)) {
-                echo "<div class='notice notice-success'><p>Category deleted successfully.</p></div>";
-            } else {
-                echo "<div class='notice notice-error'><p>Error deleting category.</p></div>";
+
+            // Check if category is used in links
+            if(get_category_usage_count($category_id) > 0) {
+                echo "<div class='notice notice-error'><p>The category is used in $category_id link(s).</p></div>";
             }
+
+            else {
+                echo delete_category($category_id) ? "<div class='notice notice-success'><p>Category deleted successfully.</p></div>" : "<div class='notice notice-error'><p>Error deleting category.</p></div>";
+            }
+
+            //if (delete_category($category_id)) {
+            //    echo "<div class='notice notice-success'><p>Category deleted successfully.</p></div>";
+            //} else {
+            //    echo "<div class='notice notice-error'><p>Error deleting category.</p></div>";
+            //}
         }
     }
     ?>
@@ -61,10 +71,6 @@ function categories_page()
                             <?php wp_nonce_field('category_action_nonce'); ?>
                             <input type="hidden" name="category_id" value="<?= esc_attr($category->id); ?>">
 
-                            <!--
-                            <h2>Edit Category: <?= esc_attr($category->name); ?></h2>
-                            -->
-
                             <table class="form-table">
                                 <tr>
                                     <th><label>Category ID</label></th>
@@ -84,8 +90,13 @@ function categories_page()
 
                             <p class="submit">
                                 <button type="submit" name="update_category" class="button button-primary">Update</button>
-                                <button type="submit" name="delete_category" class="button">Delete</button>
+                                <button type="submit" name="delete_category" class="button"
+                                        onclick="return confirm('Are you sure you want to delete this category?');"
+                                    <?php echo $usage_count > 0 ? 'disabled' : ''; ?>>
+                                    Delete
+                                </button>
                             </p>
+
                         </form>
                     </div>
                     <?php

@@ -16,4 +16,4 @@ include_once(plugin_dir_path(__FILE__) . 'admin/admin.php');
 //include_once(plugin_dir_path(__FILE__) . 'includes/admin-page.php');
 include_once(plugin_dir_path(__FILE__) . 'includes/post-type.php');
 include_once(plugin_dir_path(__FILE__) . 'includes/enqueue-scripts.php');
-include_once(plugin_dir_path(__FILE__) . 'includes/crud-functions.php');
+//include_once(plugin_dir_path(__FILE__) . 'includes/crud-functions.php');

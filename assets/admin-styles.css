@@ -116,10 +116,15 @@
 
 .category-card {
     border: 1px solid #ccd0d4;
+    background-color: #fff;
     border-radius: 6px;
     padding: 20px;
     flex: 1 1 calc(50% - 20px);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.category-card:nth-child(even) {
+    background-color: #f6f7f7;
 }
 
 .category-card h2 {
@@ -130,7 +135,6 @@
 
 .category-card .form-table {
     width: 100%;
-    margin: 15px 0;
 }
 
 .category-card .submit {

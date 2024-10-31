@@ -1,8 +1,20 @@
 <?php
 
 // Enqueue admin styles
-function hw_custom_admin_styles() {
-    wp_enqueue_style('hw-admin-css', plugins_url('../assets/admin-styles.css', __FILE__));
+function hw_custom_admin_styles(): void
+{
+
+    // Enqueue admin styles and scripts
+    wp_enqueue_style(
+        'admin-css',
+        plugins_url('../assets/admin-styles.css', __FILE__)
+    );
+
+    wp_enqueue_script(
+        'admin-js',
+        plugins_url('../assets/admin-scripts.js', __FILE__),
+        array('jquery')
+    );
 
     // Enqueue WordPress color picker
     wp_enqueue_style('wp-color-picker');

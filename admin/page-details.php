@@ -73,14 +73,16 @@ function link_details_page(): void
                 <tr>
                     <th scope="row"><label for="link_name">Link Name</label></th>
                     <td>
-                        <input type="text" name="link_name" id="link_name" value="<?= $link_data['link_name']; ?>" class="regular-text" required />
+                        <input type="text" name="link_name" id="link_name" value="<?= $link_data['link_name']; ?>"
+                               class="regular-text" required/>
                     </td>
                 </tr>
 
                 <tr>
                     <th scope="row"><label for="label_text">Label Text</label></th>
                     <td>
-                        <input type="text" name="label_text" id="label_text" value="<?= $link_data['label_text']; ?>" class="regular-text" required />
+                        <input type="text" name="label_text" id="label_text" value="<?= $link_data['label_text']; ?>"
+                               class="regular-text" required/>
                         <p class="description">Leave blank to use the link name as the label text.</p>
                     </td>
                 </tr>
@@ -88,7 +90,9 @@ function link_details_page(): void
                     <th scope="row"><label for="category">Category</label></th>
                     <td>
                         <select name="category" id="category">
-                            <option value="0" <?= selected($link_data['category'], 'Uncategorized', false); ?>>Uncategorized</option>
+                            <option value="0" <?= selected($link_data['category'], 'Uncategorized', false); ?>>
+                                Uncategorized
+                            </option>
                             <?php foreach ($categories as $category): ?>
                                 <option value="<?= $category->id; ?>" <?= selected($link_data['category'], $category->name, false); ?>>
                                     <?= esc_html($category->name); ?>
@@ -101,7 +105,8 @@ function link_details_page(): void
                 <tr>
                     <th scope="row"><label for="url">URL</label></th>
                     <td>
-                        <input type="url" name="url" id="url" value="<?= $link_data['url']; ?>" class="regular-text" required />
+                        <input type="url" name="url" id="url" value="<?= $link_data['url']; ?>" class="regular-text"
+                               required/>
                     </td>
                 </tr>
                 <tr>
@@ -120,20 +125,24 @@ function link_details_page(): void
                 <tr>
                     <th scope="row">Target</th>
                     <td>
-                        <label><input type="radio" name="target" value="_self" <?= checked($link_data['target'], '_self'); ?>> Same Tab</label><br>
-                        <label><input type="radio" name="target" value="_blank" <?= checked($link_data['target'], '_blank'); ?>> New Tab</label>
+                        <label><input type="radio" name="target"
+                                      value="_self" <?= checked($link_data['target'], '_self'); ?>> Same Tab</label><br>
+                        <label><input type="radio" name="target"
+                                      value="_blank" <?= checked($link_data['target'], '_blank'); ?>> New Tab</label>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="color">Color</label></th>
                     <td>
-                        <input type="text" name="color" id="color" value="<?= $link_data['color']; ?>" class="regular-text color-picker" />
+                        <input type="text" name="color" id="color" value="<?= $link_data['color']; ?>"
+                               class="regular-text color-picker"/>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row">Cover Image</th>
                     <td>
-                        <input type="hidden" name="cover_image_id" id="cover_image_id" value="<?= $link_data['cover_image_id']; ?>" />
+                        <input type="hidden" name="cover_image_id" id="cover_image_id"
+                               value="<?= $link_data['cover_image_id']; ?>"/>
                         <button type="button" class="button" id="select-cover-image">Select Cover Image</button>
                         <div id="cover-image-preview">
                             <?php if ($link_data['cover_image_id']): ?>
@@ -184,22 +193,9 @@ function link_details_page(): void
     </div>
 
     <script>
-        jQuery(document).ready(function($) {
-            $('.color-picker').wpColorPicker();
-            $('#select-cover-image').on('click', function(e) {
-                e.preventDefault();
-                const imageFrame = wp.media({
-                    title: 'Select or Upload Cover Image',
-                    button: { text: 'Use this image' },
-                    multiple: false
-                });
-                imageFrame.on('select', function() {
-                    const attachment = imageFrame.state().get('selection').first().toJSON();
-                    $('#cover_image_id').val(attachment.id);
-                    $('#cover-image-preview').html('<img src="' + attachment.sizes.thumbnail.url + '" />');
-                });
-                imageFrame.open();
-            });
+        jQuery(document).ready(function () {
+            initializeColorPicker();
+            initializeCoverImagePicker();
         });
     </script>
     <?php
