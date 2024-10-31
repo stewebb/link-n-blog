@@ -3,6 +3,7 @@
 include_once "page-list.php";
 include_once "page-details.php";
 include_once "page-categories.php";
+include_once "page-preview.php";
 include_once "page-settings.php";
 
 add_action('admin_menu', function () {
@@ -45,6 +46,16 @@ add_action('admin_menu', function () {
         'manage_options',
         'link-n-blog-categories',
         'categories_page'
+    );
+
+    // Preview sub-menu
+    add_submenu_page(
+        'link-n-blog',
+        'Preview',
+        'Preview',
+        'manage_options',
+        'link-n-blog-preview',
+        'preview_page'
     );
 
     // Settings sub-menu

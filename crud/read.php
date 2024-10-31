@@ -75,3 +75,26 @@ function get_category_usage_count($category_id) {
     return $wpdb->get_var($query);
 }
 
+function get_all_links_grouped_by_category(): array {
+    global $wpdb;
+    $table_links = $wpdb->prefix . 'lnb_links';
+    $table_categories = $wpdb->prefix . 'lnb_categories';
+
+    // Query to get all links with the category name
+    $sql = "
+        SELECT l.id, l.link_name, l.category, l.hit_num, l.url, c.name AS category_name
+        FROM $table_links AS l
+        LEFT JOIN $table_categories AS c ON l.category = c.id
+    ";
+
+    $links = $wpdb->get_results($sql);
+
+    // Group links by category
+    $grouped_links = [];
+    foreach ($links as $link) {
+        $category = $link->category_name ?? "Uncategorized";
+        $grouped_links[$category][] = $link;
+    }
+
+    return $grouped_links;
+}
