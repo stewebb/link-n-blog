@@ -14,37 +14,31 @@ function preview_page(): void
             background-color: #f1f1f1; /* Light gray for contrast */
             border-radius: 8px;
         }
-
-        .link-preview-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .link-preview-item {
-            flex: 1 1 200px;
-            max-width: 300px;
-            padding: 15px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
     </style>
 
     <div class="wrap">
         <h1 class="wp-heading-inline">Preview</h1>
         <hr class="wp-header-end">
 
+        <div class='notice notice-info'>
+            <p>This page currently includes only basic styling. You can enhance it with custom styles in your theme’s stylesheet.</p>
+        </div>
+
         <?php if (!empty($grouped_links)): ?>
             <?php foreach ($grouped_links as $category => $links): ?>
-                <h2><?php echo esc_html($category); ?></h2>
+                <h2><?= esc_html($category) ?></h2>
 
-                <div class="link-preview-container">
+                <div class="link-preview-container menu-row">
                     <?php foreach ($links as $link): ?>
-                        <div class="link-preview-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px;">
-                            <h3><?php echo esc_html($link->link_name); ?></h3>
-                            <p>Hits: <?php echo esc_html($link->hit_num); ?></p>
-                            <p>URL: <a href="<?php echo esc_url($link->url); ?>" target="_blank"><?php echo esc_url($link->url); ?></a></p>
+                        <div class="link-item menu-col">
+                            <div class="banner-container">
+                                <img src="<?= esc_url($link->image_url) ?>" alt="Banner for <?= esc_html($link->link_name) ?>" />
+                                <div class="centered-text"><?= esc_html($link->link_name) ?></div>
+                            </div>
+                            <div class="content-container">
+                                <p>Hits: <?= esc_html($link->hit_num) ?></p>
+                                <p>URL: <a href="<?= esc_url($link->url) ?>" target="_blank"><?= esc_url($link->url) ?></a></p>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -52,7 +46,6 @@ function preview_page(): void
         <?php else: ?>
             <p>No links available for preview.</p>
         <?php endif; ?>
-
     </div>
 
     <?php

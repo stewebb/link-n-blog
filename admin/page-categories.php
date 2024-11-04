@@ -5,7 +5,7 @@ require_once(plugin_dir_path(__FILE__) . '../crud/read.php');
 require_once(plugin_dir_path(__FILE__) . '../crud/update.php');
 require_once(plugin_dir_path(__FILE__) . '../crud/delete.php');
 
-function categories_page()
+function categories_page(): void
 {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Nonce Verification
@@ -45,12 +45,6 @@ function categories_page()
             else {
                 echo lnb_delete_category($category_id) ? "<div class='notice notice-success'><p>Category deleted successfully.</p></div>" : "<div class='notice notice-error'><p>Error deleting category.</p></div>";
             }
-
-            //if (delete_category($category_id)) {
-            //    echo "<div class='notice notice-success'><p>Category deleted successfully.</p></div>";
-            //} else {
-            //    echo "<div class='notice notice-error'><p>Error deleting category.</p></div>";
-            //}
         }
     }
     ?>

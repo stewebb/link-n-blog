@@ -1,0 +1,85 @@
+.link-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    overflow: hidden;
+    background-color: #fff;
+    border: 1px solid var(--bs-gray-300);
+    margin: 0;
+    font-size: 18px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    min-height: 200px;
+}
+
+.link-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.link-item:hover .overlay {
+    opacity: 1;
+}
+
+.link-item .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-700); /* Adjusted to CSS variable */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1002;
+}
+
+.link-item .overlay button {
+    margin: 5px;
+}
+
+.link-item .banner-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.link-item .banner-container img {
+    width: 100%;
+    height: auto;
+}
+
+.link-item .banner-container .centered-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 2.5rem;
+    z-index: 1001;
+}
+
+.link-item canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.menu-row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.menu-col {
+    padding: 10px;
+}
+
+.content-container {
+    flex-grow: 1;
+}
