@@ -4,6 +4,34 @@
  *                Links              *
  ************************************/
 
+function update_link($link_id, $link_data) {
+    global $wpdb;
+
+    // Update existing link data
+    $result = $wpdb->update(
+        'wp_lnb_links',
+        [
+            'link_name' => $link_data['link_name'],
+            'label_text' => $link_data['label_text'],
+            'category' => $link_data['category'],
+            'url' => $link_data['url'],
+            'wp_page_id' => $link_data['wp_page_id'],
+            'target' => $link_data['target'],
+            'color' => $link_data['color'],
+            'cover_image_id' => $link_data['cover_image_id'],
+            'updated_at' => current_time('mysql'),
+        ],
+        [ 'id' => $link_id ],
+        [
+            '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d', '%s'
+        ],
+        [ '%d' ]
+    );
+
+    return $result;
+}
+
+
 /*************************************
  *             Categories            *
  ************************************/

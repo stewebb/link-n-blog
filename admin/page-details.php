@@ -2,6 +2,7 @@
 
 require_once(plugin_dir_path(__FILE__) . '../crud/read.php');
 require_once(plugin_dir_path(__FILE__) . '../crud/create.php');
+require_once(plugin_dir_path(__FILE__) . '../crud/update.php');
 
 function link_details_page(): void
 {
@@ -19,7 +20,7 @@ function link_details_page(): void
         <h1><?= isset($_GET['id']) ? 'Edit Link' : 'Add New Link'; ?></h1>
 
         <?php
-        $is_edit_mode = isset($_GET['id']) && !empty($_GET['id']);
+        $is_edit_mode = !empty($_GET['id']);
         $link_data = [
             'link_name' => '',
             'label_text' => '',
@@ -194,11 +195,6 @@ function link_details_page(): void
         ?>
     </div>
 
-    <!--
-    <script>
-
-    </script>
-    -->
     <?php
 }
 

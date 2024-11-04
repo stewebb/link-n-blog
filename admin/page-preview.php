@@ -28,7 +28,7 @@ function preview_page(): void
             <?php foreach ($grouped_links as $category => $links): ?>
                 <h2><?= esc_html($category) ?></h2>
 
-                <div class="link-preview-container menu-row">
+                <div class="preview-container menu-row">
                     <?php foreach ($links as $link): ?>
                         <div class="link-item menu-col">
                             <div class="banner-container">
