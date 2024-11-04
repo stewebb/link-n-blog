@@ -1,8 +1,7 @@
 <?php
 
 // Enqueue admin styles and conditionally enqueue scripts
-function hw_custom_admin_styles(): void
-{
+add_action('admin_enqueue_scripts', function (): void {
     // Enqueue admin styles
     wp_enqueue_style(
         'admin-css',
@@ -60,5 +59,6 @@ function hw_custom_admin_styles(): void
         //    true
         //);
     }
-}
-add_action('admin_enqueue_scripts', 'hw_custom_admin_styles');
+});
+
+//add_action('admin_enqueue_scripts', 'lnb_admin_styles');

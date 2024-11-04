@@ -5,7 +5,7 @@ require_once(plugin_dir_path(__FILE__) . '../crud/create.php');
 
 function link_details_page(): void
 {
-    $categories = get_category_list();
+    $categories = lnb_get_category_list();
 
     // Retrieve WordPress posts and pages for the wp_page_id dropdown
     $pages_posts = get_posts([
@@ -35,7 +35,7 @@ function link_details_page(): void
 
         if ($is_edit_mode) {
             $link_id = intval($_GET['id']);
-            $link_details = get_link_details_by_id($link_id);
+            $link_details = lnb_get_link_details_by_id($link_id);
 
             if ($link_details) {
                 $link_data = [

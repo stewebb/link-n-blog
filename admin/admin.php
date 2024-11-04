@@ -49,22 +49,22 @@ add_action('admin_menu', function () {
     );
 
     // Preview sub-menu
-    add_submenu_page(
-        'link-n-blog',
-        'Preview',
-        'Preview',
-        'manage_options',
-        'link-n-blog-preview',
-        'preview_page'
-    );
+    //add_submenu_page(
+    //    'link-n-blog',
+    //    'Preview',
+    //    'Preview',
+    //    'manage_options',
+    //    'link-n-blog-preview',
+    //    'preview_page'
+    //);
 
     // Settings sub-menu
-    add_submenu_page(
-        'link-n-blog',
-        'Settings',
-        'Settings',
-        'manage_options',
-        'link-n-blog-settings',
-        'settings_page'
-    );
+    //add_submenu_page(
+    //    'link-n-blog',
+    //    'Settings',
+    //    'Settings',
+    //    'manage_options',
+    //    'link-n-blog-settings',
+    //    'settings_page'
+    //);
 });

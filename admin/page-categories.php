@@ -20,13 +20,13 @@ function categories_page()
         // Update or Add Category
         if (isset($_POST['update_category'])) {
             if ($category_id) {
-                if (update_category($category_id, $category_name)) {
+                if (lnb_update_category($category_id, $category_name)) {
                     echo "<div class='notice notice-success'><p>Category updated successfully.</p></div>";
                 } else {
                     echo "<div class='notice notice-error'><p>Error updating category.</p></div>";
                 }
             } else {
-                if (add_category($category_name)) {
+                if (lnb_add_category($category_name)) {
                     echo "<div class='notice notice-success'><p>Category added successfully.</p></div>";
                 } else {
                     echo "<div class='notice notice-error'><p>Error adding category.</p></div>";
@@ -38,12 +38,12 @@ function categories_page()
         if (isset($_POST['delete_category']) && $category_id) {
 
             // Check if category is used in links
-            if(get_category_usage_count($category_id) > 0) {
+            if(lnb_get_category_usage_count($category_id) > 0) {
                 echo "<div class='notice notice-error'><p>The category is used in $category_id link(s).</p></div>";
             }
 
             else {
-                echo delete_category($category_id) ? "<div class='notice notice-success'><p>Category deleted successfully.</p></div>" : "<div class='notice notice-error'><p>Error deleting category.</p></div>";
+                echo lnb_delete_category($category_id) ? "<div class='notice notice-success'><p>Category deleted successfully.</p></div>" : "<div class='notice notice-error'><p>Error deleting category.</p></div>";
             }
 
             //if (delete_category($category_id)) {
@@ -61,10 +61,10 @@ function categories_page()
         <div class="category-cards-container">
             <?php
             // Display categories with update and delete options
-            $categories = get_category_list();
+            $categories = lnb_get_category_list();
             if ($categories) {
                 foreach ($categories as $category) {
-                    $usage_count = get_category_usage_count($category->id);
+                    $usage_count = lnb_get_category_usage_count($category->id);
                     ?>
                     <div class="category-card">
                         <form method="POST" action="">

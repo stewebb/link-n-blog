@@ -31,10 +31,10 @@ function link_list_page(): void
     $per_page = isset($_GET['per_page']) ? intval($_GET['per_page']) : 10;
 
     // Retrieve the paginated, sorted links data
-    $links = get_link_list($page_num, $per_page, $sort_by, $sort_order);
+    $links = lnb_get_link_list($page_num, $per_page, $sort_by, $sort_order);
 
     // Calculate total pages
-    $total_items = get_link_count();
+    $total_items = lnb_get_link_count();
     $total_pages = ceil($total_items / $per_page);
     $split_symbol = '&nbsp;<span class="text-light-gray">|</span>&nbsp;';
 

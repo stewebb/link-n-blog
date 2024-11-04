@@ -5,7 +5,7 @@ require_once(plugin_dir_path(__FILE__) . '../crud/read.php');
 function preview_page(): void
 {
     // Retrieve all grouped links
-    $grouped_links = get_all_links_grouped_by_category();
+    $grouped_links = lnb_get_all_links_grouped_by_category();
     ?>
 
     <style>

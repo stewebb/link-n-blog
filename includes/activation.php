@@ -1,7 +1,7 @@
 <?php
 
 // Register the activation hook
-function create_database_tables(): void
+function lnb_create_database_tables(): void
 {
     global $wpdb;
     $table_categories = $wpdb->prefix . 'lnb_categories';

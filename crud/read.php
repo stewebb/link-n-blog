@@ -1,7 +1,7 @@
 <?php
 
 // Function to get paginated and sorted links data with category name
-function get_link_list($page_num = 1, $per_page = 10, $sort_by = 'id', $sort_order = 'ASC'): array|object|null
+function lnb_get_link_list($page_num = 1, $per_page = 10, $sort_by = 'id', $sort_order = 'ASC'): array|object|null
 {
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
@@ -35,7 +35,7 @@ function get_link_list($page_num = 1, $per_page = 10, $sort_by = 'id', $sort_ord
 }
 
 // Function to get the total count of links for pagination
-function get_link_count(): int
+function lnb_get_link_count(): int
 {
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
@@ -46,7 +46,8 @@ function get_link_count(): int
     return (int) $wpdb->get_var($sql);
 }
 
-function get_link_details_by_id($link_id) {
+function lnb_get_link_details_by_id($link_id): object|array|null
+{
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
     $table_categories = $wpdb->prefix . 'lnb_categories';
@@ -61,21 +62,23 @@ function get_link_details_by_id($link_id) {
     return $wpdb->get_row($query);
 }
 
-function get_category_list() {
+function lnb_get_category_list(): array|object|null
+{
     global $wpdb;
     $table_categories = $wpdb->prefix . 'lnb_categories';
     $query = "SELECT id, name FROM $table_categories";
     return $wpdb->get_results($query);
 }
 
-function get_category_usage_count($category_id) {
+function lnb_get_category_usage_count($category_id): ?string
+{
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
     $query = $wpdb->prepare("SELECT COUNT(*) FROM $table_links WHERE category = %d", $category_id);
     return $wpdb->get_var($query);
 }
 
-function get_all_links_grouped_by_category(): array {
+function lnb_get_all_links_grouped_by_category(): array {
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
     $table_categories = $wpdb->prefix . 'lnb_categories';
