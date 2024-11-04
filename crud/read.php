@@ -1,8 +1,27 @@
 <?php
 
-// Function to get paginated and sorted links data with category name
-function lnb_get_link_list($page_num = 1, $per_page = 10, $sort_by = 'id', $sort_order = 'ASC'): array|object|null
-{
+/*************************************
+ *                Links              *
+ ************************************/
+
+/**
+ * Retrieve a paginated and sorted list of links along with their category names.
+ *
+ * This function fetches links from the 'lnb_links' table, joining the 'lnb_categories'
+ * table to include the category name. It allows sorting by specific fields and paginates
+ * the results based on the page number and items per page.
+ *
+ * @param int $page_num   The page number for pagination. Defaults to 1.
+ * @param int $per_page   The number of items to display per page. Defaults to 10.
+ * @param string $sort_by The column by which to sort the results. Allowed values: 'id', 'link_name', 'category', 'hit_num'. Defaults to 'id'.
+ * @param string $sort_order The sort order. Allowed values: 'ASC' or 'DESC'. Defaults to 'ASC'.
+ *
+ * @return array|object|null The result set of links with category names as an array or object on success, null on failure.
+ *@global wpdb $wpdb     WordPress database access object.
+ *
+ */
+
+function lnb_get_link_list(int $page_num = 1, int $per_page = 10, string $sort_by = 'id', string $sort_order = 'ASC'): array|object|null {
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
     $table_categories = $wpdb->prefix . 'lnb_categories';
@@ -34,20 +53,21 @@ function lnb_get_link_list($page_num = 1, $per_page = 10, $sort_by = 'id', $sort
     return $wpdb->get_results($sql);
 }
 
-// Function to get the total count of links for pagination
-function lnb_get_link_count(): int
-{
-    global $wpdb;
-    $table_links = $wpdb->prefix . 'lnb_links';
+/**
+ * Retrieve details of a specific link by its ID, including the category name.
+ *
+ * This function fetches a single link record from the 'lnb_links' table, joining
+ * the 'lnb_categories' table to include the category name. It returns detailed information
+ * about the link, such as the link name, category, URL, and other metadata.
+ *
+ * @param int $link_id The ID of the link to retrieve.
+ *
+ * @return object|array|null The link details as an object or array on success, null on failure or if not found.
+ *@global wpdb $wpdb  WordPress database access object.
+ *
+ */
 
-    // Query to count all links
-    $sql = "SELECT COUNT(*) FROM $table_links";
-
-    return (int) $wpdb->get_var($sql);
-}
-
-function lnb_get_link_details_by_id($link_id): object|array|null
-{
+function lnb_get_link_details_by_id(int $link_id): object|array|null {
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
     $table_categories = $wpdb->prefix . 'lnb_categories';
@@ -62,21 +82,82 @@ function lnb_get_link_details_by_id($link_id): object|array|null
     return $wpdb->get_row($query);
 }
 
-function lnb_get_category_list(): array|object|null
-{
+/**
+ * Retrieve the total count of links for pagination.
+ *
+ * This function counts the total number of links in the 'lnb_links' table.
+ * It is useful for determining the total number of pages needed for pagination.
+ *
+ * @global wpdb $wpdb WordPress database access object.
+ *
+ * @return int The total count of links.
+ */
+
+function lnb_get_link_count(): int {
+    global $wpdb;
+    $table_links = $wpdb->prefix . 'lnb_links';
+
+    // Query to count all links
+    $sql = "SELECT COUNT(*) FROM $table_links";
+
+    return (int) $wpdb->get_var($sql);
+}
+
+/*************************************
+ *             Categories            *
+ ************************************/
+
+/**
+ * Retrieve a list of all categories.
+ *
+ * This function fetches all categories from the 'lnb_categories' table,
+ * returning each category's ID and name. Useful for populating category
+ * dropdowns or filter options.
+ *
+ * @global wpdb $wpdb WordPress database access object.
+ *
+ * @return array|object|null The list of categories as an array or object on success, null on failure.
+ */
+
+function lnb_get_category_list(): array|object|null {
     global $wpdb;
     $table_categories = $wpdb->prefix . 'lnb_categories';
     $query = "SELECT id, name FROM $table_categories";
     return $wpdb->get_results($query);
 }
 
-function lnb_get_category_usage_count($category_id): ?string
-{
+/**
+ * Retrieve the count of links associated with a specific category.
+ *
+ * This function counts the number of links in the 'lnb_links' table
+ * that belong to a given category. Useful for determining the usage
+ * or popularity of each category.
+ *
+ * @param int $category_id The ID of the category to count links for.
+ *
+ * @return string|null The count of links as a string on success, or null on failure.
+ *@global wpdb $wpdb WordPress database access object.
+ *
+ */
+
+function lnb_get_category_usage_count(int $category_id): ?string {
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
     $query = $wpdb->prepare("SELECT COUNT(*) FROM $table_links WHERE category = %d", $category_id);
     return $wpdb->get_var($query);
 }
+
+/**
+ * Retrieve all links grouped by their respective categories.
+ *
+ * This function fetches all links from the 'lnb_links' table, joining the 'lnb_categories'
+ * table to include the category name. It then groups the links by category, with links
+ * having no category assigned to "Uncategorized".
+ *
+ * @global wpdb $wpdb WordPress database access object.
+ *
+ * @return array An associative array where keys are category names and values are arrays of links in each category.
+ */
 
 function lnb_get_all_links_grouped_by_category(): array {
     global $wpdb;
