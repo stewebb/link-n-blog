@@ -187,7 +187,7 @@ function link_details_page(): void
                 echo $updated ? '<div class="notice notice-success is-dismissible"><p>Link updated successfully!</p></div>' :
                     '<div class="notice notice-error is-dismissible"><p>Failed to update link.</p></div>';
             } else {
-                $inserted = add_new_link($link_data);
+                $inserted = lnb_add_new_link($link_data);
                 echo $inserted ? '<div class="notice notice-success is-dismissible"><p>New link added successfully!</p></div>' :
                     '<div class="notice notice-error is-dismissible"><p>Failed to add new link.</p></div>';
             }

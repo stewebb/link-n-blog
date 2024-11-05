@@ -10,18 +10,17 @@
  * @param array $link_data The data of the new link to add.
  * @return bool True on success, false on failure.
  */
-function add_new_link(array $link_data)
-{
+
+function lnb_add_new_link(array $link_data): bool {
     global $wpdb;
-    $category_id = $link_data['category'] > 0 ? $link_data['category'] : null;
 
     // Insert new link data
-    $result = $wpdb->insert(
+    return $wpdb->insert(
         'wp_lnb_links',
         [
             'link_name' => $link_data['link_name'],
             'label_text' => $link_data['label_text'],
-            'category' => $category_id,
+            'category' => $link_data['category'] > 0 ? $link_data['category'] : null,
             'url' => $link_data['url'],
             'wp_page_id' => $link_data['wp_page_id'],
             'target' => $link_data['target'],
@@ -34,8 +33,6 @@ function add_new_link(array $link_data)
             '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d', '%s', '%s'
         ]
     );
-
-    return $result;
 }
 
 /*************************************
@@ -51,7 +48,7 @@ function add_new_link(array $link_data)
  * @param string $category_name The name of the new category to add.
  *
  * @return mysqli_result|bool|int|null The ID of the inserted category on success, false on failure, or null if no rows affected.
- *@global wpdb $wpdb WordPress database access object.
+ * @global wpdb $wpdb WordPress database access object.
  *
  */
 
