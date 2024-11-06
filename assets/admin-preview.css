@@ -87,6 +87,7 @@
     background-size: cover;
     background-position: center;
     overflow: hidden;
+    min-height: 200px;
 }
 
 .link-item .banner-container img {

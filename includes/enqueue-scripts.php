@@ -49,11 +49,19 @@ add_action('admin_enqueue_scripts', function (): void {
         //);
     }
 
-    // Settings page
+    // Preview page
     elseif ($hook_suffix === 'link-n-blog_page_link-n-blog-preview') {
         wp_enqueue_style(
             'admin-preview-css',
             plugins_url('../assets/admin-preview.css', __FILE__)
+        );
+
+        wp_enqueue_script(
+            'admin-color-script',
+            plugins_url('../assets/ColorManipulator.js', __FILE__),
+            ['jquery'],
+            '1.0',
+            true
         );
     }
 });

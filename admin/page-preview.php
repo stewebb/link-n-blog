@@ -21,7 +21,8 @@ function preview_page(): void
         <hr class="wp-header-end">
 
         <div class='notice notice-info'>
-            <p>This page currently includes only basic styling. You can enhance it with custom styles in your theme’s stylesheet.</p>
+            <p>This page currently includes only basic styling. You can enhance it with custom styles in your theme’s
+                stylesheet.</p>
         </div>
 
         <?php if (!empty($grouped_links)): ?>
@@ -37,7 +38,7 @@ function preview_page(): void
                                     <?= wp_get_attachment_image($link->cover_image_id) ?>
                                 </div>
                             <?php else: ?>
-                                <div class="banner-container" style="background-color: <?= esc_attr($link->color) ?>; width: 100%; height: 100%;"></div>
+                                <div class="banner-container" data-color="<?= esc_attr($link->color) ?>"></div>
                             <?php endif; ?>
                             <!--
                             <div class="banner-container">
@@ -58,6 +59,25 @@ function preview_page(): void
             <p>No links available for preview.</p>
         <?php endif; ?>
     </div>
+
+    <script>
+        jQuery(document).ready(function () {
+
+            // Set a fallback color if the color option is not set.
+            const defaultColor = '#e070a7';
+
+            const colorManipulator = new ColorManipulator('#fff');
+            colorManipulator.setPercentage(60);
+            colorManipulator.setIsLighten(true);
+
+            jQuery('.banner-container').each(function () {
+                const baseColor = jQuery(this).data('color');
+                colorManipulator.setColor(baseColor ? baseColor : defaultColor);
+                jQuery(this).css('background-color', colorManipulator.adjustColor());
+            });
+        });
+
+    </script>
 
     <?php
 }
