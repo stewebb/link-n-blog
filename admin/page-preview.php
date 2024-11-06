@@ -31,14 +31,25 @@ function preview_page(): void
                 <div class="preview-container menu-row">
                     <?php foreach ($links as $link): ?>
                         <div class="link-item menu-col">
+
+                            <?php if ($link->cover_image_id): ?>
+                                <div class="banner-container">
+                                    <?= wp_get_attachment_image($link->cover_image_id) ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="banner-container" style="background-color: <?= esc_attr($link->color) ?>; width: 100%; height: 100%;"></div>
+                            <?php endif; ?>
+                            <!--
                             <div class="banner-container">
-                                <img src="<?= esc_url($link->image_url) ?>" alt="Banner for <?= esc_html($link->link_name) ?>" />
+                                <img src="<?= esc_url($link->cover_image_id) ?>" alt="Banner for <?= esc_html($link->link_name) ?>" />
                                 <div class="centered-text"><?= esc_html($link->link_name) ?></div>
                             </div>
                             <div class="content-container">
                                 <p>Hits: <?= esc_html($link->hit_num) ?></p>
                                 <p>URL: <a href="<?= esc_url($link->url) ?>" target="_blank"><?= esc_url($link->url) ?></a></p>
                             </div>
+                            -->
+
                         </div>
                     <?php endforeach; ?>
                 </div>

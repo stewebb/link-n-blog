@@ -166,7 +166,7 @@ function lnb_get_all_links_grouped_by_category(): array {
 
     // Query to get all links with the category name
     $sql = "
-        SELECT l.id, l.link_name, l.category, l.hit_num, l.url, c.name AS category_name
+        SELECT l.id, l.link_name, l.cover_image_id, l.color, l.category, l.hit_num, l.url, c.name AS category_name
         FROM $table_links AS l
         LEFT JOIN $table_categories AS c ON l.category = c.id
     ";
