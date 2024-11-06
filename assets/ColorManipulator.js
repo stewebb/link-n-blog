@@ -25,6 +25,7 @@ class ColorManipulator {
      *
      * @param {string} hex The hexadecimal color code (e.g., "#ff5733" or "ff5733").
      */
+
     setColor(hex) {
         this.hex = hex.replace('#', '');
     }
@@ -33,6 +34,7 @@ class ColorManipulator {
      * Gets the percentage value.
      * @returns {number} The percentage by which to lighten or darken.
      */
+
     getPercentage() {
         return this.percentage;
     }
@@ -41,6 +43,7 @@ class ColorManipulator {
      * Sets the percentage value.
      * @param {number} percentage The new percentage value.
      */
+
     setPercentage(percentage) {
         this.percentage = percentage;
     }
@@ -49,6 +52,7 @@ class ColorManipulator {
      * Gets the isLighten flag.
      * @returns {boolean} Whether the adjustment is to lighten the color.
      */
+
     getIsLighten() {
         return this.isLighten;
     }
@@ -57,6 +61,7 @@ class ColorManipulator {
      * Sets the isLighten flag.
      * @param {boolean} isLighten The new isLighten value.
      */
+
     setIsLighten(isLighten) {
         this.isLighten = isLighten;
     }
@@ -65,6 +70,7 @@ class ColorManipulator {
      * Adjusts the color based on the current percentage and isLighten settings.
      * @returns {string} The adjusted color in hexadecimal format.
      */
+
     adjustColor() {
         return this.adjustColorBrightness(this.hex, this.percentage, this.isLighten);
     }
@@ -74,6 +80,7 @@ class ColorManipulator {
      * @param {number} percentage Optional percentage to lighten the color.
      * @returns {string} The lightened color in hexadecimal format.
      */
+
     lighten(percentage = this.percentage) {
         this.isLighten = true;
         this.percentage = percentage;
@@ -85,6 +92,7 @@ class ColorManipulator {
      * @param {number} percentage Optional percentage to darken the color.
      * @returns {string} The darkened color in hexadecimal format.
      */
+
     darken(percentage = this.percentage) {
         this.isLighten = false;
         this.percentage = percentage;
@@ -99,6 +107,7 @@ class ColorManipulator {
      * @param {boolean} isLighten Determines if the adjustment is to lighten (true) or darken (false).
      * @returns {string} The adjusted color in hexadecimal format.
      */
+
     adjustColorBrightness(hex, percentage, isLighten) {
         let { r, g, b } = this.hexToRgb(hex);
         const factor = percentage / 100;
@@ -122,6 +131,7 @@ class ColorManipulator {
      * @param {string} hex The hexadecimal color code.
      * @returns {Object} An object containing the red, green, and blue values.
      */
+
     hexToRgb(hex) {
         let r, g, b;
         if (hex.length === 6) {
@@ -146,13 +156,8 @@ class ColorManipulator {
      * @param {number} b Blue component (0-255).
      * @returns {string} The color in hexadecimal format.
      */
+
     rgbToHex(r, g, b) {
         return `#${[r, g, b].map(x => x.toString(16).padStart(2, '0')).join('')}`;
     }
 }
-
-// Usage
-//const colorManipulator = new ColorManipulator('#ff5733');
-//colorManipulator.setPercentage(20);
-//console.log(colorManipulator.lighten()); // Lighten by 20%
-//console.log(colorManipulator.darken());  // Darken by 20%

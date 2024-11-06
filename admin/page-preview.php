@@ -33,6 +33,7 @@ function preview_page(): void
                     <?php foreach ($links as $link): ?>
                         <div class="link-item menu-col">
 
+                            <!-- Background: Image or Color -->
                             <?php if ($link->cover_image_id): ?>
                                 <div class="banner-container">
                                     <?= wp_get_attachment_image($link->cover_image_id) ?>
@@ -74,6 +75,20 @@ function preview_page(): void
                 const baseColor = jQuery(this).data('color');
                 colorManipulator.setColor(baseColor ? baseColor : defaultColor);
                 jQuery(this).css('background-color', colorManipulator.adjustColor());
+            });
+        });
+
+        jQuery(document).ready(function () {
+            // Select all images within .image-container elements and apply adjustments
+            jQuery('.banner-container img').each(function () {
+                // Initialize the ImageManipulator for each image with a 20% adjustment
+                const imageManipulator = new ImageManipulator(this, 50);
+
+                // Lighten the image
+                imageManipulator.lighten();
+
+                // To darken the image instead, you can do:
+                // imageManipulator.darken();
             });
         });
 

@@ -63,6 +63,15 @@ add_action('admin_enqueue_scripts', function (): void {
             '1.0',
             true
         );
+
+        wp_enqueue_script(
+            'admin-image-script',
+            plugins_url('../assets/ImageManipulator.js', __FILE__),
+            ['jquery'],
+            '1.0',
+            true
+        );
+        // TODO Remove jquery dependency
     }
 });
 
