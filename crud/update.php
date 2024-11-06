@@ -13,7 +13,7 @@ function update_link($link_id, $link_data) {
         [
             'link_name' => $link_data['link_name'],
             'label_text' => $link_data['label_text'],
-            'category' => $link_data['category'],
+            'category' => $link_data['category'] > 0 ? $link_data['category'] : null,
             'url' => $link_data['url'],
             'wp_page_id' => $link_data['wp_page_id'],
             'target' => $link_data['target'],

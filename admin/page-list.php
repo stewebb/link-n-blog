@@ -62,16 +62,25 @@ function link_list_page(): void
             <tr>
                 <?= generate_sortable_header('ID', 'id', $sort_by, $sort_order, $page_num); ?>
                 <?= generate_sortable_header('Name', 'link_name', $sort_by, $sort_order, $page_num); ?>
+                <th scope="col">Cover Image</th>
+                <th scope="col">WP Page</th>
                 <?= generate_sortable_header('Category', 'category', $sort_by, $sort_order, $page_num); ?>
                 <?= generate_sortable_header('Hit Num', 'hit_num', $sort_by, $sort_order, $page_num); ?>
+
+                <!--
                 <th scope="col">Action</th>
+                -->
             </tr>
             </thead>
             <tbody>
             <?php if ($links): ?>
                 <?php foreach ($links as $link): ?>
                     <tr>
-                        <td><?= esc_html($link->id) ?></td>
+                        <td>
+                            <a href="admin.php?page=link-n-blog-details&id=<?= esc_attr($link->id) ?>">
+                                <?= esc_html($link->id) ?>
+                            </a>
+                        </td>
                         <td>
                             <a class="row-title" href="<?= esc_attr($link->url) ?>" target="_blank">
                                 <strong><?= esc_html($link->link_name) ?></strong>
@@ -79,19 +88,26 @@ function link_list_page(): void
                             </a>
                         </td>
                         <td>
+
+                        </td>
+                        <td>
+                            <?= !empty($link->wp_page_id) ? '<a target="_blank" href="' . esc_url(get_permalink($link->wp_page_id)) . '">' . esc_html(get_the_title($link->wp_page_id)) . '<span class="dashicons dashicons-external"></span></a>' : '<span class="text-light-gray">N/A</span>' ?>
+                        </td>
+                        <td>
                             <?= !empty($link->category_name) ? esc_html($link->category_name) : '<span class="text-light-gray">Uncategorized</span>' ?>
                         </td>
                         <td><?= esc_html($link->hit_num) ?></td>
+
+                        <!--
                         <td>
                             <a href="admin.php?page=link-n-blog-details&id=<?= esc_attr($link->id) ?>"
                                class="button-link">Edit</a><?= $split_symbol; ?>
                             <a href="admin.php?page=link-n-blog-details&id=<?= esc_attr($link->id) ?>"
                                class="button-link">Delete</a>
-                            <!--
                             <?= $split_symbol; ?>
                             <a href="<?= esc_attr($link->url) ?>" target="_blank" class="button-link">Visit</a>
-                            -->
                         </td>
+                        -->
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
