@@ -82,13 +82,21 @@ function link_list_page(): void
                             </a>
                         </td>
                         <td>
+                            <div class="color-block" style="background-color: <?= esc_attr($link->color) ?>;">
+                                <span class="color-hex"><?= esc_html($link->color) ?></span>
+                            </div>
+
                             <a class="row-title" href="<?= esc_attr($link->url) ?>" target="_blank">
                                 <strong><?= esc_html($link->link_name) ?></strong>
                                 <span class="dashicons dashicons-external"></span>
                             </a>
                         </td>
                         <td>
-
+                            <?php if ($link->cover_image_id): ?>
+                                <?= wp_get_attachment_image($link->cover_image_id, [100, 100]); ?>
+                            <?php else: ?>
+                                <span class="text-light-gray">N/A</span>
+                            <?php endif; ?>
                         </td>
                         <td>
                             <?= !empty($link->wp_page_id) ? '<a target="_blank" href="' . esc_url(get_permalink($link->wp_page_id)) . '">' . esc_html(get_the_title($link->wp_page_id)) . '<span class="dashicons dashicons-external"></span></a>' : '<span class="text-light-gray">N/A</span>' ?>
