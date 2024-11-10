@@ -11,6 +11,7 @@ function lnb_create_database_tables(): void
     $sql_categories = "CREATE TABLE IF NOT EXISTS $table_categories (
         id INT NOT NULL AUTO_INCREMENT,
         name VARCHAR(255) NOT NULL,
+        color VARCHAR(7) DEFAULT NULL,
         PRIMARY KEY (id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
@@ -29,6 +30,7 @@ function lnb_create_database_tables(): void
         last_visit DATETIME NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        display BOOLEAN NOT NULL DEFAULT 1,
         PRIMARY KEY (id),
         FOREIGN KEY (category) REFERENCES $table_categories(id)
         ON DELETE SET NULL
