@@ -122,7 +122,7 @@ function lnb_get_link_count(): int {
 function lnb_get_category_list(): array|object|null {
     global $wpdb;
     $table_categories = $wpdb->prefix . 'lnb_categories';
-    $query = "SELECT id, name FROM $table_categories";
+    $query = "SELECT * FROM $table_categories";
     return $wpdb->get_results($query);
 }
 

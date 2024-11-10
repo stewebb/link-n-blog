@@ -203,6 +203,13 @@ function link_details_page(): void
         ?>
     </div>
 
+    <script>
+        jQuery(document).ready(function () {
+            initializeColorPicker();
+            initializeCoverImagePicker();
+        });
+    </script>
+
     <?php
 }
 

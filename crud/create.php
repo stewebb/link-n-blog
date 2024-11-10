@@ -40,21 +40,26 @@ function lnb_add_new_link(array $link_data): bool {
  ************************************/
 
 /**
- * Add a new category with a specified name.
+ * Add a new category with a specified name and color.
  *
  * This function inserts a new category into the 'lnb_categories' table with the provided
- * category name. It returns the ID of the inserted row on success, or false on failure.
+ * category name and color. It returns the ID of the inserted row on success, or false on failure.
  *
  * @param string $category_name The name of the new category to add.
+ * @param string $color The color associated with the category.
  *
  * @return mysqli_result|bool|int|null The ID of the inserted category on success, false on failure, or null if no rows affected.
  * @global wpdb $wpdb WordPress database access object.
  *
  */
 
-function lnb_add_category(string $category_name): mysqli_result|bool|int|null
+function lnb_add_category(string $category_name, string $color): mysqli_result|bool|int|null
 {
     global $wpdb;
     $table_categories = $wpdb->prefix . 'lnb_categories';
-    return $wpdb->insert($table_categories, ['name' => $category_name], ['%s']);
+    return $wpdb->insert(
+        $table_categories,
+        ['name' => $category_name, 'color' => $color],
+        ['%s', '%s']
+    );
 }

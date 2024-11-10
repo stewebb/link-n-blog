@@ -37,22 +37,29 @@ function update_link($link_id, $link_data) {
  ************************************/
 
 /**
- * Update the name of a specific category.
+ * Update the name and color of a specific category.
  *
- * This function updates the 'name' of a category in the 'lnb_categories' table
+ * This function updates the 'name' and 'color' of a category in the 'lnb_categories' table
  * based on the provided category ID. It returns the number of rows affected on success,
  * or false on failure.
  *
- * @param int $category_id   The ID of the category to update.
+ * @param int $category_id The ID of the category to update.
  * @param string $category_name The new name for the category.
+ * @param string $color The new color for the category.
  *
  * @return mysqli_result|bool|int|null The number of rows affected, false on failure, or null if no rows affected.
- *@global wpdb $wpdb WordPress database access object.
+ * @global wpdb $wpdb WordPress database access object.
  *
  */
 
-function lnb_update_category(int $category_id, string $category_name): mysqli_result|bool|int|null {
+function lnb_update_category(int $category_id, string $category_name, string $color): mysqli_result|bool|int|null {
     global $wpdb;
     $table_categories = $wpdb->prefix . 'lnb_categories';
-    return $wpdb->update($table_categories, ['name' => $category_name], ['id' => $category_id], ['%s'], ['%d']);
+    return $wpdb->update(
+        $table_categories,
+        ['name' => $category_name, 'color' => $color],
+        ['id' => $category_id],
+        ['%s', '%s'],
+        ['%d']
+    );
 }

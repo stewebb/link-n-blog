@@ -8,6 +8,14 @@ add_action('admin_enqueue_scripts', function (): void {
         plugins_url('../assets/admin-styles.css', __FILE__)
     );
 
+    wp_enqueue_script(
+        'admin-script',
+        plugins_url('../assets/admin-scripts.js', __FILE__),
+        ['jquery'],
+        '1.0',
+        false
+    );
+
     // Enqueue WordPress color picker and media uploader
     wp_enqueue_style('wp-color-picker');
     wp_enqueue_script('wp-color-picker');
@@ -29,13 +37,7 @@ add_action('admin_enqueue_scripts', function (): void {
 
     // Add a Link page
     elseif ($hook_suffix === 'link-n-blog_page_link-n-blog-details') {
-        wp_enqueue_script(
-            'admin-link-details-script',
-            plugins_url('../assets/admin-link-details.js', __FILE__),
-            ['jquery'],
-            '1.0',
-            true
-        );
+
     }
 
     // Categories page

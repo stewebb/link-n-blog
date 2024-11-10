@@ -105,9 +105,19 @@ function categories_page(): void
                     <?php wp_nonce_field('category_action_nonce'); ?>
                     <input type="hidden" name="category_id">
                     <table class="form-table">
+
+                        <!-- Name -->
                         <tr>
-                            <th><label for="category_name">Name</label></th>
+                            <th><label for="category_name"><span class="required">*&nbsp;</span>Name</label></th>
                             <td><input type="text" name="category_name" id="category_name" class="regular-text" placeholder="Enter category name" required></td>
+                        </tr>
+
+                        <!-- Color -->
+                        <tr>
+                            <th scope="row"><label for="color"><span class="required">&nbsp;&nbsp;</span>Color</label></th>
+                            <td>
+                                <input type="text" name="color" id="color" value="" class="regular-text color-picker"/>
+                            </td>
                         </tr>
                     </table>
                     <p class="submit">
@@ -117,6 +127,12 @@ function categories_page(): void
             </div>
         </div>
     </div>
+
+    <script>
+        jQuery(document).ready(function () {
+            initializeColorPicker();
+        });
+    </script>
     <?php
 }
 ?>
