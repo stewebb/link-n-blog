@@ -201,3 +201,32 @@ function lnb_get_all_links_grouped_by_category(): array {
 
     return $grouped_links;
 }
+
+/**
+ * Retrieve all uncategorized links.
+ *
+ * This function fetches all links from the 'lnb_links' table that have no assigned category,
+ * returning only the link ID and name.
+ *
+ * @global wpdb $wpdb WordPress database access object.
+ *
+ * @return array An array of uncategorized links, each represented as an associative array with 'id' and 'name' keys.
+ */
+
+function lnb_get_uncategorized_links(): array {
+    global $wpdb;
+    $table_links = $wpdb->prefix . 'lnb_links';
+
+    // Query to get uncategorized links (where category is NULL or 0)
+    $query = "
+        SELECT id, link_name
+        FROM $table_links
+        WHERE category IS NULL OR category = 0
+    ";
+
+    return $wpdb->get_results($query);
+
+    //$uncategorized_items = $wpdb->get_results($sql, ARRAY_A);
+
+    //return $uncategorized_items ?: [];
+}

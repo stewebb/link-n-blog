@@ -8,6 +8,17 @@ require_once(plugin_dir_path(__FILE__) . '../crud/delete.php');
 // Update categories_page to ensure colors are added/modified
 function categories_page(): void
 {
+
+    // Check for uncategorized links
+    $uncategorized = lnb_get_uncategorized_links();
+    if (!empty($uncategorized)) {
+        echo "<div class='notice notice-warning'><p><strong>The following link(s) are uncategorized:</strong></p><ul>";
+        foreach ($uncategorized as $link) {
+            echo "<li>ID: <a style='text-decoration: none;' href='admin.php?page=link-n-blog-details&id=" . $link->id . "'>" . $link->id . "</a>, name: " . $link->link_name . "</li>";
+        }
+        echo "</ul></div>";
+    }
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Nonce Verification
         if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'category_action_nonce')) {
@@ -40,11 +51,9 @@ function categories_page(): void
         if (isset($_POST['delete_category']) && $category_id) {
 
             // Check if category is used in links
-            if(lnb_get_category_usage_count($category_id) > 0) {
+            if (lnb_get_category_usage_count($category_id) > 0) {
                 echo "<div class='notice notice-error'><p>The category is used in $category_id link(s).</p></div>";
-            }
-
-            else {
+            } else {
                 echo lnb_delete_category($category_id) ? "<div class='notice notice-success'><p>Category deleted successfully.</p></div>" : "<div class='notice notice-error'><p>Error deleting category.</p></div>";
             }
         }
@@ -78,17 +87,23 @@ function categories_page(): void
 
                                 <!-- Name -->
                                 <tr>
-                                    <th><label for="category-name-<?= esc_attr($category->id); ?>"><span class="required">*&nbsp;</span>Name</label></th>
+                                    <th><label for="category-name-<?= esc_attr($category->id); ?>"><span
+                                                    class="required">*&nbsp;</span>Name</label></th>
                                     <td>
-                                        <input type="text" name="category_name" id="category-name-<?= esc_attr($category->id); ?>" value="<?= esc_attr($category->name); ?>" class="regular-text" required>
+                                        <input type="text" name="category_name"
+                                               id="category-name-<?= esc_attr($category->id); ?>"
+                                               value="<?= esc_attr($category->name); ?>" class="regular-text" required>
                                     </td>
                                 </tr>
 
                                 <!-- Color -->
                                 <tr>
-                                    <th><label for="color-<?= esc_attr($category->id); ?>"><span class="not-required">*&nbsp;</span>Color</label></th>
+                                    <th><label for="color-<?= esc_attr($category->id); ?>"><span class="not-required">*&nbsp;</span>Color</label>
+                                    </th>
                                     <td>
-                                        <input type="text" name="color" id="color-<?= esc_attr($category->id); ?>" value="<?= esc_attr($category->color); ?>" class="regular-text color-picker">
+                                        <input type="text" name="color" id="color-<?= esc_attr($category->id); ?>"
+                                               value="<?= esc_attr($category->color); ?>"
+                                               class="regular-text color-picker">
                                     </td>
                                 </tr>
 
@@ -103,16 +118,21 @@ function categories_page(): void
                                     <th><label><span class="not-required">*&nbsp;</span>Usage Details</label></th>
                                     <td>
                                         <?php
+                                        if (empty($usage_details)) {
+                                            echo "<span class='text-light-gray'>N/A</span>";
+                                        } else {
                                             foreach ($usage_details as $usage_detail) {
-                                                echo "<p>id: <a href='admin.php?page=link-n-blog-details&id=" . $usage_detail->id . "'>" . $usage_detail->id . "</a>, name: " . $usage_detail->link_name . "</p>";
+                                                echo "<p>ID: <a href='admin.php?page=link-n-blog-details&id=" . $usage_detail->id . "'>" . $usage_detail->id . "</a>, name: " . $usage_detail->link_name . "</p>";
                                             }
+                                        }
                                         ?>
                                     </td>
                                 </tr>
                             </table>
 
                             <p class="submit">
-                                <button type="submit" name="update_category" class="button button-primary">Update</button>
+                                <button type="submit" name="update_category" class="button button-primary">Update
+                                </button>
                                 <button type="submit" name="delete_category" class="button"
                                         onclick="return confirm('Are you sure you want to delete this category?');"
                                     <?php echo $usage_count > 0 ? 'disabled' : ''; ?>>
@@ -138,12 +158,14 @@ function categories_page(): void
                         <!-- Name -->
                         <tr>
                             <th><label for="category_name"><span class="required">*&nbsp;</span>Name</label></th>
-                            <td><input type="text" name="category_name" id="category_name" class="regular-text" placeholder="Enter category name" required></td>
+                            <td><input type="text" name="category_name" id="category_name" class="regular-text"
+                                       placeholder="Enter category name" required></td>
                         </tr>
 
                         <!-- Color -->
                         <tr>
-                            <th scope="row"><label for="color"><span class="not-required">*&nbsp;</span>Color</label></th>
+                            <th scope="row"><label for="color"><span class="not-required">*&nbsp;</span>Color</label>
+                            </th>
                             <td>
                                 <input type="text" name="color" id="color" value="" class="regular-text color-picker"/>
                             </td>
@@ -164,4 +186,5 @@ function categories_page(): void
     </script>
     <?php
 }
+
 ?>

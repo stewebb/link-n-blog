@@ -27,7 +27,7 @@ function link_details_page(): void
             'category' => '',
             'url' => '',
             'target' => '_self',
-            'color' => '#000000',
+            'color' => '',
             'cover_image_id' => '',
             'wp_page_id' => '',
             'hit_num' => 0,
@@ -64,6 +64,8 @@ function link_details_page(): void
 
         <form method="post" action="">
             <table class="form-table">
+
+                <!-- ID -->
                 <?php if ($is_edit_mode): ?>
                     <tr>
                         <th scope="row"><label for="link_id">Link ID</label></th>
@@ -71,6 +73,7 @@ function link_details_page(): void
                     </tr>
                 <?php endif; ?>
 
+                <!-- Link Name -->
                 <tr>
                     <th scope="row"><label for="link_name">Link Name</label></th>
                     <td>
@@ -79,6 +82,7 @@ function link_details_page(): void
                     </td>
                 </tr>
 
+                <!-- Label Text -->
                 <tr>
                     <th scope="row"><label for="label_text">Label Text</label></th>
                     <td>
@@ -87,6 +91,8 @@ function link_details_page(): void
                         <p class="description">Leave blank to use the link name as the label text.</p>
                     </td>
                 </tr>
+
+                <!-- Category -->
                 <tr>
                     <th scope="row"><label for="category">Category</label></th>
                     <td>
@@ -103,13 +109,7 @@ function link_details_page(): void
                     </td>
                 </tr>
 
-                <tr>
-                    <th scope="row"><label for="url">URL</label></th>
-                    <td>
-                        <input type="url" name="url" id="url" value="<?= $link_data['url']; ?>" class="regular-text"
-                               required/>
-                    </td>
-                </tr>
+                <!-- WordPress Page -->
                 <tr>
                     <th scope="row"><label for="wp_page_id">WordPress Page</label></th>
                     <td>
@@ -123,15 +123,28 @@ function link_details_page(): void
                         </select>
                     </td>
                 </tr>
+
+                <!-- URL -->
+                <tr>
+                    <th scope="row"><label for="url">URL</label></th>
+                    <td>
+                        <input type="url" name="url" id="url" value="<?= $link_data['url']; ?>" class="regular-text"
+                               required/>
+                    </td>
+                </tr>
+
+                <!-- Target -->
                 <tr>
                     <th scope="row">Target</th>
                     <td>
-                        <label><input type="radio" name="target"
-                                      value="_self" <?= checked($link_data['target'], '_self'); ?>> Same Tab</label><br>
-                        <label><input type="radio" name="target"
-                                      value="_blank" <?= checked($link_data['target'], '_blank'); ?>> New Tab</label>
+                        <p><label><input type="radio" name="target"
+                                      value="_self" <?= checked($link_data['target'], '_self'); ?>> Same Tab</label>
+                        <p><label><input type="radio" name="target"
+                                      value="_blank" <?= checked($link_data['target'], '_blank'); ?>> New Tab</label></p>
                     </td>
                 </tr>
+
+                <!-- Color -->
                 <tr>
                     <th scope="row"><label for="color">Color</label></th>
                     <td>
@@ -139,6 +152,8 @@ function link_details_page(): void
                                class="regular-text color-picker"/>
                     </td>
                 </tr>
+
+                <!-- Cover Image -->
                 <tr>
                     <th scope="row">Cover Image</th>
                     <td>
@@ -156,18 +171,26 @@ function link_details_page(): void
                 </tr>
 
                 <?php if ($is_edit_mode): ?>
+
+                    <!-- Hit Number -->
                     <tr>
                         <th scope="row"><label for="hit_num">Hit Number</label></th>
                         <td><?= $link_data['hit_num'] ?></td>
                     </tr>
+
+                    <!-- Last Visit -->
                     <tr>
                         <th scope="row"><label for="last_visit">Last Visit</label></th>
                         <td><?= !empty($link_data['last_visit']) ? $link_data['last_visit'] : "Never" ?></td>
                     </tr>
+
+                    <!-- Created At -->
                     <tr>
                         <th scope="row"><label for="created_at">Created At</label></th>
                         <td><?= $link_data['created_at'] ?></td>
                     </tr>
+
+                    <!-- Updated At -->
                     <tr>
                         <th scope="row"><label for="updated_at">Updated At</label></th>
                         <td><?= $link_data['updated_at'] ?></td>
