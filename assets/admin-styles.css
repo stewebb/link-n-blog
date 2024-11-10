@@ -4,6 +4,10 @@
     object-fit: contain;
 }
 
+/*************************************
+ *               General             *
+ ************************************/
+
 .full-width {
     width: 100%;
 }
@@ -16,6 +20,13 @@
     color: #BFBFBF;
 }
 
+.form-table .not-required {
+    opacity: 0;
+}
+
+.form-table a {
+    text-decoration: none;
+}
 /*************************************
  *             Pagination            *
  ************************************/

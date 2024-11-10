@@ -148,6 +148,25 @@ function lnb_get_category_usage_count(int $category_id): ?string {
 }
 
 /**
+ * Retrieve the IDs and names of links associated with a specific category.
+ *
+ * This function fetches the 'id' and 'name' of each link in the 'lnb_links' table
+ * that belong to a given category. Useful for listing links in a category or further processing.
+ *
+ * @param int $category_id The ID of the category to fetch links for.
+ *
+ * @return array|null An array of objects with 'id' and 'name' of each link on success, or null on failure.
+ * @global wpdb $wpdb WordPress database access object.
+ */
+
+function lnb_get_links_by_category(int $category_id): ?array {
+    global $wpdb;
+    $table_links = $wpdb->prefix . 'lnb_links';
+    $query = $wpdb->prepare("SELECT id, link_name FROM $table_links WHERE category = %d", $category_id);
+    return $wpdb->get_results($query);
+}
+
+/**
  * Retrieve all links grouped by their respective categories.
  *
  * This function fetches all links from the 'lnb_links' table, joining the 'lnb_categories'
