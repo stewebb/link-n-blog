@@ -40,7 +40,7 @@ function lnb_get_link_list(int $page_num = 1, int $per_page = 10, string $sort_b
     // Query to get paginated and sorted links with the category name
     $sql = $wpdb->prepare(
         "
-        SELECT l.id, l.link_name, l.color, l.category, l.wp_page_id, l.cover_image_id, l.hit_num, l.url, c.name AS category_name
+        SELECT l.*, c.name AS category_name
         FROM $table_links AS l
         LEFT JOIN $table_categories AS c ON l.category = c.id
         ORDER BY l.$sort_by $sort_order

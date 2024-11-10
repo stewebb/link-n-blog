@@ -62,25 +62,26 @@ function link_list_page(): void
             <tr>
                 <?= generate_sortable_header('ID', 'id', $sort_by, $sort_order, $page_num); ?>
                 <?= generate_sortable_header('Name', 'link_name', $sort_by, $sort_order, $page_num); ?>
+                <?= generate_sortable_header('Display', 'display', $sort_by, $sort_order, $page_num); ?>
                 <th scope="col">Cover Image</th>
                 <th scope="col">WP Page</th>
                 <?= generate_sortable_header('Category', 'category', $sort_by, $sort_order, $page_num); ?>
                 <?= generate_sortable_header('Hit Num', 'hit_num', $sort_by, $sort_order, $page_num); ?>
-
-                <!--
-                <th scope="col">Action</th>
-                -->
             </tr>
             </thead>
             <tbody>
             <?php if ($links): ?>
                 <?php foreach ($links as $link): ?>
                     <tr>
+
+                        <!-- ID -->
                         <td>
                             <a href="admin.php?page=link-n-blog-details&id=<?= esc_attr($link->id) ?>">
                                 <?= esc_html($link->id) ?>
                             </a>
                         </td>
+
+                        <!-- Name -->
                         <td>
                             <div class="color-block" style="background-color: <?= esc_attr($link->color) ?>;">
                                 <span class="color-hex"><?= esc_html($link->color) ?></span>
@@ -91,6 +92,25 @@ function link_list_page(): void
                                 <span class="dashicons dashicons-external"></span>
                             </a>
                         </td>
+
+                        <!-- Display -->
+                        <td>
+                            <?php
+                            if ($link->display > 0) {
+                                $badge_text = 'Name and Link';
+                                $badge_class = 'badge-primary';
+                            } elseif ($link->display == 0) {
+                                $badge_text = 'Name only';
+                                $badge_class = 'badge-secondary';
+                            } else {
+                                $badge_text = 'Hidden';
+                                $badge_class = 'badge-dark';
+                            }
+                            ?>
+                            <span class="badge <?= esc_attr($badge_class); ?>"><?= esc_html($badge_text); ?></span>
+                        </td>
+
+                        <!-- Cover Image -->
                         <td>
                             <?php if ($link->cover_image_id): ?>
                                 <?= wp_get_attachment_image($link->cover_image_id, [100, 100]); ?>

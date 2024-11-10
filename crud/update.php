@@ -4,7 +4,16 @@
  *                Links              *
  ************************************/
 
-function update_link($link_id, $link_data) {
+/**
+ * Updates an existing link in the wp_lnb_links table.
+ *
+ * @param int $link_id The ID of the link to update.
+ * @param array $link_data The updated data for the link.
+ *
+ * @return int|false The number of rows affected, or false on error.
+ */
+function update_link(int $link_id, array $link_data): bool|int
+{
     global $wpdb;
 
     // Update existing link data
@@ -19,17 +28,19 @@ function update_link($link_id, $link_data) {
             'target' => $link_data['target'],
             'color' => $link_data['color'],
             'cover_image_id' => $link_data['cover_image_id'],
+            'display' => $link_data['display'],  // New 'display' field
             'updated_at' => current_time('mysql'),
         ],
         [ 'id' => $link_id ],
         [
-            '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d', '%s'
+            '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d', '%d', '%s'
         ],
         [ '%d' ]
     );
 
     return $result;
 }
+
 
 
 /*************************************

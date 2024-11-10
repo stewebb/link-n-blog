@@ -22,6 +22,7 @@ function link_details_page(): void
         <?php
         $is_edit_mode = !empty($_GET['id']);
         $link_data = [
+            'display' => 1,
             'link_name' => '',
             'label_text' => '',
             'category' => '',
@@ -40,6 +41,7 @@ function link_details_page(): void
 
             if ($link_details) {
                 $link_data = [
+                    'display' => intval($link_details->display),
                     'link_id' => $link_id,
                     'link_name' => esc_html($link_details->link_name),
                     'label_text' => esc_html($link_details->label_text),
@@ -72,6 +74,17 @@ function link_details_page(): void
                         <td><?= $link_data['link_id']; ?></td>
                     </tr>
                 <?php endif; ?>
+
+                <!-- Display Options -->
+                <tr>
+                    <th scope="row">Display</th>
+                    <td>
+                        <p><label><input type="radio" name="display" value="1" <?= checked($link_data['display'], '1'); ?>> Name and Link(s)</label></p>
+                        <p><label><input type="radio" name="display" value="0" <?= checked($link_data['display'], '0'); ?>> Name only</label></p>
+                        <p><label><input type="radio" name="display" value="-1" <?= checked($link_data['display'], '-1'); ?>> Hidden</label></p>
+                    </td>
+                </tr>
+
 
                 <!-- Link Name -->
                 <tr>
@@ -203,6 +216,7 @@ function link_details_page(): void
         <?php
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $link_data = [
+                'display' => intval($_POST['display']),
                 'link_name' => sanitize_text_field($_POST['link_name']),
                 'label_text' => sanitize_text_field($_POST['label_text']),
                 'category' => sanitize_text_field($_POST['category']),

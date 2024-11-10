@@ -10,7 +10,6 @@
  * @param array $link_data The data of the new link to add.
  * @return bool True on success, false on failure.
  */
-
 function lnb_add_new_link(array $link_data): bool {
     global $wpdb;
 
@@ -26,11 +25,12 @@ function lnb_add_new_link(array $link_data): bool {
             'target' => $link_data['target'],
             'color' => $link_data['color'],
             'cover_image_id' => $link_data['cover_image_id'],
+            'display' => $link_data['display'],  // New 'display' field
             'created_at' => current_time('mysql'),
             'updated_at' => current_time('mysql'),
         ],
         [
-            '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d', '%s', '%s'
+            '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d', '%d', '%s', '%s'
         ]
     );
 }
