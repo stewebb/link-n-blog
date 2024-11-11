@@ -6,6 +6,7 @@ function preview_page(): void
 {
     // Retrieve all grouped links
     $grouped_links = lnb_get_all_links_grouped_by_category();
+    echo do_shortcode('[helloworld]');
     ?>
 
     <style>

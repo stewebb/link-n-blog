@@ -133,7 +133,7 @@ function categories_page(): void
                             <p class="submit">
                                 <button type="submit" name="update_category" class="button button-primary">Update
                                 </button>
-                                <button type="submit" name="delete_category" class="button"
+                                <button type="submit" name="delete_category" class="button button-danger"
                                         onclick="return confirm('Are you sure you want to delete this category?');"
                                     <?php echo $usage_count > 0 ? 'disabled' : ''; ?>>
                                     Delete

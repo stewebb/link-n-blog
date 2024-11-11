@@ -65,6 +65,11 @@ function link_details_page(): void
         ?>
 
         <form method="post" action="">
+            <input type="hidden" name="action" value="save">
+            <?php if ($is_edit_mode): ?>
+                <input type="hidden" name="link_id" value="<?= $link_data['link_id']; ?>">
+            <?php endif; ?>
+
             <table class="form-table">
 
                 <!-- ID -->
@@ -214,6 +219,7 @@ function link_details_page(): void
                         <td><?= $link_data['updated_at'] ?></td>
                     </tr>
                 <?php endif; ?>
+
             </table>
 
             <div class="inline-buttons">
@@ -223,15 +229,27 @@ function link_details_page(): void
                 </p>
                 <?php if ($is_edit_mode): ?>
                     <p class="submit">
-                        <button type="button" class="button button-danger" onclick="if(confirm('Are you sure you want to delete this link? This action cannot be undone.')) window.location.href='admin.php?page=link-n-blog&action=delete&id=<?= $link_data['link_id']; ?>'">Delete</button>
+                        <?php
+                        submit_button(
+                            'Delete',
+                            'delete button-danger',
+                            'delete_action',
+                            false,
+                            [
+                                'onclick' => "if(confirm('Are you sure you want to delete this link? This action cannot be undone.')) { document.getElementById('delete-action').value='delete'; document.getElementById('link-details-form').submit(); }"
+                            ]
+                        );
+                        ?>
                     </p>
                 <?php endif; ?>
-
             </div>
 
+            <input type="hidden" name="delete_action" value="" id="delete-action">
         </form>
 
         <?php
+
+        // Handling form submission
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $link_data = [
                 'display' => intval($_POST['display']),
@@ -245,11 +263,30 @@ function link_details_page(): void
                 'cover_image_id' => intval($_POST['cover_image_id']),
             ];
 
-            if ($is_edit_mode) {
+            // Delete
+            if (isset($_POST['delete_action']) && $_POST['delete_action'] === 'delete') {
+                $link_id_to_delete = intval($_POST['link_id']);
+                $deleted = lnb_delete_link($link_id_to_delete);
+
+                echo $deleted ? '<div class="notice notice-success is-dismissible"><p>Link deleted successfully!</p></div>' : '<div class="notice notice-error is-dismissible"><p>Failed to delete link.</p></div>';
+                //if ($deleted) {
+                //    echo '<div class="notice notice-success is-dismissible"><p>Link deleted successfully!</p></div>';
+                //    //echo '<script>window.location.href = "admin.php?page=link-n-blog";</script>';
+                //    //return;
+                //} else {
+                //    echo '<div class="notice notice-error is-dismissible"><p>Failed to delete link.</p></div>';
+                //}
+            }
+
+            // Edit
+            elseif ($is_edit_mode) {
                 $updated = update_link($link_id, $link_data);
                 echo $updated ? '<div class="notice notice-success is-dismissible"><p>Link updated successfully!</p></div>' :
                     '<div class="notice notice-error is-dismissible"><p>Failed to update link.</p></div>';
-            } else {
+            }
+
+            // Insert
+            else {
                 $inserted = lnb_add_new_link($link_data);
                 echo $inserted ? '<div class="notice notice-success is-dismissible"><p>New link added successfully!</p></div>' :
                     '<div class="notice notice-error is-dismissible"><p>Failed to add new link.</p></div>';
