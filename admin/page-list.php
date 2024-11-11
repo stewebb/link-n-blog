@@ -41,7 +41,6 @@ function link_list_page(): void
     ?>
     <div class="wrap">
         <h1 class="wp-heading-inline">Link List</h1>
-        <a href="admin.php?page=link-n-blog-details" class="page-title-action">Add New</a>
         <hr class="wp-header-end">
 
         <!-- Per Page Selector -->
@@ -126,16 +125,6 @@ function link_list_page(): void
                         </td>
                         <td><?= esc_html($link->hit_num) ?></td>
 
-                        <!--
-                        <td>
-                            <a href="admin.php?page=link-n-blog-details&id=<?= esc_attr($link->id) ?>"
-                               class="button-link">Edit</a><?= $split_symbol; ?>
-                            <a href="admin.php?page=link-n-blog-details&id=<?= esc_attr($link->id) ?>"
-                               class="button-link">Delete</a>
-                            <?= $split_symbol; ?>
-                            <a href="<?= esc_attr($link->url) ?>" target="_blank" class="button-link">Visit</a>
-                        </td>
-                        -->
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -183,6 +172,11 @@ function link_list_page(): void
                     <?php endif; ?>
                 </li>
             </ul>
+        </div>
+
+        <div class="inline-buttons">
+            <a href="admin.php?page=link-n-blog-details" class="button button-primary">Add New</a>
+            <a href="admin.php?page=link-n-blog-categories" class="button button-secondary">Manage Categories</a>
         </div>
 
     </div>

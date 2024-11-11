@@ -36,7 +36,7 @@ function preview_page(): void
                             <!-- Background: Image or Color -->
                             <?php if ($link->cover_image_id): ?>
                                 <div class="banner-container">
-                                    <?= wp_get_attachment_image($link->cover_image_id) ?>
+                                    <?= wp_get_attachment_image($link->cover_image_id, 'full') ?>
                                 </div>
                             <?php else: ?>
                                 <div class="banner-container" data-color="<?= esc_attr($link->color) ?>"></div>
@@ -82,10 +82,10 @@ function preview_page(): void
             // Select all images within .image-container elements and apply adjustments
             jQuery('.banner-container img').each(function () {
                 // Initialize the ImageManipulator for each image with a 20% adjustment
-                const imageManipulator = new ImageManipulator(this, 50);
+                //const imageManipulator = new ImageManipulator(this, 50);
 
                 // Lighten the image
-                imageManipulator.lighten();
+                //imageManipulator.lighten();
 
                 // To darken the image instead, you can do:
                 // imageManipulator.darken();

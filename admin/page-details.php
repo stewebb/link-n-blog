@@ -79,9 +79,13 @@ function link_details_page(): void
                 <tr>
                     <th scope="row">Display</th>
                     <td>
-                        <p><label><input type="radio" name="display" value="1" <?= checked($link_data['display'], '1'); ?>> Name and Link(s)</label></p>
-                        <p><label><input type="radio" name="display" value="0" <?= checked($link_data['display'], '0'); ?>> Name only</label></p>
-                        <p><label><input type="radio" name="display" value="-1" <?= checked($link_data['display'], '-1'); ?>> Hidden</label></p>
+                        <p><label><input type="radio" name="display"
+                                         value="1" <?= checked($link_data['display'], '1'); ?>> Name and Link(s)</label>
+                        </p>
+                        <p><label><input type="radio" name="display"
+                                         value="0" <?= checked($link_data['display'], '0'); ?>> Name only</label></p>
+                        <p><label><input type="radio" name="display"
+                                         value="-1" <?= checked($link_data['display'], '-1'); ?>> Hidden</label></p>
                     </td>
                 </tr>
 
@@ -100,7 +104,7 @@ function link_details_page(): void
                     <th scope="row"><label for="label_text">Label Text</label></th>
                     <td>
                         <input type="text" name="label_text" id="label_text" value="<?= $link_data['label_text']; ?>"
-                               class="regular-text" />
+                               class="regular-text"/>
                         <p class="description">Leave blank to use the link name as the label text.</p>
                     </td>
                 </tr>
@@ -151,9 +155,10 @@ function link_details_page(): void
                     <th scope="row">Target</th>
                     <td>
                         <p><label><input type="radio" name="target"
-                                      value="_self" <?= checked($link_data['target'], '_self'); ?>> Same Tab</label>
+                                         value="_self" <?= checked($link_data['target'], '_self'); ?>> Same Tab</label>
                         <p><label><input type="radio" name="target"
-                                      value="_blank" <?= checked($link_data['target'], '_blank'); ?>> New Tab</label></p>
+                                         value="_blank" <?= checked($link_data['target'], '_blank'); ?>> New Tab</label>
+                        </p>
                     </td>
                 </tr>
 
@@ -210,7 +215,14 @@ function link_details_page(): void
                     </tr>
                 <?php endif; ?>
             </table>
-            <?php submit_button($is_edit_mode ? 'Update Link' : 'Add New Link'); ?>
+
+            <div class="inline-buttons">
+                <?php submit_button($is_edit_mode ? 'Update Link' : 'Add New Link'); ?>
+                <p class="submit">
+                    <a href="admin.php?page=link-n-blog" class="button button-secondary">Back to List</a>
+                </p>
+            </div>
+
         </form>
 
         <?php

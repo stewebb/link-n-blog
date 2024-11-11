@@ -12,6 +12,24 @@
     width: 100%;
 }
 
+.form-table .not-required {
+    opacity: 0;
+}
+
+.form-table a {
+    text-decoration: none;
+}
+
+.inline-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/*************************************
+ *                Texts              *
+ ************************************/
+
 .text-gray {
     color: #808080;
 }
@@ -20,13 +38,6 @@
     color: #BFBFBF;
 }
 
-.form-table .not-required {
-    opacity: 0;
-}
-
-.form-table a {
-    text-decoration: none;
-}
 /*************************************
  *             Pagination            *
  ************************************/
