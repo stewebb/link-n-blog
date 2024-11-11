@@ -221,6 +221,12 @@ function link_details_page(): void
                 <p class="submit">
                     <a href="admin.php?page=link-n-blog" class="button button-secondary">Back to List</a>
                 </p>
+                <?php if ($is_edit_mode): ?>
+                    <p class="submit">
+                        <button type="button" class="button button-danger" onclick="if(confirm('Are you sure you want to delete this link? This action cannot be undone.')) window.location.href='admin.php?page=link-n-blog&action=delete&id=<?= $link_data['link_id']; ?>'">Delete</button>
+                    </p>
+                <?php endif; ?>
+
             </div>
 
         </form>

@@ -4,6 +4,26 @@
  *                Links              *
  ************************************/
 
+/**
+ * Delete a specific link by its ID.
+ *
+ * This function deletes a link from the 'lnb_links' table based on
+ * the provided link ID. It returns the number of rows affected on success,
+ * or false on failure.
+ *
+ * @param int $link_id The ID of the link to delete.
+ *
+ * @return int|false The number of rows affected, or false on failure.
+ * @global wpdb $wpdb WordPress database access object.
+ */
+
+function lnb_delete_link(int $link_id): int|false
+{
+    global $wpdb;
+    $table_links = $wpdb->prefix . 'lnb_links';
+    return $wpdb->delete($table_links, ['id' => $link_id], ['%d']);
+}
+
 /*************************************
  *             Categories            *
  ************************************/
