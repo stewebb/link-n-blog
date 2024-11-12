@@ -83,9 +83,11 @@ erDiagram
 
     wp_lnb_links }o--|| wp_lnb_categories : "category"
     wp_lnb_links }o--|| wp_lnb_groups : "group_id"
-
-
 ```
+
 ## Notes
 - `updated_at` in `wp_lnb_links` is managed manually.
-- Zero `id` row in `wp_lnb_groups` and `wp_lnb_links` has default meanings.
+- Rows with `id = 0` in `wp_lnb_categories` and `wp_lnb_groups` serve as default, non-deletable entries:
+    - **`id = 0` in `wp_lnb_categories`**: Represents the "unCategorized" category, used as a fallback for links without a specific category.
+    - **`id = 0` in `wp_lnb_groups`**: Represents the "Default Group," used as a fallback for links without a specific group assignment.
+- Deletion of rows with `id = 0` in `wp_lnb_categories` and `wp_lnb_groups` is restricted at both the database level (using triggers) and application level (using checks).
