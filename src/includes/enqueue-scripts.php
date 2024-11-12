@@ -73,8 +73,8 @@ add_action('admin_enqueue_scripts', function (): void {
             '1.0',
             true
         );
-        // TODO Remove jquery dependency
     }
 });
 
 //add_action('admin_enqueue_scripts', 'lnb_admin_styles');
+// TODO Remove jquery dependency

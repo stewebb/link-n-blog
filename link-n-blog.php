@@ -8,14 +8,20 @@ Author: Steven Webb
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use \LinkNBlog\Activation;
-use \LinkNBlog\Admin;
+use LinkNBlog\Activation;
+use LinkNBlog\Admin;
+use LinkNBlog\Enqueue;
 
 // Activation
 register_activation_hook(__FILE__, [new Activation(), 'setup']);
 
+// Enqueue styles and scripts
+new Enqueue();
+
 // Admin Panel
 new Admin();
+
+
 // Activation file
 //include_once plugin_dir_path(__FILE__) . 'src/includes/activation.php';
 
