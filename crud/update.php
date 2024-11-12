@@ -74,3 +74,7 @@ function lnb_update_category(int $category_id, string $category_name, string $co
         ['%d']
     );
 }
+
+/*************************************
+ *               Groups              *
+ ************************************/

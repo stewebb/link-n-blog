@@ -63,3 +63,7 @@ function lnb_add_category(string $category_name, string $color): mysqli_result|b
         ['%s', '%s']
     );
 }
+
+/*************************************
+ *               Groups              *
+ ************************************/
