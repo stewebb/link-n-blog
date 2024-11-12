@@ -8,12 +8,18 @@ Author: Steven Webb
 
 // Activate plugin
 include_once(plugin_dir_path(__FILE__) . 'includes/activation.php');
-register_activation_hook(__FILE__, 'lnb_create_database_tables');
+
+// Usage: instantiate the class and call setup method during plugin activation
+$lnbDatabaseSetup = new LNB_Database_Setup();
+register_activation_hook(__FILE__, [$lnbDatabaseSetup, 'setup']);
+
+
+//register_activation_hook(__FILE__, 'lnb_create_database_tables');
 
 // Register the 'helloworld' shortcode
-function helloworld_shortcode() {
-    return "<p>Hello, World!</p>";
-}
+//function helloworld_shortcode() {
+//    return "<p>Hello, World!</p>";
+//}
 add_shortcode('helloworld', 'helloworld_shortcode');
 
 // Admin pages

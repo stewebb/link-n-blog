@@ -1,0 +1,19 @@
+{
+    "name": "stewebb/link-n-blog",
+    "type": "project",
+    "require": {
+        "timber/timber": "^2.3"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Stewebb\\LinkNBlog\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "stewebb",
+            "email": "xiaoancloud@outlook.com"
+        }
+    ]
+}
