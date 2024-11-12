@@ -8,14 +8,22 @@ Author: Steven Webb
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use \LinkNBlog\Activation;
+use \LinkNBlog\Admin;
+
+// Activation
+register_activation_hook(__FILE__, [new Activation(), 'setup']);
+
+// Admin Panel
+new Admin();
 // Activation file
-include_once plugin_dir_path(__FILE__) . 'src/includes/activation.php';
+//include_once plugin_dir_path(__FILE__) . 'src/includes/activation.php';
 
 // Admin pages
-include_once plugin_dir_path(__FILE__) . 'src/admin/admin.php';
+//include_once plugin_dir_path(__FILE__) . 'src/admin/admin.php';
 
 // Enqueue scripts
-include_once plugin_dir_path(__FILE__) . 'src/includes/enqueue-scripts.php';
+//include_once plugin_dir_path(__FILE__) . 'src/includes/enqueue-scripts.php';
 
 
 // Activate plugin

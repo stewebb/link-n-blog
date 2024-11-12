@@ -1,6 +1,6 @@
 <?php
 
-namespace \Stewebb\LinkNBlog\Controllers;
+namespace LinkNBlog\Controllers;
 
 class LinkListController
 {

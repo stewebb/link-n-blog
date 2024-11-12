@@ -1,5 +1,7 @@
 <?php
 
+namespace LinkNBlog;
+
 /**
  * LNB Plugin Database Setup and Integrity Enforcement
  *
@@ -8,9 +10,9 @@
  * through triggers and application logic.
  */
 
-class LNB_Database_Setup
+class Activation
 {
-    private $wpdb;
+    private \wpdb $wpdb;
     private string $table_categories;
     private string $table_groups;
     private string $table_links;
@@ -159,6 +161,3 @@ class LNB_Database_Setup
         $this->wpdb->query($trigger_group);
     }
 }
-
-
-?>

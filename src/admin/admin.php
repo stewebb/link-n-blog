@@ -59,12 +59,12 @@ add_action('admin_menu', function () {
     );
 
     // Settings sub-menu
-    //add_submenu_page(
-    //    'link-n-blog',
-    //    'Settings',
-    //    'Settings',
-    //    'manage_options',
-    //    'link-n-blog-settings',
-    //    'settings_page'
-    //);
+    add_submenu_page(
+        'link-n-blog',
+        'Settings',
+        'Settings',
+        'manage_options',
+        'link-n-blog-settings',
+        'settings_page'
+    );
 });
