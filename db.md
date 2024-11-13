@@ -26,8 +26,8 @@
 | id             | INT                     | NO   | PRIMARY KEY | AUTO_INCREMENT    | Unique ID for each link                                                             |
 | link_name      | VARCHAR(255)            | NO   |             |                   | Name of the link                                                                    |
 | label_text     | VARCHAR(255)            | YES  |             |                   | Label text displayed for the link                                                   |
-| category       | INT                     | YES  | FOREIGN KEY |                   | Category ID linking to the categories table                                         |
-| group_id       | INT                     | YES  | FOREIGN KEY |                   | Group ID linking to the groups table                                                |
+| category_id    | INT                     | NO   | FOREIGN KEY |                   | Category ID linking to the categories table                                         |
+| group_id       | INT                     | NO   | FOREIGN KEY |                   | Group ID linking to the groups table                                                |
 | wp_page_id     | BIGINT UNSIGNED         | YES  |             |                   | ID of the associated WordPress page                                                 |
 | url            | VARCHAR(2083)           | YES  |             |                   | The URL of the link                                                                 |
 | target         | ENUM('_self', '_blank') | YES  |             | '_blank'          | Specifies if the link opens in the same or new tab                                  |

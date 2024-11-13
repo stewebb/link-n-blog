@@ -38,6 +38,16 @@ add_action('admin_menu', function () {
         'link_details_page'
     );
 
+    // Groups sub-menu
+    add_submenu_page(
+        'link-n-blog',
+        'Groups',
+        'Groups',
+        'manage_options',
+        'link-n-blog-groups',
+        'groups_page'
+    );
+
     // Categories sub-menu
     add_submenu_page(
         'link-n-blog',

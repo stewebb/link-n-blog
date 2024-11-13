@@ -117,8 +117,8 @@ function lnb_create_links_table(): void
         id INT NOT NULL AUTO_INCREMENT,
         link_name VARCHAR(255) NOT NULL,
         label_text VARCHAR(255),
-        category INT,
-        group_id INT,
+        category_id INT NOT NULL,
+        group_id INT NOT NULL,
         wp_page_id BIGINT UNSIGNED,
         url VARCHAR(2083) NOT NULL,
         target ENUM('_self', '_blank') DEFAULT '_blank',
@@ -130,12 +130,13 @@ function lnb_create_links_table(): void
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         display TINYINT NOT NULL DEFAULT 1,
         PRIMARY KEY (id),
-        FOREIGN KEY (category) REFERENCES $table_categories(id) ON DELETE SET NULL,
+        FOREIGN KEY (category_id) REFERENCES $table_categories(id) ON DELETE SET NULL,
         FOREIGN KEY (group_id) REFERENCES $table_groups(id) ON DELETE SET NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
     dbDelta($sql_links);
 }
+
 
 /**
  * Inserts the default "unCategorized" category with id = 0 if it doesn't exist.
@@ -183,29 +184,52 @@ function lnb_add_prevent_delete_triggers(): void
     $table_categories = $wpdb->prefix . 'lnb_categories';
     $table_groups = $wpdb->prefix . 'lnb_groups';
 
-    // Trigger to prevent deletion of "unCategorized" category
-    $trigger_categories = "CREATE TRIGGER prevent_delete_uncategorized
-    BEFORE DELETE ON $table_categories
-    FOR EACH ROW
-    BEGIN
-        IF OLD.id = 0 THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Cannot delete the unCategorized category';
-        END IF;
-    END;";
+    // Check if the triggers already exist
+    $trigger_exists_category = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT COUNT(*) FROM information_schema.TRIGGERS 
+             WHERE TRIGGER_SCHEMA = %s 
+             AND TRIGGER_NAME = %s",
+            DB_NAME,
+            'prevent_delete_uncategorized'
+        )
+    );
 
-    // Trigger to prevent deletion of "Default Group"
-    $trigger_groups = "CREATE TRIGGER prevent_delete_default_group
-    BEFORE DELETE ON $table_groups
-    FOR EACH ROW
-    BEGIN
-        IF OLD.id = 0 THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Cannot delete the Default Group';
-        END IF;
-    END;";
+    $trigger_exists_group = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT COUNT(*) FROM information_schema.TRIGGERS 
+             WHERE TRIGGER_SCHEMA = %s 
+             AND TRIGGER_NAME = %s",
+            DB_NAME,
+            'prevent_delete_default_group'
+        )
+    );
 
-    // Execute triggers
-    $wpdb->query($trigger_categories);
-    $wpdb->query($trigger_groups);
+    // Trigger to prevent deletion of "unCategorized" category if it doesn't exist
+    if ($trigger_exists_category == 0) {
+        $trigger_categories = "CREATE TRIGGER prevent_delete_uncategorized
+        BEFORE DELETE ON $table_categories
+        FOR EACH ROW
+        BEGIN
+            IF OLD.id = 0 THEN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Cannot delete the unCategorized category';
+            END IF;
+        END;";
+        $wpdb->query($trigger_categories);
+    }
+
+    // Trigger to prevent deletion of "Default Group" if it doesn't exist
+    if ($trigger_exists_group == 0) {
+        $trigger_groups = "CREATE TRIGGER prevent_delete_default_group
+        BEFORE DELETE ON $table_groups
+        FOR EACH ROW
+        BEGIN
+            IF OLD.id = 0 THEN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Cannot delete the Default Group';
+            END IF;
+        END;";
+        $wpdb->query($trigger_groups);
+    }
 }
