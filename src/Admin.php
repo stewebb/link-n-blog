@@ -4,6 +4,7 @@ namespace LinkNBlog;
 
 //use Twig\Environment;
 //use Twig\Loader\FilesystemLoader;
+use LinkNBlog\Controllers\LinkGroupController;
 
 /**
  * Class Admin
@@ -16,6 +17,9 @@ class Admin
     /**
      * Constructor to initialize the admin menu setup.
      */
+
+    private $linkGroupController;
+
     public function __construct()
     {
         // Include required page files
@@ -26,20 +30,9 @@ class Admin
     }
 
     /**
-     * Include the page files required for the plugin.
-     */
-    //private function includePages()
-   // {
-   //     include_once "page-list.php";
-     //   include_once "page-details.php";
-     //   include_once "page-categories.php";
-     //   include_once "page-preview.php";
-     //   include_once "page-settings.php";
-    //}
-
-    /**
      * Registers the main admin menu and submenu pages.
      */
+
     public function registerAdminMenu(): void
     {
 
@@ -49,7 +42,7 @@ class Admin
             "Link 'n' Blog",
             'manage_options',
             'link-n-blog',
-            [$this, 'linkGroupPage'],
+            [LinkGroupController::class, 'linkGroupPage'],
             plugins_url('../assets/LNB_Square.svg', __FILE__),
             '99'
         );
@@ -71,14 +64,14 @@ class Admin
             'Link Groups',
             'manage_options',
             'link-n-blog-group',
-            [$this, 'linkGroupPage']
+            [LinkGroupController::class, 'linkGroupPage'],
         );
 
         // 3. Link
         add_submenu_page(
             'link-n-blog',
-            'Link List',
-            'Link List',
+            'Add a Group',
+            'Add a Group',
             'manage_options',
             'link-n-blog-list',
             [$this, 'linkListPage']
