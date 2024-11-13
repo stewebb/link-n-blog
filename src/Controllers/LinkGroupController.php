@@ -2,7 +2,7 @@
 
 namespace LinkNBlog\Controllers;
 
-class LinkListController
+class LinkGroupController
 {
 
 }

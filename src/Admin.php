@@ -40,36 +40,51 @@ class Admin
     /**
      * Registers the main admin menu and submenu pages.
      */
-    public function registerAdminMenu()
+    public function registerAdminMenu(): void
     {
+
+        // Menu
         add_menu_page(
             "Link 'n' Blog",
             "Link 'n' Blog",
             'manage_options',
             'link-n-blog',
-            [$this, 'linkListPage'],
+            [$this, 'linkGroupPage'],
             plugins_url('../assets/LNB_Square.svg', __FILE__),
             '99'
         );
 
-        // Register submenus
-        $this->registerSubmenus();
-    }
+        // 1. Preview
+        add_submenu_page(
+            'link-n-blog',
+            'Preview',
+            'Preview',
+            'manage_options',
+            'link-n-blog',
+            [$this, 'previewPage']
+        );
 
-    /**
-     * Registers the submenus under the main menu.
-     */
-    private function registerSubmenus()
-    {
+        // 2. Group
+        add_submenu_page(
+            'link-n-blog',
+            'Link Groups',
+            'Link Groups',
+            'manage_options',
+            'link-n-blog-group',
+            [$this, 'linkGroupPage']
+        );
+
+        // 3. Link
         add_submenu_page(
             'link-n-blog',
             'Link List',
             'Link List',
             'manage_options',
-            'link-n-blog',
+            'link-n-blog-list',
             [$this, 'linkListPage']
         );
 
+        // 4. Details
         add_submenu_page(
             'link-n-blog',
             'Add a Link',
@@ -79,6 +94,7 @@ class Admin
             [$this, 'linkDetailsPage']
         );
 
+        // 5. Categories
         add_submenu_page(
             'link-n-blog',
             'Categories',
@@ -88,15 +104,7 @@ class Admin
             [$this, 'categoriesPage']
         );
 
-        add_submenu_page(
-            'link-n-blog',
-            'Preview',
-            'Preview',
-            'manage_options',
-            'link-n-blog-preview',
-            [$this, 'previewPage']
-        );
-
+        // 6. Settings
         add_submenu_page(
             'link-n-blog',
             'Settings',

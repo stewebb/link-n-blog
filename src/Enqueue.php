@@ -10,12 +10,13 @@ namespace LinkNBlog;
 class Enqueue
 {
     /**
-     * Constructor to initialize the enqueue setup.
+     * Initialize the enqueue setup.
+     *
+     * @return void
      */
-
-    public function __construct()
+    public static function init(): void
     {
-        add_action('admin_enqueue_scripts', [$this, 'enqueueAdminAssets']);
+        add_action('admin_enqueue_scripts', [self::class, 'enqueueAdminAssets']);
     }
 
     /**
@@ -23,12 +24,11 @@ class Enqueue
      *
      * @return void
      */
-
-    public function enqueueAdminAssets(): void
+    public static function enqueueAdminAssets(): void
     {
-        $this->enqueueCoreStyles();
-        $this->enqueueCoreScripts();
-        $this->conditionallyEnqueueScripts();
+        self::enqueueCoreStyles();
+        self::enqueueCoreScripts();
+        self::conditionallyEnqueueScripts();
     }
 
     /**
@@ -36,8 +36,7 @@ class Enqueue
      *
      * @return void
      */
-
-    private function enqueueCoreStyles(): void
+    private static function enqueueCoreStyles(): void
     {
         wp_enqueue_style(
             'admin-css',
@@ -52,8 +51,7 @@ class Enqueue
      *
      * @return void
      */
-
-    private function enqueueCoreScripts(): void
+    private static function enqueueCoreScripts(): void
     {
         wp_enqueue_script(
             'admin-script',
@@ -72,23 +70,22 @@ class Enqueue
      *
      * @return void
      */
-
-    private function conditionallyEnqueueScripts(): void
+    private static function conditionallyEnqueueScripts(): void
     {
         global $hook_suffix;
 
         switch ($hook_suffix) {
             case 'link-n-blog_page_link-n-blog-link-list':
-                $this->enqueueLinkListScripts();
+                self::enqueueLinkListScripts();
                 break;
             case 'link-n-blog_page_link-n-blog-details':
-                $this->enqueueLinkDetailsScripts();
+                self::enqueueLinkDetailsScripts();
                 break;
             case 'link-n-blog_page_link-n-blog-categories':
-                $this->enqueueCategoriesScripts();
+                self::enqueueCategoriesScripts();
                 break;
             case 'link-n-blog_page_link-n-blog-preview':
-                $this->enqueuePreviewScripts();
+                self::enqueuePreviewScripts();
                 break;
             // Add more cases as needed
         }
@@ -99,11 +96,9 @@ class Enqueue
      *
      * @return void
      */
-
-    private function enqueueLinkListScripts(): void
+    private static function enqueueLinkListScripts(): void
     {
         // Example placeholder for Link List page scripts
-        // Uncomment to enqueue specific scripts for this page
         /*
         wp_enqueue_script(
             'link-list-script',
@@ -120,8 +115,7 @@ class Enqueue
      *
      * @return void
      */
-
-    private function enqueueLinkDetailsScripts(): void
+    private static function enqueueLinkDetailsScripts(): void
     {
         // Example placeholder for Add a Link page scripts
     }
@@ -131,10 +125,8 @@ class Enqueue
      *
      * @return void
      */
-
-    private function enqueueCategoriesScripts(): void
+    private static function enqueueCategoriesScripts(): void
     {
-        // Example placeholder for Categories page scripts
         /*
         wp_enqueue_script(
             'categories-script',
@@ -151,8 +143,7 @@ class Enqueue
      *
      * @return void
      */
-
-    private function enqueuePreviewScripts(): void
+    private static function enqueuePreviewScripts(): void
     {
         wp_enqueue_style(
             'admin-preview-css',

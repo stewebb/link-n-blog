@@ -6,6 +6,7 @@ Version: 1.0
 Author: Steven Webb
 */
 
+//  composer dump-autoload
 require_once __DIR__ . '/vendor/autoload.php';
 
 use LinkNBlog\Activation;
@@ -16,7 +17,7 @@ use LinkNBlog\Enqueue;
 register_activation_hook(__FILE__, [new Activation(), 'setup']);
 
 // Enqueue styles and scripts
-new Enqueue();
+Enqueue::init();
 
 // Admin Panel
 new Admin();
