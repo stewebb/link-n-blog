@@ -1,16 +1,12 @@
-/**
-    Global Stylesheet for Admin pages.
- */
-
-/*************************************
- *           General / Misc          *
- ************************************/
-
 #toplevel_page_link-n-blog .wp-menu-image img {
     width: 20px;
     height: 20px;
     object-fit: contain;
 }
+
+/*************************************
+ *               General             *
+ ************************************/
 
 .full-width {
     width: 100%;
@@ -43,13 +39,18 @@
     background-color: #d63638!important;
 }
 
+/*
+.button-danger:hover {
+    color: #fff;
+}
+*/
+
 .button-danger:focus {
     box-shadow:
             0 0 0 1px #fff,
             0 0 0 3px #d63638!important;
 }
 
-/* Inline Button */
 .inline-buttons {
     display: flex;
     gap: 10px;

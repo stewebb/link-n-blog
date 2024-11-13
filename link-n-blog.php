@@ -20,4 +20,6 @@ register_activation_hook(__FILE__, 'lnb_create_database_tables');
 include_once(plugin_dir_path(__FILE__) . 'admin/admin.php');
 
 // Include other files
+//include_once(plugin_dir_path(__FILE__) . 'includes/post-type.php');
 include_once(plugin_dir_path(__FILE__) . 'includes/enqueue-scripts.php');
+//rrr
