@@ -10,3 +10,4 @@ add_action('init', function() {
     );
     register_post_type('my_item', $args);
 });
+//
