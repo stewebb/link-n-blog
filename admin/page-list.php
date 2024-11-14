@@ -64,7 +64,7 @@ function link_list_page(): void
         <table class="widefat fixed striped table-view-list">
             <thead>
             <tr>
-                <?= generate_sortable_header('Group', 'group_id', $sort_by, $sort_order, $page_num); ?>
+                <th scope="col">Group</th>
                 <?= generate_sortable_header('ID', 'id', $sort_by, $sort_order, $page_num); ?>
                 <?= generate_sortable_header('Name', 'link_name', $sort_by, $sort_order, $page_num); ?>
                 <?= generate_sortable_header('Display', 'display', $sort_by, $sort_order, $page_num); ?>
@@ -84,7 +84,8 @@ function link_list_page(): void
 
                         <!-- Group -->
                         <?php if ($link->group_id !== $last_group_id): ?>
-                            <td rowspan="<?= $group_counts[$link->group_id]; ?>"><strong>Group: <?= esc_html($link->group_name); ?></strong></td>
+                            <td rowspan="<?= $group_counts[$link->group_id]; ?>">
+                                <strong><?= esc_html($link->group_name); ?></strong></td>
                             <?php
                             $last_group_id = $link->group_id;
                         endif;
@@ -190,4 +191,5 @@ function link_list_page(): void
     </div>
     <?php
 }
+
 ?>
