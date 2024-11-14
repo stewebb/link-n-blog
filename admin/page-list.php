@@ -35,12 +35,23 @@ function link_list_page(): void
     // Calculate total pages
     $total_items = lnb_get_link_count();
     $total_pages = ceil($total_items / $per_page);
-    $split_symbol = '&nbsp;<span class="text-light-gray">|</span>&nbsp;';
 
     // Group the links by group_id to calculate rowspans
     $group_counts = [];
     foreach ($links as $link) {
         $group_counts[$link->group_id] = ($group_counts[$link->group_id] ?? 0) + 1;
+    }
+
+    // Calculate unique background colors for each group based on HSV color space
+    $unique_groups = array_unique(array_map(fn($link) => $link->group_id, $links));
+    $total_groups = count($unique_groups);
+
+    $group_colors = [];
+    $i = 0;
+    foreach ($unique_groups as $group_id) {
+        $hue = (360 / $total_groups) * $i;
+        $group_colors[$group_id] = "hsl($hue, 100%, 95%)";
+        $i++;
     }
 
     ?>
@@ -61,7 +72,7 @@ function link_list_page(): void
             </form>
         </div>
 
-        <table class="widefat fixed striped table-view-list">
+        <table class="widefat fixed table-view-list">
             <thead>
             <tr>
                 <th scope="col">Group</th>
@@ -69,7 +80,11 @@ function link_list_page(): void
                 <?= generate_sortable_header('Name', 'link_name', $sort_by, $sort_order, $page_num); ?>
                 <?= generate_sortable_header('Display', 'display', $sort_by, $sort_order, $page_num); ?>
                 <th scope="col">Cover Image</th>
+
+                <!--
                 <th scope="col">WP Page</th>
+                -->
+
                 <?= generate_sortable_header('Category', 'category', $sort_by, $sort_order, $page_num); ?>
                 <?= generate_sortable_header('Hit Num', 'hit_num', $sort_by, $sort_order, $page_num); ?>
             </tr>
@@ -80,12 +95,13 @@ function link_list_page(): void
                 $last_group_id = null;
                 foreach ($links as $link):
                     ?>
-                    <tr>
+                    <tr style="background-color: <?= $group_colors[$link->group_id]; ?>;">
 
-                        <!-- Group -->
+                        <!-- Group with color background -->
                         <?php if ($link->group_id !== $last_group_id): ?>
                             <td rowspan="<?= $group_counts[$link->group_id]; ?>">
-                                <strong><?= esc_html($link->group_name); ?></strong></td>
+                                <strong><?= esc_html($link->group_name); ?></strong>
+                            </td>
                             <?php
                             $last_group_id = $link->group_id;
                         endif;
@@ -114,13 +130,13 @@ function link_list_page(): void
                         <td>
                             <?php
                             if ($link->display > 0) {
-                                $badge_text = 'Name and Link';
+                                $badge_text = 'N & L';
                                 $badge_class = 'badge-primary';
                             } elseif ($link->display == 0) {
-                                $badge_text = 'Name only';
+                                $badge_text = 'N';
                                 $badge_class = 'badge-secondary';
                             } else {
-                                $badge_text = 'Hidden';
+                                $badge_text = 'H';
                                 $badge_class = 'badge-dark';
                             }
                             ?>
@@ -132,15 +148,22 @@ function link_list_page(): void
                             <?php if ($link->cover_image_id): ?>
                                 <?= wp_get_attachment_image($link->cover_image_id, [100, 100]); ?>
                             <?php else: ?>
-                                <span class="text-light-gray">N/A</span>
+                                <span class="text-gray">N/A</span>
                             <?php endif; ?>
                         </td>
+
+                        <!--
                         <td>
-                            <?= !empty($link->wp_page_id) ? '<a target="_blank" href="' . esc_url(get_permalink($link->wp_page_id)) . '">' . esc_html(get_the_title($link->wp_page_id)) . '<span class="dashicons dashicons-external"></span></a>' : '<span class="text-light-gray">N/A</span>' ?>
+                            <?= !empty($link->wp_page_id) ? '<a target="_blank" href="' . esc_url(get_permalink($link->wp_page_id)) . '">' . esc_html(get_the_title($link->wp_page_id)) . '<span class="dashicons dashicons-external"></span></a>' : '<span class="text-gray">N/A</span>' ?>
                         </td>
+                        -->
+
+                        <!-- Category -->
                         <td>
-                            <?= !empty($link->category_name) ? esc_html($link->category_name) : '<span class="text-light-gray">Uncategorized</span>' ?>
+                            <?= !empty($link->category_name) ? esc_html($link->category_name) : '<span class="text-gray">Uncategorized</span>' ?>
                         </td>
+
+                        <!-- Hit Num -->
                         <td><?= esc_html($link->hit_num) ?></td>
                     </tr>
                 <?php endforeach; ?>
