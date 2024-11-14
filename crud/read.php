@@ -68,6 +68,7 @@ function lnb_get_link_list(int $page_num = 1, int $per_page = 10, string $sort_b
  *
  */
 
+/*
 function lnb_get_link_details_by_id(int $link_id): object|array|null {
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
@@ -82,6 +83,7 @@ function lnb_get_link_details_by_id(int $link_id): object|array|null {
 
     return $wpdb->get_row($query);
 }
+*/
 
 /**
  * Retrieve the total count of links for pagination.

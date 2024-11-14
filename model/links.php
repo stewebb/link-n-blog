@@ -41,7 +41,6 @@ function lnb_add_new_link(array $link_data): bool {
     );
 }
 
-
 /*************************************
  *                Read               *
  ************************************/
@@ -69,7 +68,7 @@ function lnb_get_link_list(int $page_num = 1, int $per_page = 10, string $sort_b
     $table_categories = $wpdb->prefix . 'lnb_categories';
 
     // Sanitize and validate sort options
-    $allowed_sort_by = ['id', 'link_name', 'category', 'hit_num'];
+    $allowed_sort_by = ['id', 'link_name', 'category_id', 'hit_num'];
     $sort_by = in_array($sort_by, $allowed_sort_by) ? $sort_by : 'id';
     $sort_order = strtoupper($sort_order) === 'DESC' ? 'DESC' : 'ASC';
 
@@ -94,6 +93,39 @@ function lnb_get_link_list(int $page_num = 1, int $per_page = 10, string $sort_b
     );
 
     return $wpdb->get_results($sql);
+}
+
+/**
+ * Retrieve details of a specific link by its ID, including the category and group names.
+ *
+ * This function fetches a single link record from the 'lnb_links' table, joining
+ * the 'lnb_categories' and 'lnb_groups' tables to include the category and group names.
+ * It returns detailed information about the link, such as the link name, category, group,
+ * URL, and other metadata.
+ *
+ * @param int $link_id The ID of the link to retrieve.
+ *
+ * @return object|array|null The link details as an object or array on success, null on failure or if not found.
+ * @global wpdb $wpdb WordPress database access object.
+ */
+
+function lnb_get_link_details_by_id(int $link_id): object|array|null {
+    global $wpdb;
+    $table_links = $wpdb->prefix . 'lnb_links';
+    $table_categories = $wpdb->prefix . 'lnb_categories';
+    $table_groups = $wpdb->prefix . 'lnb_groups';
+
+    $query = $wpdb->prepare("
+        SELECT links.*, 
+               categories.name AS category_name, 
+               groups.name AS group_name
+        FROM $table_links AS links
+        LEFT JOIN $table_categories AS categories ON links.category_id = categories.id
+        LEFT JOIN $table_groups AS groups ON links.group_id = groups.id
+        WHERE links.id = %d
+    ", $link_id);
+
+    return $wpdb->get_row($query);
 }
 
 /*************************************
