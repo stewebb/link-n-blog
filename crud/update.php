@@ -12,7 +12,8 @@
  *
  * @return int|false The number of rows affected, or false on error.
  */
-function update_link(int $link_id, array $link_data): bool|int
+/*
+function lnb_update_link(int $link_id, array $link_data): bool|int
 {
     global $wpdb;
 
@@ -40,7 +41,7 @@ function update_link(int $link_id, array $link_data): bool|int
 
     return $result;
 }
-
+*/
 
 
 /*************************************

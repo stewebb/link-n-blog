@@ -17,13 +17,14 @@
  * @global wpdb $wpdb WordPress database access object.
  */
 
+/*
 function lnb_delete_link(int $link_id): int|false
 {
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
     return $wpdb->delete($table_links, ['id' => $link_id], ['%d']);
 }
-
+*/
 /*************************************
  *             Categories            *
  ************************************/

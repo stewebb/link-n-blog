@@ -1,68 +1,63 @@
 <?php
 
-require_once(plugin_dir_path(__FILE__) . '../crud/read.php');
-require_once(plugin_dir_path(__FILE__) . '../crud/create.php');
-require_once(plugin_dir_path(__FILE__) . '../crud/update.php');
+require_once(plugin_dir_path(__FILE__) . '../model/links.php');
+require_once(plugin_dir_path(__FILE__) . '../model/categories.php');
+require_once(plugin_dir_path(__FILE__) . '../model/groups.php');
 
 function link_details_page(): void
 {
     $categories = lnb_get_category_list();
+    $groups = lnb_get_group_list();
 
-    // Retrieve WordPress posts and pages for the wp_page_id dropdown
     $pages_posts = get_posts([
         'post_type' => ['post', 'page'],
         'post_status' => 'publish',
         'numberposts' => -1
     ]);
 
+    // Link data initialization
+    $is_edit_mode = !empty($_GET['id']);
+    $link_data = [
+        'display' => 1,
+        'link_name' => '',
+        'label_text' => '',
+        'category' => '',
+        'group' => '',  // Initialize group data
+        'url' => '',
+        'target' => '_self',
+        'color' => '',
+        'cover_image_id' => '',
+        'wp_page_id' => '',
+        'hit_num' => 0,
+        'last_visit' => ''
+    ];
+
+    if ($is_edit_mode) {
+        $link_id = intval($_GET['id']);
+        $link_details = lnb_get_link_details_by_id($link_id);
+        if ($link_details) {
+            $link_data = [
+                'display' => intval($link_details->display),
+                'link_id' => $link_id,
+                'link_name' => esc_html($link_details->link_name),
+                'label_text' => esc_html($link_details->label_text),
+                'category' => esc_html($link_details->category_name),
+                'group' => esc_html($link_details->group_name),  // Fetch group data
+                'url' => esc_url($link_details->url),
+                'target' => esc_html($link_details->target),
+                'color' => esc_html($link_details->color),
+                'cover_image_id' => intval($link_details->cover_image_id),
+                'wp_page_id' => intval($link_details->wp_page_id),
+                'hit_num' => intval($link_details->hit_num),
+                'last_visit' => esc_html($link_details->last_visit),
+                'created_at' => esc_html($link_details->created_at),
+                'updated_at' => esc_html($link_details->updated_at)
+            ];
+        }
+    }
     ?>
     <div class="wrap">
         <h1><?= isset($_GET['id']) ? 'Edit Link' : 'Add New Link'; ?></h1>
-
-        <?php
-        $is_edit_mode = !empty($_GET['id']);
-        $link_data = [
-            'display' => 1,
-            'link_name' => '',
-            'label_text' => '',
-            'category' => '',
-            'url' => '',
-            'target' => '_self',
-            'color' => '',
-            'cover_image_id' => '',
-            'wp_page_id' => '',
-            'hit_num' => 0,
-            'last_visit' => ''
-        ];
-
-        if ($is_edit_mode) {
-            $link_id = intval($_GET['id']);
-            $link_details = lnb_get_link_details_by_id($link_id);
-
-            if ($link_details) {
-                $link_data = [
-                    'display' => intval($link_details->display),
-                    'link_id' => $link_id,
-                    'link_name' => esc_html($link_details->link_name),
-                    'label_text' => esc_html($link_details->label_text),
-                    'category' => esc_html($link_details->category_name),
-                    'url' => esc_url($link_details->url),
-                    'target' => esc_html($link_details->target),
-                    'color' => esc_html($link_details->color),
-                    'cover_image_id' => intval($link_details->cover_image_id),
-                    'wp_page_id' => intval($link_details->wp_page_id),
-                    'hit_num' => intval($link_details->hit_num),
-                    'last_visit' => esc_html($link_details->last_visit),
-                    'created_at' => esc_html($link_details->created_at),
-                    'updated_at' => esc_html($link_details->updated_at)
-                ];
-            } else {
-                echo '<div class="notice notice-error"><p>Link not found.</p></div>';
-                return;
-            }
-        }
-
-        ?>
 
         <form method="post" action="">
             <input type="hidden" name="action" value="save">
@@ -79,6 +74,20 @@ function link_details_page(): void
                         <td><?= $link_data['link_id']; ?></td>
                     </tr>
                 <?php endif; ?>
+
+                <!-- Groups -->
+                <tr>
+                    <th scope="row"><label for="group">Group</label></th>
+                    <td>
+                        <select name="group" id="group" required>
+                            <?php foreach ($groups as $group): ?>
+                                <option value="<?= $group->id; ?>" <?= selected($link_data['group'], $group->name, false); ?>>
+                                    <?= esc_html($group->name); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
 
                 <!-- Display Options -->
                 <tr>
@@ -119,9 +128,6 @@ function link_details_page(): void
                     <th scope="row"><label for="category">Category</label></th>
                     <td>
                         <select name="category" id="category">
-                            <option value="0" <?= selected($link_data['category'], 'Uncategorized', false); ?>>
-                                Uncategorized
-                            </option>
                             <?php foreach ($categories as $category): ?>
                                 <option value="<?= $category->id; ?>" <?= selected($link_data['category'], $category->name, false); ?>>
                                     <?= esc_html($category->name); ?>
@@ -248,7 +254,6 @@ function link_details_page(): void
         </form>
 
         <?php
-
         // Handling form submission
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $link_data = [
@@ -256,6 +261,7 @@ function link_details_page(): void
                 'link_name' => sanitize_text_field($_POST['link_name']),
                 'label_text' => sanitize_text_field($_POST['label_text']),
                 'category' => sanitize_text_field($_POST['category']),
+                'group' => sanitize_text_field($_POST['group']),
                 'url' => esc_url_raw($_POST['url']),
                 'wp_page_id' => intval($_POST['wp_page_id']),
                 'target' => sanitize_text_field($_POST['target']),
@@ -269,18 +275,11 @@ function link_details_page(): void
                 $deleted = lnb_delete_link($link_id_to_delete);
 
                 echo $deleted ? '<div class="notice notice-success is-dismissible"><p>Link deleted successfully!</p></div>' : '<div class="notice notice-error is-dismissible"><p>Failed to delete link.</p></div>';
-                //if ($deleted) {
-                //    echo '<div class="notice notice-success is-dismissible"><p>Link deleted successfully!</p></div>';
-                //    //echo '<script>window.location.href = "admin.php?page=link-n-blog";</script>';
-                //    //return;
-                //} else {
-                //    echo '<div class="notice notice-error is-dismissible"><p>Failed to delete link.</p></div>';
-                //}
             }
 
             // Edit
             elseif ($is_edit_mode) {
-                $updated = update_link($link_id, $link_data);
+                $updated = lnb_update_link($link_id, $link_data);
                 echo $updated ? '<div class="notice notice-success is-dismissible"><p>Link updated successfully!</p></div>' :
                     '<div class="notice notice-error is-dismissible"><p>Failed to update link.</p></div>';
             }

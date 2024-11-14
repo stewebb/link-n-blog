@@ -8,6 +8,40 @@
  *                Create             *
  ************************************/
 
+/**
+ * Inserts a new link into the wp_lnb_links table.
+ *
+ * @param array $link_data The data of the new link to add.
+ * @return bool True on success, false on failure.
+ */
+
+function lnb_add_new_link(array $link_data): bool {
+    global $wpdb;
+
+    // Insert new link data
+    return $wpdb->insert(
+        'wp_lnb_links',
+        [
+            'link_name' => $link_data['link_name'],
+            'label_text' => $link_data['label_text'],
+            'category_id' => $link_data['category'] > 0 ? $link_data['category'] : null,
+            'group_id' => $link_data['group'] > 0 ? $link_data['group'] : null,
+            'url' => $link_data['url'],
+            'wp_page_id' => $link_data['wp_page_id'],
+            'target' => $link_data['target'],
+            'color' => $link_data['color'],
+            'cover_image_id' => $link_data['cover_image_id'],
+            'display' => $link_data['display'],
+            'created_at' => current_time('mysql'),
+            'updated_at' => current_time('mysql'),
+        ],
+        [
+            '%s', '%s', '%d', '%d', '%s', '%d', '%s', '%s', '%d', '%d', '%s', '%s'
+        ]
+    );
+}
+
+
 /*************************************
  *                Read               *
  ************************************/
@@ -62,11 +96,69 @@ function lnb_get_link_list(int $page_num = 1, int $per_page = 10, string $sort_b
     return $wpdb->get_results($sql);
 }
 
-
 /*************************************
  *                Update             *
  ************************************/
 
+/**
+ * Updates an existing link in the wp_lnb_links table.
+ *
+ * @param int $link_id The ID of the link to update.
+ * @param array $link_data The updated data for the link.
+ *
+ * @return int|false The number of rows affected, or false on error.
+ */
+
+function lnb_update_link(int $link_id, array $link_data): bool|int
+{
+    global $wpdb;
+
+    // Update existing link data
+    $result = $wpdb->update(
+        'wp_lnb_links',
+        [
+            'link_name' => $link_data['link_name'],
+            'label_text' => $link_data['label_text'],
+            'category_id' => $link_data['category'] > 0 ? $link_data['category'] : null,
+            'group_id' => $link_data['group'] > 0 ? $link_data['group'] : null,  // New 'group' field
+            'url' => $link_data['url'],
+            'wp_page_id' => $link_data['wp_page_id'],
+            'target' => $link_data['target'],
+            'color' => $link_data['color'],
+            'cover_image_id' => $link_data['cover_image_id'],
+            'display' => $link_data['display'],
+            'updated_at' => current_time('mysql'),
+        ],
+        [ 'id' => $link_id ],
+        [
+            '%s', '%s', '%d', '%d', '%s', '%d', '%s', '%s', '%d', '%d', '%s'
+        ],
+        [ '%d' ]
+    );
+
+    return $result;
+}
+
 /*************************************
  *                Delete             *
  ************************************/
+
+/**
+ * Delete a specific link by its ID.
+ *
+ * This function deletes a link from the 'lnb_links' table based on
+ * the provided link ID. It returns the number of rows affected on success,
+ * or false on failure.
+ *
+ * @param int $link_id The ID of the link to delete.
+ *
+ * @return int|false The number of rows affected, or false on failure.
+ * @global wpdb $wpdb WordPress database access object.
+ */
+
+function lnb_delete_link(int $link_id): int|false
+{
+    global $wpdb;
+    $table_links = $wpdb->prefix . 'lnb_links';
+    return $wpdb->delete($table_links, ['id' => $link_id], ['%d']);
+}

@@ -120,12 +120,14 @@ function lnb_get_link_count(): int {
  * @return array|object|null The list of categories as an array or object on success, null on failure.
  */
 
+/*
 function lnb_get_category_list(): array|object|null {
     global $wpdb;
     $table_categories = $wpdb->prefix . 'lnb_categories';
     $query = "SELECT * FROM $table_categories";
     return $wpdb->get_results($query);
 }
+*/
 
 /**
  * Retrieve the count of links associated with a specific category.

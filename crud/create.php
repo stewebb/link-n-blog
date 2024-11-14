@@ -10,6 +10,7 @@
  * @param array $link_data The data of the new link to add.
  * @return bool True on success, false on failure.
  */
+/*
 function lnb_add_new_link(array $link_data): bool {
     global $wpdb;
 
@@ -34,7 +35,7 @@ function lnb_add_new_link(array $link_data): bool {
         ]
     );
 }
-
+*/
 /*************************************
  *             Categories            *
  ************************************/
