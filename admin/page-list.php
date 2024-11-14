@@ -21,7 +21,6 @@ function generate_sortable_header($column_name, $sort_field, $current_sort_by, $
             </th>";
 }
 
-
 // Function to display the link list page in the admin panel with pagination and sorting
 function link_list_page(): void
 {
@@ -37,6 +36,12 @@ function link_list_page(): void
     $total_items = lnb_get_link_count();
     $total_pages = ceil($total_items / $per_page);
     $split_symbol = '&nbsp;<span class="text-light-gray">|</span>&nbsp;';
+
+    // Group the links by group_id to calculate rowspans
+    $group_counts = [];
+    foreach ($links as $link) {
+        $group_counts[$link->group_id] = ($group_counts[$link->group_id] ?? 0) + 1;
+    }
 
     ?>
     <div class="wrap">
@@ -59,6 +64,7 @@ function link_list_page(): void
         <table class="widefat fixed striped table-view-list">
             <thead>
             <tr>
+                <?= generate_sortable_header('Group', 'group_id', $sort_by, $sort_order, $page_num); ?>
                 <?= generate_sortable_header('ID', 'id', $sort_by, $sort_order, $page_num); ?>
                 <?= generate_sortable_header('Name', 'link_name', $sort_by, $sort_order, $page_num); ?>
                 <?= generate_sortable_header('Display', 'display', $sort_by, $sort_order, $page_num); ?>
@@ -70,8 +76,19 @@ function link_list_page(): void
             </thead>
             <tbody>
             <?php if ($links): ?>
-                <?php foreach ($links as $link): ?>
+                <?php
+                $last_group_id = null;
+                foreach ($links as $link):
+                    ?>
                     <tr>
+
+                        <!-- Group -->
+                        <?php if ($link->group_id !== $last_group_id): ?>
+                            <td rowspan="<?= $group_counts[$link->group_id]; ?>"><strong>Group: <?= esc_html($link->group_name); ?></strong></td>
+                            <?php
+                            $last_group_id = $link->group_id;
+                        endif;
+                        ?>
 
                         <!-- ID -->
                         <td>
@@ -124,12 +141,11 @@ function link_list_page(): void
                             <?= !empty($link->category_name) ? esc_html($link->category_name) : '<span class="text-light-gray">Uncategorized</span>' ?>
                         </td>
                         <td><?= esc_html($link->hit_num) ?></td>
-
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="5">No links found.</td>
+                    <td colspan="8">No links found.</td>
                 </tr>
             <?php endif; ?>
             </tbody>
@@ -138,6 +154,7 @@ function link_list_page(): void
         <!-- Pagination -->
         <div class="pagination">
             <ul class="pagination-links">
+
                 <!-- Previous Button -->
                 <li>
                     <?php if ($page_num > 1): ?>
@@ -150,16 +167,12 @@ function link_list_page(): void
 
                 <!-- Page Numbers -->
                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                    <?php if ($i == 1 || $i == $total_pages || ($i >= $page_num - 1 && $i <= $page_num + 1)): ?>
-                        <li>
-                            <a href="?page=link-n-blog&page_num=<?= $i ?>&per_page=<?= $per_page ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>"
-                               class="button <?= $i == $page_num ? 'active' : '' ?>">
-                                <?= $i ?>
-                            </a>
-                        </li>
-                    <?php elseif ($i == 2 || $i == $total_pages - 1): ?>
-                        <li><span class="button disabled">...</span></li>
-                    <?php endif; ?>
+                    <li>
+                        <a href="?page=link-n-blog&page_num=<?= $i ?>&per_page=<?= $per_page ?>&sort_by=<?= esc_attr($sort_by) ?>&sort_order=<?= esc_attr($sort_order) ?>"
+                           class="button <?= $i == $page_num ? 'active' : '' ?>">
+                            <?= $i ?>
+                        </a>
+                    </li>
                 <?php endfor; ?>
 
                 <!-- Next Button -->
@@ -174,11 +187,7 @@ function link_list_page(): void
             </ul>
         </div>
 
-        <div class="inline-buttons">
-            <a href="admin.php?page=link-n-blog-details" class="button button-primary">Add New</a>
-            <a href="admin.php?page=link-n-blog-categories" class="button button-secondary">Manage Categories</a>
-        </div>
-
     </div>
     <?php
 }
+?>
