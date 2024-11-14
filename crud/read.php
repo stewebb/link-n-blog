@@ -21,6 +21,7 @@
  *
  */
 
+/*
 function lnb_get_link_list(int $page_num = 1, int $per_page = 10, string $sort_by = 'id', string $sort_order = 'ASC'): array|object|null {
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
@@ -42,7 +43,7 @@ function lnb_get_link_list(int $page_num = 1, int $per_page = 10, string $sort_b
         "
         SELECT l.*, c.name AS category_name
         FROM $table_links AS l
-        LEFT JOIN $table_categories AS c ON l.category = c.id
+        LEFT JOIN $table_categories AS c ON l.category_id = c.id
         ORDER BY l.$sort_by $sort_order
         LIMIT %d OFFSET %d
         ",
@@ -52,7 +53,7 @@ function lnb_get_link_list(int $page_num = 1, int $per_page = 10, string $sort_b
 
     return $wpdb->get_results($sql);
 }
-
+*/
 /**
  * Retrieve details of a specific link by its ID, including the category name.
  *

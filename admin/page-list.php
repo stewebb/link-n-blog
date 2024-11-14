@@ -1,6 +1,6 @@
 <?php
 
-require_once(plugin_dir_path(__FILE__) . '../crud/read.php');
+require_once(plugin_dir_path(__FILE__) . '../model/links.php');
 
 // Helper function to generate table headers with sorting links
 function generate_sortable_header($column_name, $sort_field, $current_sort_by, $current_sort_order, $page_num): string

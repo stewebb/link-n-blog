@@ -130,10 +130,11 @@ function lnb_create_links_table(): void
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         display TINYINT NOT NULL DEFAULT 1,
         PRIMARY KEY (id),
-        FOREIGN KEY (category_id) REFERENCES $table_categories(id) ON DELETE SET NULL,
-        FOREIGN KEY (group_id) REFERENCES $table_groups(id) ON DELETE SET NULL
+        FOREIGN KEY (category_id) REFERENCES $table_categories(id) ON DELETE RESTRICT,
+        FOREIGN KEY (group_id) REFERENCES $table_groups(id) ON DELETE RESTRICT
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql_links);
 }
 
@@ -151,7 +152,7 @@ function lnb_insert_default_category(): void
         $wpdb->prepare(
             "INSERT IGNORE INTO $table_categories (id, name, color, created_at, updated_at) 
              VALUES (%d, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
-            0, 'unCategorized', '#000000'
+            0, 'Uncategorized', '#000000'
         )
     );
 }
