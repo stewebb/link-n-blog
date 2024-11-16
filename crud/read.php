@@ -96,6 +96,7 @@ function lnb_get_link_details_by_id(int $link_id): object|array|null {
  * @return int The total count of links.
  */
 
+/*
 function lnb_get_link_count(): int {
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
@@ -105,6 +106,7 @@ function lnb_get_link_count(): int {
 
     return (int) $wpdb->get_var($sql);
 }
+*/
 
 /*************************************
  *             Categories            *

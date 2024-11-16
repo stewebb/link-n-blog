@@ -56,43 +56,54 @@ function lnb_add_new_link(array $link_data): bool {
  * @param int $per_page The number of items to display per page. Defaults to 10.
  * @param string $sort_by The column by which to sort the results within each group. Allowed values: 'id', 'link_name', 'category_id', 'hit_num'. Defaults to 'id'.
  * @param string $sort_order The sort order within each group. Allowed values: 'ASC' or 'DESC'. Defaults to 'ASC'.
+ * @param int|null $group_id The group ID to filter by. If null or empty, no filtering by group_id is applied.
  *
  * @return array|object|null The result set of links with group and category names as an array or object on success, null on failure.
  * @global wpdb $wpdb WordPress database access object.
  */
 
-function lnb_get_link_list(int $page_num = 1, int $per_page = 10, string $sort_by = 'id', string $sort_order = 'ASC'): array|object|null
+function lnb_get_link_list(int $page_num = 1, int $per_page = 10, string $sort_by = 'id', string $sort_order = 'ASC', ?int $group_id = null): array|object|null
 {
-    global $wpdb;
-    $table_links = $wpdb->prefix . 'lnb_links';
-    $table_categories = $wpdb->prefix . 'lnb_categories';
-    $table_groups = $wpdb->prefix . 'lnb_groups'; // Assuming 'lnb_groups' is the table for groups
+	global $wpdb;
+	$table_links = $wpdb->prefix . 'lnb_links';
+	$table_categories = $wpdb->prefix . 'lnb_categories';
+	$table_groups = $wpdb->prefix . 'lnb_groups'; // Assuming 'lnb_groups' is the table for groups
 
-    // Sanitize and validate sort options
-    $allowed_sort_by = ['id', 'link_name', 'category_id', 'hit_num'];
-    $sort_by = in_array($sort_by, $allowed_sort_by) ? $sort_by : 'id';
-    $sort_order = strtoupper($sort_order) === 'DESC' ? 'DESC' : 'ASC';
+	// Sanitize and validate sort options
+	$allowed_sort_by = ['id', 'link_name', 'category_id', 'hit_num'];
+	$sort_by = in_array($sort_by, $allowed_sort_by) ? $sort_by : 'id';
+	$sort_order = strtoupper($sort_order) === 'DESC' ? 'DESC' : 'ASC';
 
-    $page_num = max($page_num, 1);
-    $per_page = max($per_page, 1);
+	$page_num = max($page_num, 1);
+	$per_page = max($per_page, 1);
 
-    // Calculate offset for pagination
-    $offset = ($page_num - 1) * $per_page;
+	// Calculate offset for pagination
+	$offset = ($page_num - 1) * $per_page;
 
-    // Query to get paginated and sorted links by group_id with the group and category names
-    $sql = $wpdb->prepare(
-        "
+	// Start building the query
+	$query = "
         SELECT l.*, c.name AS category_name, g.name AS group_name
         FROM $table_links AS l
         LEFT JOIN $table_categories AS c ON l.category_id = c.id
         LEFT JOIN $table_groups AS g ON l.group_id = g.id
+    ";
+
+	// Add a WHERE clause if group_id is provided
+	$where_clause = '';
+	if (!empty($group_id) && $group_id > 0) {
+		$where_clause = $wpdb->prepare("WHERE l.group_id = %d", $group_id);
+	}
+
+	// Complete the query with sorting and pagination
+	$query .= "
+        $where_clause
         ORDER BY l.group_id, l.$sort_by $sort_order
         LIMIT %d OFFSET %d
-        ",
-        $per_page,
-        $offset
-    );
-    return $wpdb->get_results($sql);
+    ";
+
+	// Prepare and execute the query
+	$sql = $wpdb->prepare($query, $per_page, $offset);
+	return $wpdb->get_results($sql);
 }
 
 /**
@@ -126,6 +137,32 @@ function lnb_get_link_details_by_id(int $link_id): object|array|null {
     ", $link_id);
 
     return $wpdb->get_row($query);
+}
+
+/**
+ * Retrieve the total count of links for pagination.
+ *
+ * This function counts the total number of links in the 'lnb_links' table,
+ * optionally filtered by a specific group ID.
+ *
+ * @param int|null $group_id The group ID to filter by. If null, count all links.
+ * @global wpdb $wpdb WordPress database access object.
+ *
+ * @return int The total count of links.
+ */
+function lnb_get_link_count(?int $group_id = null): int {
+	global $wpdb;
+	$table_links = $wpdb->prefix . 'lnb_links';
+
+	// Base query to count links
+	$sql = "SELECT COUNT(*) FROM $table_links";
+
+	// Add WHERE clause if a group_id is provided
+	if (!is_null($group_id) && $group_id > 0) {
+		$sql .= $wpdb->prepare(" WHERE group_id = %d", $group_id);
+	}
+
+	return (int) $wpdb->get_var($sql);
 }
 
 /*************************************

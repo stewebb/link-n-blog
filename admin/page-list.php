@@ -1,21 +1,22 @@
 <?php
 
 require_once(plugin_dir_path(__FILE__) . '../model/links.php');
+require_once(plugin_dir_path(__FILE__) . '../model/groups.php');
 
 // Helper function to generate table headers with sorting links
-function generate_sortable_header($column_name, $sort_field, $current_sort_by, $current_sort_order, $page_num): string
+function generate_sortable_header($column_name, $sort_field, $current_sort_by, $current_sort_order, $page_num, $group_id): string
 {
-    $new_sort_order = $current_sort_order === 'ASC' ? 'DESC' : 'ASC';
-    $is_current_sort = $sort_field === $current_sort_by;
+	$new_sort_order = $current_sort_order === 'ASC' ? 'DESC' : 'ASC';
+	$is_current_sort = $sort_field === $current_sort_by;
 
-    // Choose arrow symbol based on current sorting order
-    $sort_symbol = '';
-    if ($is_current_sort) {
-        $sort_symbol = $current_sort_order === 'ASC' ? ' ▲' : ' ▼';
-    }
+	// Choose arrow symbol based on current sorting order
+	$sort_symbol = '';
+	if ($is_current_sort) {
+		$sort_symbol = $current_sort_order === 'ASC' ? ' ▲' : ' ▼';
+	}
 
-    return "<th scope='col' class='" . ($is_current_sort ? 'sorted ' . strtolower($current_sort_order) : '') . "'>
-                <a href='?page=link-n-blog&sort_by=$sort_field&sort_order=$new_sort_order&page_num=$page_num'>
+	return "<th scope='col' class='" . ($is_current_sort ? 'sorted ' . strtolower($current_sort_order) : '') . "'>
+                <a href='?page=link-n-blog&sort_by=$sort_field&sort_order=$new_sort_order&page_num=$page_num&group_id=$group_id'>
                     $column_name $sort_symbol
                 </a>
             </th>";
@@ -28,12 +29,14 @@ function link_list_page(): void
 	$sort_by = $_GET['sort_by'] ?? 'id';
 	$sort_order = $_GET['sort_order'] ?? 'ASC';
 	$per_page = isset($_GET['per_page']) ? intval($_GET['per_page']) : 25;
+	$group_id = isset($_GET['group_id']) ? intval($_GET['group_id']) : 0;
 
 	// Retrieve the paginated, sorted links data
-	$links = lnb_get_link_list($page_num, $per_page, $sort_by, $sort_order);
+	$links = lnb_get_link_list($page_num, $per_page, $sort_by, $sort_order, $group_id);
+    $groups = lnb_get_group_list();
 
 	// Calculate total pages
-	$total_items = lnb_get_link_count();
+	$total_items = lnb_get_link_count($group_id);
 	$total_pages = ceil($total_items / $per_page);
 
 	// Group the links by group_id to calculate rowspans
@@ -57,7 +60,6 @@ function link_list_page(): void
 
 		// Concatenate group_id and group_name
 		$concat_string = "id={$group_id}, name={$group_name}";
-		//echo $concat_string;
 
 		// Generate hue from concatenated string
 		$hue = crc32($concat_string) % 360;
@@ -72,6 +74,22 @@ function link_list_page(): void
     <div class="wrap">
         <h1 class="wp-heading-inline">Link List</h1>
         <hr class="wp-header-end">
+
+        <!-- Group Selector -->
+        <div class="group-selector mb-3">
+            <form method="GET" style="display: inline;">
+                <input type="hidden" name="page" value="link-n-blog">
+                <label for="group_id">Filter by Group:</label>
+                <select name="group_id" id="group_id" onchange="this.form.submit()">
+                    <option value="0" <?= $group_id == 0 ? 'selected' : '' ?>>All Groups</option>
+				    <?php foreach ($groups as $group): ?>
+                        <option value="<?= $group->id ?>" <?= $group->id == $group_id ? 'selected' : '' ?>>
+						    <?= esc_html($group->name) ?>
+                        </option>
+				    <?php endforeach; ?>
+                </select>
+            </form>
+        </div>
 
         <!-- Per Page Selector -->
         <div class="per-page-selector mb-3">
@@ -90,17 +108,12 @@ function link_list_page(): void
             <thead>
             <tr>
                 <th scope="col">Group</th>
-                <?= generate_sortable_header('ID', 'id', $sort_by, $sort_order, $page_num); ?>
-                <?= generate_sortable_header('Name', 'link_name', $sort_by, $sort_order, $page_num); ?>
-                <?= generate_sortable_header('Display', 'display', $sort_by, $sort_order, $page_num); ?>
+	            <?= generate_sortable_header('ID', 'id', $sort_by, $sort_order, $page_num, $group_id); ?>
+	            <?= generate_sortable_header('Name', 'link_name', $sort_by, $sort_order, $page_num, $group_id); ?>
+	            <?= generate_sortable_header('Display', 'display', $sort_by, $sort_order, $page_num, $group_id); ?>
                 <th scope="col">Cover Image</th>
-
-                <!--
-                <th scope="col">WP Page</th>
-                -->
-
-                <?= generate_sortable_header('Category', 'category', $sort_by, $sort_order, $page_num); ?>
-                <?= generate_sortable_header('Hit Num', 'hit_num', $sort_by, $sort_order, $page_num); ?>
+	            <?= generate_sortable_header('Category', 'category', $sort_by, $sort_order, $page_num, $group_id); ?>
+	            <?= generate_sortable_header('Hit Num', 'hit_num', $sort_by, $sort_order, $page_num, $group_id); ?>
             </tr>
             </thead>
 
@@ -241,5 +254,4 @@ function link_list_page(): void
     </div>
     <?php
 }
-
 ?>
