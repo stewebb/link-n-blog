@@ -167,18 +167,18 @@ function categories_page(): void {
                                     </tr>
 
                                 </table>
-
-                                <p class="submit">
-                                    <button type="submit" name="update_category" class="button button-primary">Update
-                                    </button>
-                                    <button type="submit" name="delete_category" class="button button-danger"
-                                            onclick="return confirm('Are you sure you want to delete this category?');"
-			                            <?php echo $cannot_be_deleted ? 'disabled' : ''; ?>>
-                                        Delete
-                                    </button>
-                                </p>
-
                             </div>
+
+                            <!-- Card Actions -->
+                            <div class="lnb-card-actions">
+                                <button type="submit" name="update_category" class="button button-primary">Update</button>
+                                <button type="submit" name="delete_category" class="button button-danger"
+                                        onclick="return confirm('Are you sure you want to delete this category?');"
+			                        <?= $cannot_be_deleted ? 'disabled' : ''; ?>>
+                                    Delete
+                                </button>
+                            </div>
+
                         </form>
                     </div>
 					<?php
@@ -219,7 +219,6 @@ function categories_page(): void {
                     </form>
                 </div>
             </div>
-
 
         </div>
     </div>
