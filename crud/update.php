@@ -64,6 +64,7 @@ function lnb_update_link(int $link_id, array $link_data): bool|int
  *
  */
 
+/*
 function lnb_update_category(int $category_id, string $category_name, string $color): mysqli_result|bool|int|null {
     global $wpdb;
     $table_categories = $wpdb->prefix . 'lnb_categories';
@@ -75,6 +76,7 @@ function lnb_update_category(int $category_id, string $category_name, string $co
         ['%d']
     );
 }
+*/
 
 /*************************************
  *               Groups              *

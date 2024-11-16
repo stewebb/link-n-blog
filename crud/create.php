@@ -54,6 +54,7 @@ function lnb_add_new_link(array $link_data): bool {
  *
  */
 
+/*
 function lnb_add_category(string $category_name, string $color): mysqli_result|bool|int|null
 {
     global $wpdb;
@@ -64,6 +65,7 @@ function lnb_add_category(string $category_name, string $color): mysqli_result|b
         ['%s', '%s']
     );
 }
+*/
 
 /*************************************
  *               Groups              *

@@ -1,50 +1,36 @@
 <?php
 
-//require_once(plugin_dir_path(__FILE__) . '../crud/create.php');
-//require_once(plugin_dir_path(__FILE__) . '../crud/read.php');
-//require_once(plugin_dir_path(__FILE__) . '../crud/update.php');
-//require_once(plugin_dir_path(__FILE__) . '../crud/delete.php');
-
-require_once(plugin_dir_path(__FILE__) . '../model/categories.php');
+require_once( plugin_dir_path( __FILE__ ) . '../model/categories.php' );
 
 // Update categories_page to ensure colors are added/modified
-function categories_page(): void
-{
-	// Check for uncategorized links
-	//$uncategorized = lnb_get_uncategorized_links();
-	//if (!empty($uncategorized)) {
-	//    echo "<div class='notice notice-warning'><p><strong>The following link(s) are uncategorized:</strong></p><ul>";
-	//    foreach ($uncategorized as $link) {
-	//        echo "<li>ID: <a style='text-decoration: none;' href='admin.php?page=link-n-blog-details&id=" . $link->id . "'>" . $link->id . "</a>, name: " . $link->link_name . "</li>";
-	//    }
-	//    echo "</ul></div>";
-	//}
+function categories_page(): void {
 
-	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 		// Nonce Verification
-		if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'category_action_nonce')) {
-			die('Security check failed');
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'category_action_nonce' ) ) {
+			die( 'Security check failed' );
 		}
 
 		// Get category ID, name, and color
-		$category_id = !empty($_POST['category_id']) ? intval($_POST['category_id']) : null;
-		$category_name = !empty($_POST['category_name']) ? sanitize_text_field($_POST['category_name']) : '';
-		$color = !empty($_POST['color']) ? sanitize_hex_color($_POST['color']) : '';
+		$category_id   = ! empty( $_POST['category_id'] ) ? intval( $_POST['category_id'] ) : null;
+		$category_name = ! empty( $_POST['category_name'] ) ? sanitize_text_field( $_POST['category_name'] ) : '';
+		$color         = ! empty( $_POST['color'] ) ? sanitize_hex_color( $_POST['color'] ) : '';
 
 		// Update or Add Category
-		if (isset($_POST['update_category'])) {
-			if ($category_id) {
-				if ($category_id == 1) {
-					echo "<div class='notice notice-error'><p>The category with ID 1 cannot be updated or deleted.</p></div>";
+		if ( isset( $_POST['update_category'] ) ) {
+
+			// Update
+			if ( $category_id ) {
+				if ( lnb_update_category( $category_id, $category_name, $color ) ) {
+					echo "<div class='notice notice-success'><p>Category updated successfully.</p></div>";
 				} else {
-					if (lnb_update_category($category_id, $category_name, $color)) {
-						echo "<div class='notice notice-success'><p>Category updated successfully.</p></div>";
-					} else {
-						echo "<div class='notice notice-error'><p>Error updating category.</p></div>";
-					}
+					echo "<div class='notice notice-error'><p>Error updating category.</p></div>";
 				}
-			} else {
-				if (lnb_add_category($category_name, $color)) {
+			}
+
+            // Add
+			else {
+				if ( lnb_add_category( $category_name, $color ) ) {
 					echo "<div class='notice notice-success'><p>Category added successfully.</p></div>";
 				} else {
 					echo "<div class='notice notice-error'><p>Error adding category.</p></div>";
@@ -53,15 +39,15 @@ function categories_page(): void
 		}
 
 		// Delete Category
-		if (isset($_POST['delete_category']) && $category_id) {
-			if ($category_id == 1) {
+		if ( isset( $_POST['delete_category'] ) && $category_id ) {
+			if ( $category_id == 1 ) {
 				echo "<div class='notice notice-error'><p>The category with ID 1 cannot be deleted.</p></div>";
 			} else {
 				// Check if category is used in links
-				if (lnb_get_category_usage_count($category_id) > 0) {
+				if ( lnb_get_category_usage_count( $category_id ) > 0 ) {
 					echo "<div class='notice notice-error'><p>The category is used in $category_id link(s).</p></div>";
 				} else {
-					echo lnb_delete_category($category_id) ? "<div class='notice notice-success'><p>Category deleted successfully.</p></div>" : "<div class='notice notice-error'><p>Error deleting category.</p></div>";
+					echo lnb_delete_category( $category_id ) ? "<div class='notice notice-success'><p>Category deleted successfully.</p></div>" : "<div class='notice notice-error'><p>Error deleting category.</p></div>";
 				}
 			}
 		}
@@ -75,42 +61,49 @@ function categories_page(): void
 			<?php
 			// Display categories with update and delete options
 			$categories = lnb_get_category_list();
-			if ($categories) {
-				foreach ($categories as $category) {
+			if ( $categories ) {
+				foreach ( $categories as $category ) {
 					//$usage_count = lnb_get_category_usage_count($category->id);
 					//$usage_details = lnb_get_links_by_category($category->id);
 					?>
                     <div class="category-card">
                         <form method="POST" action="">
-							<?php wp_nonce_field('category_action_nonce'); ?>
-                            <input type="hidden" name="category_id" value="<?= esc_attr($category->id); ?>">
+							<?php wp_nonce_field( 'category_action_nonce' ); ?>
+                            <input type="hidden" name="category_id" value="<?= esc_attr( $category->id ); ?>">
 
                             <table class="form-table">
 
                                 <!-- ID -->
                                 <tr>
                                     <th><label><span class="not-required">*&nbsp;</span>Category ID</label></th>
-                                    <td><?= esc_attr($category->id); ?></td>
+                                    <td>
+										<?= esc_attr( $category->id ); ?>
+										<?php if ( $category->id == 1 ): ?>
+                                            &nbsp;<span class="badge badge-primary">Default</span>
+                                            &nbsp;<span class="badge badge-dark">Cannot be deleted</span>
+										<?php endif; ?>
+                                    </td>
                                 </tr>
 
                                 <!-- Name -->
                                 <tr>
-                                    <th><label for="category-name-<?= esc_attr($category->id); ?>"><span
+                                    <th><label for="category-name-<?= esc_attr( $category->id ); ?>"><span
                                                     class="required">*&nbsp;</span>Name</label></th>
                                     <td>
                                         <input type="text" name="category_name"
-                                               id="category-name-<?= esc_attr($category->id); ?>"
-                                               value="<?= esc_attr($category->name); ?>" class="regular-text" required>
+                                               id="category-name-<?= esc_attr( $category->id ); ?>"
+                                               value="<?= esc_attr( $category->name ); ?>" class="regular-text"
+                                               required>
                                     </td>
                                 </tr>
 
                                 <!-- Color -->
                                 <tr>
-                                    <th><label for="color-<?= esc_attr($category->id); ?>"><span class="not-required">*&nbsp;</span>Color</label>
+                                    <th><label for="color-<?= esc_attr( $category->id ); ?>"><span class="not-required">*&nbsp;</span>Color</label>
                                     </th>
                                     <td>
-                                        <input type="text" name="color" id="color-<?= esc_attr($category->id); ?>"
-                                               value="<?= esc_attr($category->color); ?>"
+                                        <input type="text" name="color" id="color-<?= esc_attr( $category->id ); ?>"
+                                               value="<?= esc_attr( $category->color ); ?>"
                                                class="regular-text color-picker">
                                     </td>
                                 </tr>
@@ -118,19 +111,19 @@ function categories_page(): void
                                 <!-- Created At -->
                                 <tr>
                                     <th><label><span class="not-required">*&nbsp;</span>Created At</label></th>
-                                    <td><?= esc_html($category->created_at); ?></td>
+                                    <td><?= esc_html( $category->created_at ); ?></td>
                                 </tr>
 
                                 <!-- Updated At -->
                                 <tr>
                                     <th><label><span class="not-required">*&nbsp;</span>Updated At</label></th>
-                                    <td><?= esc_html($category->updated_at); ?></td>
+                                    <td><?= esc_html( $category->updated_at ); ?></td>
                                 </tr>
 
                                 <!-- Usage Count -->
                                 <tr>
                                     <th><label><span class="not-required">*&nbsp;</span>Usage Count</label></th>
-                                    <td><?= esc_html($usage_count); ?> links</td>
+                                    <td><?= esc_html( $usage_count ); ?> links</td>
                                 </tr>
 
                                 <!-- Usage Details -->
@@ -138,10 +131,10 @@ function categories_page(): void
                                     <th><label><span class="not-required">*&nbsp;</span>Usage Details</label></th>
                                     <td>
 										<?php
-										if (empty($usage_details)) {
+										if ( empty( $usage_details ) ) {
 											echo "<span class='text-light-gray'>N/A</span>";
 										} else {
-											foreach ($usage_details as $usage_detail) {
+											foreach ( $usage_details as $usage_detail ) {
 												echo "<p>ID: <a href='admin.php?page=link-n-blog-details&id=" . $usage_detail->id . "'>" . $usage_detail->id . "</a>, name: " . $usage_detail->link_name . "</p>";
 											}
 										}
@@ -171,7 +164,7 @@ function categories_page(): void
             <div class="category-card add-new-category">
                 <h2>Add a New Category</h2>
                 <form method="POST" action="">
-					<?php wp_nonce_field('category_action_nonce'); ?>
+					<?php wp_nonce_field( 'category_action_nonce' ); ?>
                     <input type="hidden" name="category_id">
                     <table class="form-table">
 
