@@ -57,6 +57,27 @@ function lnb_get_category_list(): array|object|null {
     return $wpdb->get_results($query);
 }
 
+/**
+ * Retrieve the count of links associated with a specific category.
+ *
+ * This function counts the number of links in the 'lnb_links' table
+ * that belong to a given category. Useful for determining the usage
+ * or popularity of each category.
+ *
+ * @param int $category_id The ID of the category to count links for.
+ *
+ * @return string|null The count of links as a string on success, or null on failure.
+ *@global wpdb $wpdb WordPress database access object.
+ *
+ */
+
+function lnb_get_category_usage_count(int $category_id): ?string {
+	global $wpdb;
+	$table_links = $wpdb->prefix . 'lnb_links';
+	$query = $wpdb->prepare("SELECT COUNT(*) FROM $table_links WHERE category_id = %d", $category_id);
+	return $wpdb->get_var($query);
+}
+
 /*************************************
  *                Update             *
  ************************************/
@@ -92,3 +113,24 @@ function lnb_update_category(int $category_id, string $category_name, string $co
 /*************************************
  *                Delete             *
  ************************************/
+
+/**
+ * Delete a specific category by its ID.
+ *
+ * This function deletes a category from the 'lnb_categories' table based on
+ * the provided category ID. It returns the number of rows affected on success,
+ * or false on failure.
+ *
+ * @param int $category_id The ID of the category to delete.
+ *
+ * @return mysqli_result|bool|int|null The number of rows affected, false on failure, or null if no rows affected.
+ *@global wpdb $wpdb WordPress database access object.
+ *
+ */
+
+function lnb_delete_category(int $category_id): mysqli_result|bool|int|null
+{
+    global $wpdb;
+    $table_categories = $wpdb->prefix . 'lnb_categories';
+    return $wpdb->delete($table_categories, ['id' => $category_id], ['%d']);
+}

@@ -28,7 +28,7 @@ function categories_page(): void {
 				}
 			}
 
-            // Add
+			// Add
 			else {
 				if ( lnb_add_category( $category_name, $color ) ) {
 					echo "<div class='notice notice-success'><p>Category added successfully.</p></div>";
@@ -43,6 +43,7 @@ function categories_page(): void {
 			if ( $category_id == 1 ) {
 				echo "<div class='notice notice-error'><p>The category with ID 1 cannot be deleted.</p></div>";
 			} else {
+
 				// Check if category is used in links
 				if ( lnb_get_category_usage_count( $category_id ) > 0 ) {
 					echo "<div class='notice notice-error'><p>The category is used in $category_id link(s).</p></div>";
@@ -53,106 +54,123 @@ function categories_page(): void {
 		}
 	}
 	?>
+
     <div class="wrap">
         <h1 class="wp-heading-inline">Manage Categories</h1>
         <hr class="wp-header-end">
 
-        <div class="category-cards-container">
+        <div class="lnb-card-container">
 			<?php
+
 			// Display categories with update and delete options
 			$categories = lnb_get_category_list();
 			if ( $categories ) {
 				foreach ( $categories as $category ) {
-					//$usage_count = lnb_get_category_usage_count($category->id);
-					//$usage_details = lnb_get_links_by_category($category->id);
+
+                    $usage_count = lnb_get_category_usage_count($category->id);
+
+                    $default_category = $category->id == 1;
+                    $empty_category = $usage_count == 0;
+					$cannot_be_deleted = $default_category || !$empty_category;
+
 					?>
-                    <div class="category-card">
+                    <div class="lnb-card">
                         <form method="POST" action="">
 							<?php wp_nonce_field( 'category_action_nonce' ); ?>
                             <input type="hidden" name="category_id" value="<?= esc_attr( $category->id ); ?>">
 
-                            <table class="form-table">
+                            <!-- Card Header with Category ID -->
+                            <div class="lnb-card-header">
+                                Category ID: <?= esc_attr( $category->id ); ?>
+                                <?php
 
-                                <!-- ID -->
-                                <tr>
-                                    <th><label><span class="not-required">*&nbsp;</span>Category ID</label></th>
-                                    <td>
-										<?= esc_attr( $category->id ); ?>
-										<?php if ( $category->id == 1 ): ?>
-                                            &nbsp;<span class="badge badge-primary">Default</span>
-                                            &nbsp;<span class="badge badge-dark">Cannot be deleted</span>
-										<?php endif; ?>
-                                    </td>
-                                </tr>
+                                    // Show badges
+                                    if($default_category) {
+                                        echo '&nbsp;<span class="badge badge-primary">Default</span>';
+                                    }
+                                    if($empty_category) {
+                                        echo '&nbsp;<span class="badge badge-secondary">Empty</span>';
+                                    }
+                                    if($cannot_be_deleted) {
+                                        echo '&nbsp;<span class="badge badge-dark">Cannot be deleted</span>';
+                                    }
+                                ?>
 
-                                <!-- Name -->
-                                <tr>
-                                    <th><label for="category-name-<?= esc_attr( $category->id ); ?>"><span
-                                                    class="required">*&nbsp;</span>Name</label></th>
-                                    <td>
-                                        <input type="text" name="category_name"
-                                               id="category-name-<?= esc_attr( $category->id ); ?>"
-                                               value="<?= esc_attr( $category->name ); ?>" class="regular-text"
-                                               required>
-                                    </td>
-                                </tr>
+                            </div>
 
-                                <!-- Color -->
-                                <tr>
-                                    <th><label for="color-<?= esc_attr( $category->id ); ?>"><span class="not-required">*&nbsp;</span>Color</label>
-                                    </th>
-                                    <td>
-                                        <input type="text" name="color" id="color-<?= esc_attr( $category->id ); ?>"
-                                               value="<?= esc_attr( $category->color ); ?>"
-                                               class="regular-text color-picker">
-                                    </td>
-                                </tr>
+                            <!-- Card Body with Form Details -->
+                            <div class="lnb-card-body">
+                                <table class="form-table">
 
-                                <!-- Created At -->
-                                <tr>
-                                    <th><label><span class="not-required">*&nbsp;</span>Created At</label></th>
-                                    <td><?= esc_html( $category->created_at ); ?></td>
-                                </tr>
+                                    <!-- Name -->
+                                    <tr>
+                                        <th><label for="category-name-<?= esc_attr( $category->id ); ?>"><span
+                                                        class="required">*&nbsp;</span>Name</label></th>
+                                        <td>
+                                            <input type="text" name="category_name"
+                                                   id="category-name-<?= esc_attr( $category->id ); ?>"
+                                                   value="<?= esc_attr( $category->name ); ?>" class="regular-text"
+                                                   required>
+                                        </td>
+                                    </tr>
 
-                                <!-- Updated At -->
-                                <tr>
-                                    <th><label><span class="not-required">*&nbsp;</span>Updated At</label></th>
-                                    <td><?= esc_html( $category->updated_at ); ?></td>
-                                </tr>
+                                    <!-- Color -->
+                                    <tr>
+                                        <th><label for="color-<?= esc_attr( $category->id ); ?>"><span class="not-required">*&nbsp;</span>Color</label>
+                                        </th>
+                                        <td>
+                                            <input type="text" name="color" id="color-<?= esc_attr( $category->id ); ?>"
+                                                   value="<?= esc_attr( $category->color ); ?>"
+                                                   class="regular-text color-picker">
+                                        </td>
+                                    </tr>
 
-                                <!-- Usage Count -->
-                                <tr>
-                                    <th><label><span class="not-required">*&nbsp;</span>Usage Count</label></th>
-                                    <td><?= esc_html( $usage_count ); ?> links</td>
-                                </tr>
+                                    <!-- Created At -->
+                                    <tr>
+                                        <th><label><span class="not-required">*&nbsp;</span>Created At</label></th>
+                                        <td><?= esc_html( $category->created_at ); ?></td>
+                                    </tr>
 
-                                <!-- Usage Details -->
-                                <tr>
-                                    <th><label><span class="not-required">*&nbsp;</span>Usage Details</label></th>
-                                    <td>
-										<?php
-										if ( empty( $usage_details ) ) {
-											echo "<span class='text-light-gray'>N/A</span>";
-										} else {
-											foreach ( $usage_details as $usage_detail ) {
-												echo "<p>ID: <a href='admin.php?page=link-n-blog-details&id=" . $usage_detail->id . "'>" . $usage_detail->id . "</a>, name: " . $usage_detail->link_name . "</p>";
+                                    <!-- Updated At -->
+                                    <tr>
+                                        <th><label><span class="not-required">*&nbsp;</span>Updated At</label></th>
+                                        <td><?= esc_html( $category->updated_at ); ?></td>
+                                    </tr>
+
+                                    <!-- Usage Count -->
+                                    <tr>
+                                        <th><label><span class="not-required">*&nbsp;</span>Usage Count</label></th>
+                                        <td><?= esc_html( $usage_count ); ?> links</td>
+                                    </tr>
+
+                                    <!-- Usage Details -->
+                                    <tr>
+                                        <th><label><span class="not-required">*&nbsp;</span>Usage Details</label></th>
+                                        <td>
+											<?php
+											if ( empty( $usage_details ) ) {
+												echo "<span class='text-light-gray'>N/A</span>";
+											} else {
+												foreach ( $usage_details as $usage_detail ) {
+													echo "<p>ID: <a href='admin.php?page=link-n-blog-details&id=" . $usage_detail->id . "'>" . $usage_detail->id . "</a>, name: " . $usage_detail->link_name . "</p>";
+												}
 											}
-										}
-										?>
-                                    </td>
-                                </tr>
-                            </table>
+											?>
+                                        </td>
+                                    </tr>
+                                </table>
 
-                            <p class="submit">
-                                <button type="submit" name="update_category" class="button button-primary">Update
-                                </button>
-                                <button type="submit" name="delete_category" class="button button-danger"
-                                        onclick="return confirm('Are you sure you want to delete this category?');"
-									<?php echo $category->id == 1 || $usage_count > 0 ? 'disabled' : ''; ?>>
-                                    Delete
-                                </button>
-                            </p>
+                                <p class="submit">
+                                    <button type="submit" name="update_category" class="button button-primary">Update
+                                    </button>
+                                    <button type="submit" name="delete_category" class="button button-danger"
+                                            onclick="return confirm('Are you sure you want to delete this category?');"
+			                            <?php echo $cannot_be_deleted ? 'disabled' : ''; ?>>
+                                        Delete
+                                    </button>
+                                </p>
 
+                            </div>
                         </form>
                     </div>
 					<?php
@@ -161,7 +179,7 @@ function categories_page(): void {
 			?>
 
             <!-- Add a New Category -->
-            <div class="category-card add-new-category">
+            <div class="lnb-card add-new-category">
                 <h2>Add a New Category</h2>
                 <form method="POST" action="">
 					<?php wp_nonce_field( 'category_action_nonce' ); ?>

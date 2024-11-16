@@ -43,12 +43,14 @@ function lnb_delete_link(int $link_id): int|false
  *
  */
 
+/*
 function lnb_delete_category(int $category_id): mysqli_result|bool|int|null
 {
     global $wpdb;
     $table_categories = $wpdb->prefix . 'lnb_categories';
     return $wpdb->delete($table_categories, ['id' => $category_id], ['%d']);
 }
+*/
 
 /*************************************
  *               Groups              *

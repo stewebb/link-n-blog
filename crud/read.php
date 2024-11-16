@@ -147,12 +147,14 @@ function lnb_get_category_list(): array|object|null {
  *
  */
 
+/*
 function lnb_get_category_usage_count(int $category_id): ?string {
     global $wpdb;
     $table_links = $wpdb->prefix . 'lnb_links';
     $query = $wpdb->prepare("SELECT COUNT(*) FROM $table_links WHERE category = %d", $category_id);
     return $wpdb->get_var($query);
 }
+*/
 
 /**
  * Retrieve the IDs and names of links associated with a specific category.

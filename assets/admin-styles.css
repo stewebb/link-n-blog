@@ -162,56 +162,67 @@
 }
 
 /*************************************
- *             Categories            *
+ *                Cards              *
  ************************************/
 
-.category-cards-container {
+.lnb-card-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     margin-top: 20px;
 }
 
-.category-card {
+.lnb-card {
     border: 1px solid #ccd0d4;
     background-color: #fff;
     border-radius: 6px;
-    padding: 20px;
     flex: 1 1 calc(50% - 20px);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
-.category-card:nth-child(even) {
+/*
+.lnb-card:nth-child(even) {
     background-color: #f6f7f7;
 }
+ */
 
-.category-card:hover {
+.lnb-card:hover {
     transform: translateY(-5px);
-    /*background-color: #e1f1f7;*/
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
-.category-card h2 {
+/* Card Header (like BS Card Header) */
+.lnb-card-header {
+    background-color: #f7f7f7;
     font-size: 1.2em;
-    margin-bottom: 10px;
-    color: #0073aa;
+    font-weight: bold;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 10px;
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 15px;
 }
 
-.category-card .form-table {
+.lnb-card-body {
+    padding: 15px;
+}
+
+.lnb-card .form-table {
     width: 100%;
 }
 
-.category-card .submit {
+.lnb-card .submit {
     display: flex;
     gap: 10px;
     margin-top: 10px;
 }
 
+/*
 .add-new-category h2 {
     color: #0073aa;
 }
-
+ */
 
 /*************************************
  *            Color Blocks           *
