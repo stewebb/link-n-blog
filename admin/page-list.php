@@ -1,5 +1,6 @@
 <?php
 
+require_once(plugin_dir_path(__FILE__) . '../includes/helpers.php');
 require_once(plugin_dir_path(__FILE__) . '../model/links.php');
 require_once(plugin_dir_path(__FILE__) . '../model/groups.php');
 
@@ -55,17 +56,17 @@ function link_list_page(): void
 	// Calculate unique background colors for each group based on HSV color space
 	$group_colors = [];
 	foreach ($unique_groups as $ug_id => $ug_name) {
-
+		$group_colors[$ug_id] = lnb_get_group_colors($ug_name);
 		// Concatenate group_id and group_name
-		$concat_string = "id={$ug_id}, name={$ug_name}";
+		//$concat_string = "id={$ug_id}, name={$ug_name}";
 
 		// Generate hue from concatenated string
-		$hue = crc32($concat_string) % 360;
-		$group_colors[$ug_id] = [
-			'primary' => "hsl($hue, 70%, 90%)",     // Light pastel based on hue
-			'secondary' => "rgb(248, 248, 248)",    // Fixed light gray
-			'tertiary' => "hsl($hue, 50%, 30%)"     // Dark color for the group name column
-		];
+		//$hue = crc32($concat_string) % 360;
+		//$group_colors[$ug_id] = [
+		//	'primary' => "hsl($hue, 70%, 90%)",     // Light pastel based on hue
+		//	'secondary' => "rgb(248, 248, 248)",    // Fixed light gray
+		//	'tertiary' => "hsl($hue, 50%, 30%)"     // Dark color for the group name column
+		//];
 	}
 	?>
 
@@ -134,7 +135,8 @@ function link_list_page(): void
                     }
 
                     // Choose color based on row index for striping effect
-                    $background_color = $group_colors[$link->group_id][$row_index % 2 === 0 ? 'primary' : 'secondary'];
+                    //$background_color = $group_colors[$link->group_id][$row_index % 2 === 0 ? 'primary' : 'secondary'];
+	                $background_color = ($row_index % 2 == 0) ? $group_colors[$link->group_id]['light'] : "rgb(248, 248, 248)";
                     ?>
 
                     <tr style="background-color: <?= $background_color; ?>;">
@@ -142,7 +144,7 @@ function link_list_page(): void
                         <!-- Group cell with color background (only display once per group) -->
                         <?php if ($link->group_id !== $last_group_id): ?>
                             <td rowspan="<?= $group_counts[$link->group_id]; ?>"
-                                style="background-color: <?= $group_colors[$link->group_id]['tertiary']; ?>; color: white;">
+                                style="background-color: <?= $group_colors[$link->group_id]['dark']; ?>; color: white;">
                                 <strong><?= esc_html($link->group_name); ?></strong>
                             </td>
                             <?php $last_group_id = $link->group_id; // Update last group after rendering group cell ?>
