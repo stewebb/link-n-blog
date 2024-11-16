@@ -1,6 +1,6 @@
 <?php
 
-require_once(plugin_dir_path(__FILE__) . '../includes/helpers.php');
+require_once( plugin_dir_path( __FILE__ ) . '../includes/helpers.php' );
 require_once( plugin_dir_path( __FILE__ ) . '../model/links.php' );
 require_once( plugin_dir_path( __FILE__ ) . '../model/groups.php' );
 
@@ -31,8 +31,8 @@ function groups_page(): void {
 				}
 			}
 
-			// Add New Group
-            else {
+            // Add New Group
+			else {
 				$result = lnb_add_group( $group_name, $enabled );
 				if ( $result ) {
 					echo "<div class='notice notice-success'><p>Group added successfully.</p></div>";
@@ -74,9 +74,9 @@ function groups_page(): void {
 			$groups = lnb_get_group_list();
 			if ( $groups ) {
 				foreach ( $groups as $group ) {
-					$usage_count       = lnb_get_group_usage_count( $group->id );
-					$usage_details     = lnb_get_links_by_group( $group->id );
-                    $group_color       = lnb_get_group_colors( $group->name );
+					$usage_count   = lnb_get_group_usage_count( $group->id );
+					$usage_details = lnb_get_links_by_group( $group->id );
+					$group_color   = lnb_get_group_colors( $group->name );
 
 					$default_group     = $group->id == 1;
 					$empty_group       = $usage_count == 0;
@@ -90,12 +90,20 @@ function groups_page(): void {
                             <input type="hidden" name="group_id" value="<?= esc_attr( $group->id ); ?>">
 
                             <!-- Card Header with Group ID -->
-                            <div class="lnb-card-header" style="background-color: <?= esc_attr($group_color['light']) ?>;">
-                                <div class="color-block" style="background-color: <?= esc_attr($group_color['dark']) ?>;">
-                                    <span class="color-hex"><?= esc_html($group_color['dark']) ?></span>
+                            <div class="lnb-card-header"
+                                 style="background-color: <?= esc_attr( $group_color['light'] ) ?>;">
+                                <div class="color-block"
+                                     style="background-color: <?= esc_attr( $group_color['dark'] ) ?>;">
+                                    <span class="color-hex"><?= esc_html( $group_color['dark'] ) ?></span>
                                 </div>
 
-                                Group ID: <?= esc_attr( $group->id ); ?>
+                                <span <?php if ( $group->disabled ) {
+									echo 'class="text-strikethrough" ';
+								} ?>>
+                                    Group ID: <?= esc_attr( $group->id ); ?>
+                                </span>
+
+
 								<?php
 
 								// Show badges

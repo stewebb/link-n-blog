@@ -154,7 +154,8 @@ function link_list_page(): void {
                                  style="<?= ! empty( $link->color ) ? 'background-color:' . esc_attr( $link->color ) . ';' : '' ?>"
                             >
                                 <span class="color-hex">
-                                    <?= esc_html( $link->color ?: 'No Color' ) ?>
+                                    &nbsp;
+                                    <?= esc_html( $link->color ?: 'No Link Color' ) ?>
                                 </span>
                             </div>
 
@@ -193,13 +194,21 @@ function link_list_page(): void {
 
                         <!-- Category -->
                         <td>
+                            <div class="color-block <?= empty( $link->category_color ) ? 'hollow' : '' ?>"
+                                 style="<?= ! empty( $link->category_color ) ? 'background-color:' . esc_attr( $link->category_color ) . ';' : '' ?>"
+                            >
+                                <span class="color-hex">
+                                    &nbsp;
+                                    <?= esc_html( $link->category_color ?: 'No Category Color' ) ?>
+                                </span>
+                            </div>
 							<?= ! empty( $link->category_name ) ? esc_html( $link->category_name ) : '<span class="text-gray">Uncategorized</span>' ?>
                         </td>
 
                         <!-- Hit Num -->
                         <td><?= esc_html( $link->hit_num ) ?></td>
                     </tr>
-					<?php $row_index ++; // Increment row index for the next row
+					<?php $row_index ++;
 					?>
 				<?php endforeach; ?>
 
