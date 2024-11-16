@@ -27,7 +27,7 @@ function link_list_page(): void
 	$page_num = isset($_GET['page_num']) ? max(1, intval($_GET['page_num'])) : 1;
 	$sort_by = $_GET['sort_by'] ?? 'id';
 	$sort_order = $_GET['sort_order'] ?? 'ASC';
-	$per_page = isset($_GET['per_page']) ? intval($_GET['per_page']) : 10;
+	$per_page = isset($_GET['per_page']) ? intval($_GET['per_page']) : 25;
 
 	// Retrieve the paginated, sorted links data
 	$links = lnb_get_link_list($page_num, $per_page, $sort_by, $sort_order);
@@ -62,8 +62,9 @@ function link_list_page(): void
 		// Generate hue from concatenated string
 		$hue = crc32($concat_string) % 360;
 		$group_colors[$group_id] = [
-			'primary' => "hsl($hue, 100%, 95%)",    // Light pastel based on hue
-			'secondary' => "rgb(248, 248, 248)"     // Fixed light gray
+			'primary' => "hsl($hue, 70%, 90%)",     // Light pastel based on hue
+			'secondary' => "rgb(248, 248, 248)",    // Fixed light gray
+			'tertiary' => "hsl($hue, 50%, 30%)"     // Dark color for the group name column
 		];
 	}
 	?>
@@ -78,9 +79,9 @@ function link_list_page(): void
                 <input type="hidden" name="page" value="link-n-blog">
                 <label for="per_page">Links per page:</label>
                 <select name="per_page" id="per_page" onchange="this.form.submit()">
-                    <?php foreach ([10, 20, 50] as $count): ?>
+				    <?php foreach ([10, 25, 50, 100] as $count): ?>
                         <option value="<?= $count ?>" <?= $count === $per_page ? 'selected' : '' ?>><?= $count ?></option>
-                    <?php endforeach; ?>
+				    <?php endforeach; ?>
                 </select>
             </form>
         </div>
@@ -121,9 +122,11 @@ function link_list_page(): void
                     ?>
 
                     <tr style="background-color: <?= $background_color; ?>;">
+
                         <!-- Group cell with color background (only display once per group) -->
                         <?php if ($link->group_id !== $last_group_id): ?>
-                            <td rowspan="<?= $group_counts[$link->group_id]; ?>">
+                            <td rowspan="<?= $group_counts[$link->group_id]; ?>"
+                                style="background-color: <?= $group_colors[$link->group_id]['tertiary']; ?>; color: white;">
                                 <strong><?= esc_html($link->group_name); ?></strong>
                             </td>
                             <?php $last_group_id = $link->group_id; // Update last group after rendering group cell ?>
@@ -193,6 +196,11 @@ function link_list_page(): void
             </tbody>
 
         </table>
+
+        <!-- Total Links Count -->
+        <div class="total-links mt-3">
+            <p><strong>Total Links:</strong> <?= $total_items ?></p>
+        </div>
 
         <!-- Pagination -->
         <div class="pagination">
