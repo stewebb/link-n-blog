@@ -24,40 +24,50 @@ function generate_sortable_header($column_name, $sort_field, $current_sort_by, $
 // Function to display the link list page in the admin panel with pagination and sorting
 function link_list_page(): void
 {
-    $page_num = isset($_GET['page_num']) ? max(1, intval($_GET['page_num'])) : 1;
-    $sort_by = $_GET['sort_by'] ?? 'id';
-    $sort_order = $_GET['sort_order'] ?? 'ASC';
-    $per_page = isset($_GET['per_page']) ? intval($_GET['per_page']) : 10;
+	$page_num = isset($_GET['page_num']) ? max(1, intval($_GET['page_num'])) : 1;
+	$sort_by = $_GET['sort_by'] ?? 'id';
+	$sort_order = $_GET['sort_order'] ?? 'ASC';
+	$per_page = isset($_GET['per_page']) ? intval($_GET['per_page']) : 10;
 
-    // Retrieve the paginated, sorted links data
-    $links = lnb_get_link_list($page_num, $per_page, $sort_by, $sort_order);
+	// Retrieve the paginated, sorted links data
+	$links = lnb_get_link_list($page_num, $per_page, $sort_by, $sort_order);
 
-    // Calculate total pages
-    $total_items = lnb_get_link_count();
-    $total_pages = ceil($total_items / $per_page);
+	// Calculate total pages
+	$total_items = lnb_get_link_count();
+	$total_pages = ceil($total_items / $per_page);
 
-    // Group the links by group_id to calculate rowspans
-    $group_counts = [];
-    foreach ($links as $link) {
-        $group_counts[$link->group_id] = ($group_counts[$link->group_id] ?? 0) + 1;
-    }
+	// Group the links by group_id to calculate rowspans
+	$group_counts = [];
+	$unique_groups = [];
 
-    // Calculate unique background colors for each group based on HSV color space
-    $unique_groups = array_unique(array_map(fn($link) => $link->group_id, $links));
-    $total_groups = count($unique_groups);
+	foreach ($links as $link) {
+		$group_counts[$link->group_id] = ($group_counts[$link->group_id] ?? 0) + 1;
 
-    $group_colors = [];
-    $i = 0;
-    foreach ($unique_groups as $group_id) {
-        $hue = (360 / $total_groups) * $i;
-        $group_colors[$group_id] = [
-            'light' => "hsl($hue, 100%, 95%)",  // Lighter shade
-            'dark' => "hsl($hue, 100%, 90%)"    // Slightly darker shade
-        ];
-        $i++;
-    }
+		// Ensure unique group_id and group_name mapping
+		if (!isset($unique_groups[$link->group_id])) {
+			$unique_groups[$link->group_id] = $link->group_name;
+		}
+	}
 
-    ?>
+	// Calculate unique background colors for each group based on HSV color space
+	$group_colors = [];
+	$i = 0;
+
+	foreach ($unique_groups as $group_id => $group_name) {
+
+		// Concatenate group_id and group_name
+		$concat_string = "id={$group_id}, name={$group_name}";
+		//echo $concat_string;
+
+		// Generate hue from concatenated string
+		$hue = crc32($concat_string) % 360;
+		$group_colors[$group_id] = [
+			'primary' => "hsl($hue, 100%, 95%)",    // Light pastel based on hue
+			'secondary' => "rgb(248, 248, 248)"     // Fixed light gray
+		];
+	}
+	?>
+
     <div class="wrap">
         <h1 class="wp-heading-inline">Link List</h1>
         <hr class="wp-header-end">
@@ -107,7 +117,7 @@ function link_list_page(): void
                     }
 
                     // Choose color based on row index for striping effect
-                    $background_color = $group_colors[$link->group_id][$row_index % 2 === 0 ? 'light' : 'dark'];
+                    $background_color = $group_colors[$link->group_id][$row_index % 2 === 0 ? 'primary' : 'secondary'];
                     ?>
 
                     <tr style="background-color: <?= $background_color; ?>;">
