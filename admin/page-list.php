@@ -50,7 +50,10 @@ function link_list_page(): void
     $i = 0;
     foreach ($unique_groups as $group_id) {
         $hue = (360 / $total_groups) * $i;
-        $group_colors[$group_id] = "hsl($hue, 100%, 95%)";
+        $group_colors[$group_id] = [
+            'light' => "hsl($hue, 100%, 95%)",  // Lighter shade
+            'dark' => "hsl($hue, 100%, 90%)"    // Slightly darker shade
+        ];
         $i++;
     }
 
@@ -89,23 +92,32 @@ function link_list_page(): void
                 <?= generate_sortable_header('Hit Num', 'hit_num', $sort_by, $sort_order, $page_num); ?>
             </tr>
             </thead>
+
             <tbody>
             <?php if ($links): ?>
                 <?php
                 $last_group_id = null;
-                foreach ($links as $link):
-                    ?>
-                    <tr style="background-color: <?= $group_colors[$link->group_id]; ?>;">
+                $row_index = 0;
 
-                        <!-- Group with color background -->
+                foreach ($links as $link):
+
+                    // Check if we're in a new group and reset row index
+                    if ($link->group_id !== $last_group_id) {
+                        $row_index = 0; // Reset row index for alternating colors
+                    }
+
+                    // Choose color based on row index for striping effect
+                    $background_color = $group_colors[$link->group_id][$row_index % 2 === 0 ? 'light' : 'dark'];
+                    ?>
+
+                    <tr style="background-color: <?= $background_color; ?>;">
+                        <!-- Group cell with color background (only display once per group) -->
                         <?php if ($link->group_id !== $last_group_id): ?>
                             <td rowspan="<?= $group_counts[$link->group_id]; ?>">
                                 <strong><?= esc_html($link->group_name); ?></strong>
                             </td>
-                            <?php
-                            $last_group_id = $link->group_id;
-                        endif;
-                        ?>
+                            <?php $last_group_id = $link->group_id; // Update last group after rendering group cell ?>
+                        <?php endif; ?>
 
                         <!-- ID -->
                         <td>
@@ -152,12 +164,6 @@ function link_list_page(): void
                             <?php endif; ?>
                         </td>
 
-                        <!--
-                        <td>
-                            <?= !empty($link->wp_page_id) ? '<a target="_blank" href="' . esc_url(get_permalink($link->wp_page_id)) . '">' . esc_html(get_the_title($link->wp_page_id)) . '<span class="dashicons dashicons-external"></span></a>' : '<span class="text-gray">N/A</span>' ?>
-                        </td>
-                        -->
-
                         <!-- Category -->
                         <td>
                             <?= !empty($link->category_name) ? esc_html($link->category_name) : '<span class="text-gray">Uncategorized</span>' ?>
@@ -166,13 +172,16 @@ function link_list_page(): void
                         <!-- Hit Num -->
                         <td><?= esc_html($link->hit_num) ?></td>
                     </tr>
+                    <?php $row_index++; // Increment row index for the next row ?>
                 <?php endforeach; ?>
+
             <?php else: ?>
                 <tr>
                     <td colspan="8">No links found.</td>
                 </tr>
             <?php endif; ?>
             </tbody>
+
         </table>
 
         <!-- Pagination -->
