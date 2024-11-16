@@ -1,9 +1,5 @@
 <?php
 
-//require_once( plugin_dir_path( __FILE__ ) . '../includes/helpers.php' );
-//require_once( plugin_dir_path( __FILE__ ) . '../model/links.php' );
-//require_once( plugin_dir_path( __FILE__ ) . '../model/groups.php' );
-
 // Groups Management Page
 function groups_page(): void {
 	if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {

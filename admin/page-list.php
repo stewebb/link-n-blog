@@ -1,9 +1,5 @@
 <?php
 
-//require_once( plugin_dir_path( __FILE__ ) . '../includes/helpers.php' );
-//require_once( plugin_dir_path( __FILE__ ) . '../model/links.php' );
-//require_once( plugin_dir_path( __FILE__ ) . '../model/groups.php' );
-
 // Helper function to generate table headers with sorting links
 function generate_sortable_header( $column_name, $sort_field, $current_sort_by, $current_sort_order, $page_num, $group_id ): string {
 	$new_sort_order  = $current_sort_order === 'ASC' ? 'DESC' : 'ASC';
@@ -66,19 +62,21 @@ function link_list_page(): void {
 
             <!-- Group Selector -->
             <div class="group-selector">
-                <form method="GET">
+                <form method="GET" action="<?= esc_url( admin_url( 'admin.php' ) ); ?>">
                     <input type="hidden" name="page" value="link-n-blog">
+
                     <label for="group_id">Filter by Group:</label>
                     <select name="group_id" id="group_id" onchange="this.form.submit()">
-                        <option value="0" <?= ( $group_id == 0 ) ? 'selected' : '' ?>>All Groups</option>
-						<?php foreach ( $groups as $group ): ?>
-                            <option value="<?= $group->id ?>" <?= $group->id == $group_id ? 'selected' : '' ?>>
-								<?= esc_html( $group->name ) ?>
+                        <option value="0" <?= selected( $group_id, 0, false ); ?>>All Groups</option>
+				        <?php foreach ( $groups as $group ): ?>
+                            <option value="<?= esc_attr( $group->id ); ?>" <?= selected( $group->id, $group_id, false ); ?>>
+						        <?= esc_html( $group->name ); ?>
                             </option>
-						<?php endforeach; ?>
+				        <?php endforeach; ?>
                     </select>
                 </form>
             </div>
+
 
             <!-- Per Page Selector -->
             <div class="per-page-selector">

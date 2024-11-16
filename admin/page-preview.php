@@ -2,9 +2,38 @@
 
 function preview_page(): void
 {
+
+	$group_id = isset( $_GET['group_id'] ) ? intval( $_GET['group_id'] ) : 1;
+	$groups = lnb_get_group_list();
+    ?>
+
+    <div class="wrap">
+        <h1 class="wp-heading-inline">Preview</h1>
+        <hr class="wp-header-end mb-3">
+
+        <!-- Group Selector -->
+        <div class="group-selector">
+            <form method="GET" action="<?= esc_url( admin_url('admin.php') ); ?>">
+                <input type="hidden" name="page" value="link-n-blog-preview">
+                <label for="group_id">Select a Group:</label>
+                <select name="group_id" id="group_id" onchange="this.form.submit()">
+					<?php foreach ( $groups as $group ): ?>
+                        <option value="<?= esc_attr( $group->id ); ?>" <?= selected( $group->id, $group_id, false ); ?>>
+							<?= esc_html( $group->name ); ?>
+                        </option>
+					<?php endforeach; ?>
+                </select>
+            </form>
+        </div>
+    </div>
+
+
+	<?php
     // Retrieve all grouped links
     //$grouped_links = lnb_get_all_links_grouped_by_category(1);
-    echo do_shortcode('[lnb id=1]');
+    //echo do_shortcode('[lnb id=1]');
+
+    /*
     ?>
 
     <style>
@@ -94,4 +123,5 @@ function preview_page(): void
     </script>
 
     <?php
+    */
 }

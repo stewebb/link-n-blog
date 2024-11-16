@@ -1,9 +1,5 @@
 <?php
 
-//require_once(plugin_dir_path(__FILE__) . '../model/links.php');
-//require_once(plugin_dir_path(__FILE__) . '../model/categories.php');
-//require_once(plugin_dir_path(__FILE__) . '../model/groups.php');
-
 function link_details_page(): void
 {
     $categories = lnb_get_category_list();
@@ -236,9 +232,13 @@ function link_details_page(): void
 
             <div class="inline-buttons">
                 <?php submit_button($is_edit_mode ? 'Update Link' : 'Add New Link'); ?>
+
+                <!--
                 <p class="submit">
                     <a href="admin.php?page=link-n-blog" class="button button-secondary">Back to List</a>
                 </p>
+                -->
+
                 <?php if ($is_edit_mode): ?>
                     <p class="submit">
                         <?php
@@ -281,12 +281,16 @@ function link_details_page(): void
                 $deleted = lnb_delete_link($link_id_to_delete);
 
                 echo $deleted ? '<div class="notice notice-success is-dismissible"><p>Link deleted successfully!</p></div>' : '<div class="notice notice-error is-dismissible"><p>Failed to delete link.</p></div>';
-            } // Edit
+            }
+
+            // Edit
             elseif ($is_edit_mode) {
                 $updated = lnb_update_link($link_id, $link_data);
                 echo $updated ? '<div class="notice notice-success is-dismissible"><p>Link updated successfully!</p></div>' :
                     '<div class="notice notice-error is-dismissible"><p>Failed to update link.</p></div>';
-            } // Insert
+            }
+
+            // Insert
             else {
                 $inserted = lnb_add_new_link($link_data);
                 echo $inserted ? '<div class="notice notice-success is-dismissible"><p>New link added successfully!</p></div>' :
