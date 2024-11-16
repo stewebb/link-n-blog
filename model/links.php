@@ -207,6 +207,48 @@ function lnb_get_links_by_group(int $group_id): ?array {
 	return $wpdb->get_results($query);
 }
 
+/**
+ * Retrieve all links grouped by their respective categories.
+ *
+ * This function fetches all links from the 'lnb_links' table, joining the 'lnb_categories'
+ * and 'lnb_groups' tables to include the category and group details. It then groups the
+ * links by category, with links having no category assigned to "Uncategorized".
+ *
+ * @global wpdb $wpdb WordPress database access object.
+ *
+ * @param int $group_id The ID of the group to filter by.
+ * @return array An associative array where keys are category names and values are arrays of links in each category.
+ */
+
+function lnb_get_all_links_grouped_by_category(int $group_id): array {
+	global $wpdb;
+	$table_links = $wpdb->prefix . 'lnb_links';
+	$table_categories = $wpdb->prefix . 'lnb_categories';
+	$table_groups = $wpdb->prefix . 'lnb_groups';
+
+	// Query to get all links with the category and group details
+	$sql = $wpdb->prepare("
+        SELECT l.id, l.link_name, l.label_text, l.cover_image_id, l.target, l.wp_page_id, l.color, l.category_id, l.hit_num, l.url, 
+               c.name AS category_name
+        FROM $table_links AS l
+        LEFT JOIN $table_categories AS c ON l.category_id = c.id
+        LEFT JOIN $table_groups AS g ON c.group_id = g.id
+        WHERE g.id = %d AND g.disabled = 0
+    ", $group_id);
+
+	$links = $wpdb->get_results($sql);
+
+	// Group links by category
+	$grouped_links = [];
+	foreach ($links as $link) {
+		$category = $link->category_name ?? "Uncategorized";
+		$grouped_links[$category][] = $link;
+	}
+
+	return $grouped_links;
+}
+
+
 /*************************************
  *                Update             *
  ************************************/
@@ -223,31 +265,27 @@ function lnb_get_links_by_group(int $group_id): ?array {
 function lnb_update_link(int $link_id, array $link_data): bool|int
 {
     global $wpdb;
-
-    // Update existing link data
-    $result = $wpdb->update(
-        'wp_lnb_links',
-        [
-            'link_name' => $link_data['link_name'],
-            'label_text' => $link_data['label_text'],
-            'category_id' => $link_data['category'] > 0 ? $link_data['category'] : null,
-            'group_id' => $link_data['group'] > 0 ? $link_data['group'] : null,  // New 'group' field
-            'url' => $link_data['url'],
-            'wp_page_id' => $link_data['wp_page_id'],
-            'target' => $link_data['target'],
-            'color' => $link_data['color'],
-            'cover_image_id' => $link_data['cover_image_id'],
-            'display' => $link_data['display'],
-            'updated_at' => current_time('mysql'),
-        ],
-        [ 'id' => $link_id ],
-        [
-            '%s', '%s', '%d', '%d', '%s', '%d', '%s', '%s', '%d', '%d', '%s'
-        ],
-        [ '%d' ]
-    );
-
-    return $result;
+	return $wpdb->update(
+	    'wp_lnb_links',
+	    [
+	        'link_name' => $link_data['link_name'],
+	        'label_text' => $link_data['label_text'],
+	        'category_id' => $link_data['category'] > 0 ? $link_data['category'] : null,
+	        'group_id' => $link_data['group'] > 0 ? $link_data['group'] : null,  // New 'group' field
+	        'url' => $link_data['url'],
+	        'wp_page_id' => $link_data['wp_page_id'],
+	        'target' => $link_data['target'],
+	        'color' => $link_data['color'],
+	        'cover_image_id' => $link_data['cover_image_id'],
+	        'display' => $link_data['display'],
+	        'updated_at' => current_time('mysql'),
+	    ],
+	    [ 'id' => $link_id ],
+	    [
+	        '%s', '%s', '%d', '%d', '%s', '%d', '%s', '%s', '%d', '%d', '%s'
+	    ],
+	    [ '%d' ]
+	);
 }
 
 /*************************************

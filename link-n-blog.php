@@ -1,25 +1,25 @@
 <?php
-/*
-Plugin Name: Link 'n' Blog
-Description: TODO
-Version: 1.0
-Author: Steven Webb
-*/
 
-// Activate plugin
+/**
+ * Plugin Name: Link 'n' Blog
+ * Plugin URI: https://github.com/stewebb/link-n-blog
+ * Description: Adds custom functionality to enhance WordPress site features.
+ * Version: 1.0.0
+ * Author: Steven Webb
+ * Author URI: https://stewebb.net
+ * License: MIT
+ * License URI: https://opensource.org/licenses/MIT
+ *
+ */
+
+// Helpers
+include_once(plugin_dir_path(__FILE__) . 'includes/helpers.php');
+include_once( plugin_dir_path( __FILE__ ) . 'includes/enqueue.php' );
+
+// Activation
 include_once(plugin_dir_path(__FILE__) . 'includes/activation.php');
 register_activation_hook(__FILE__, 'lnb_create_database_tables');
 
-// Register the 'helloworld' shortcode
-//function helloworld_shortcode() {
-//    return "<p>Hello, World!</p>";
-//}
-//add_shortcode('helloworld', 'helloworld_shortcode');
-
-// Admin pages
+// Public and admin pages
+include_once(plugin_dir_path(__FILE__) . 'public/public.php');
 include_once(plugin_dir_path(__FILE__) . 'admin/admin.php');
-
-// Include other files
-//include_once(plugin_dir_path(__FILE__) . 'includes/post-type.php');
-include_once(plugin_dir_path(__FILE__) . 'includes/enqueue-scripts.php');
-//rrr
