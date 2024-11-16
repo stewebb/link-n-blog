@@ -186,6 +186,25 @@ function lnb_get_links_by_category(int $category_id): ?array {
     return $wpdb->get_results($query);
 }
 
+/**
+ * Retrieve the IDs and names of links associated with a specific group.
+ *
+ * This function fetches the 'id' and 'name' of each link in the 'lnb_links' table
+ * that belong to a given group. Useful for listing links in a group or further processing.
+ *
+ * @param int $group_id The ID of the group to fetch links for.
+ *
+ * @return array|null An array of objects with 'id' and 'name' of each link on success, or null on failure.
+ * @global wpdb $wpdb WordPress database access object.
+ */
+
+function lnb_get_links_by_group(int $group_id): ?array {
+	global $wpdb;
+	$table_links = $wpdb->prefix . 'lnb_links';
+	$query = $wpdb->prepare("SELECT id, link_name FROM $table_links WHERE group_id = %d", $group_id);
+	return $wpdb->get_results($query);
+}
+
 /*************************************
  *                Update             *
  ************************************/

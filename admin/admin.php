@@ -2,6 +2,7 @@
 
 include_once "page-list.php";
 include_once "page-details.php";
+include_once "page-groups.php";
 include_once "page-categories.php";
 include_once "page-preview.php";
 include_once "page-settings.php";
