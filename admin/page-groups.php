@@ -5,84 +5,76 @@
 //require_once(plugin_dir_path(__FILE__) . '../crud/update.php');
 //require_once(plugin_dir_path(__FILE__) . '../crud/delete.php');
 
-require_once(plugin_dir_path(__FILE__) . '../model/categories.php');
-
 // Update categories_page to ensure colors are added/modified
 function categories_page(): void
 {
-	// Check for uncategorized links
-	//$uncategorized = lnb_get_uncategorized_links();
-	//if (!empty($uncategorized)) {
-	//    echo "<div class='notice notice-warning'><p><strong>The following link(s) are uncategorized:</strong></p><ul>";
-	//    foreach ($uncategorized as $link) {
-	//        echo "<li>ID: <a style='text-decoration: none;' href='admin.php?page=link-n-blog-details&id=" . $link->id . "'>" . $link->id . "</a>, name: " . $link->link_name . "</li>";
-	//    }
-	//    echo "</ul></div>";
-	//}
 
-	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		// Nonce Verification
-		if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'category_action_nonce')) {
-			die('Security check failed');
-		}
+    // Check for uncategorized links
+    //$uncategorized = lnb_get_uncategorized_links();
+    //if (!empty($uncategorized)) {
+    //    echo "<div class='notice notice-warning'><p><strong>The following link(s) are uncategorized:</strong></p><ul>";
+    //    foreach ($uncategorized as $link) {
+    //        echo "<li>ID: <a style='text-decoration: none;' href='admin.php?page=link-n-blog-details&id=" . $link->id . "'>" . $link->id . "</a>, name: " . $link->link_name . "</li>";
+    //    }
+    //    echo "</ul></div>";
+    //}
 
-		// Get category ID, name, and color
-		$category_id = !empty($_POST['category_id']) ? intval($_POST['category_id']) : null;
-		$category_name = !empty($_POST['category_name']) ? sanitize_text_field($_POST['category_name']) : '';
-		$color = !empty($_POST['color']) ? sanitize_hex_color($_POST['color']) : '';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Nonce Verification
+        if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'category_action_nonce')) {
+            die('Security check failed');
+        }
 
-		// Update or Add Category
-		if (isset($_POST['update_category'])) {
-			if ($category_id) {
-				if ($category_id == 1) {
-					echo "<div class='notice notice-error'><p>The category with ID 1 cannot be updated or deleted.</p></div>";
-				} else {
-					if (lnb_update_category($category_id, $category_name, $color)) {
-						echo "<div class='notice notice-success'><p>Category updated successfully.</p></div>";
-					} else {
-						echo "<div class='notice notice-error'><p>Error updating category.</p></div>";
-					}
-				}
-			} else {
-				if (lnb_add_category($category_name, $color)) {
-					echo "<div class='notice notice-success'><p>Category added successfully.</p></div>";
-				} else {
-					echo "<div class='notice notice-error'><p>Error adding category.</p></div>";
-				}
-			}
-		}
+        // Get category ID, name, and color
+        $category_id = !empty($_POST['category_id']) ? intval($_POST['category_id']) : null;
+        $category_name = !empty($_POST['category_name']) ? sanitize_text_field($_POST['category_name']) : '';
+        $color = !empty($_POST['color']) ? sanitize_hex_color($_POST['color']) : '';
 
-		// Delete Category
-		if (isset($_POST['delete_category']) && $category_id) {
-			if ($category_id == 1) {
-				echo "<div class='notice notice-error'><p>The category with ID 1 cannot be deleted.</p></div>";
-			} else {
-				// Check if category is used in links
-				if (lnb_get_category_usage_count($category_id) > 0) {
-					echo "<div class='notice notice-error'><p>The category is used in $category_id link(s).</p></div>";
-				} else {
-					echo lnb_delete_category($category_id) ? "<div class='notice notice-success'><p>Category deleted successfully.</p></div>" : "<div class='notice notice-error'><p>Error deleting category.</p></div>";
-				}
-			}
-		}
-	}
-	?>
+        // Update or Add Category
+        if (isset($_POST['update_category'])) {
+            if ($category_id) {
+                if (lnb_update_category($category_id, $category_name, $color)) {
+                    echo "<div class='notice notice-success'><p>Category updated successfully.</p></div>";
+                } else {
+                    echo "<div class='notice notice-error'><p>Error updating category.</p></div>";
+                }
+            } else {
+                if (lnb_add_category($category_name, $color)) {
+                    echo "<div class='notice notice-success'><p>Category added successfully.</p></div>";
+                } else {
+                    echo "<div class='notice notice-error'><p>Error adding category.</p></div>";
+                }
+            }
+        }
+
+        // Delete Category
+        if (isset($_POST['delete_category']) && $category_id) {
+
+            // Check if category is used in links
+            if (lnb_get_category_usage_count($category_id) > 0) {
+                echo "<div class='notice notice-error'><p>The category is used in $category_id link(s).</p></div>";
+            } else {
+                echo lnb_delete_category($category_id) ? "<div class='notice notice-success'><p>Category deleted successfully.</p></div>" : "<div class='notice notice-error'><p>Error deleting category.</p></div>";
+            }
+        }
+    }
+    ?>
     <div class="wrap">
         <h1 class="wp-heading-inline">Manage Categories</h1>
         <hr class="wp-header-end">
 
         <div class="category-cards-container">
-			<?php
-			// Display categories with update and delete options
-			$categories = lnb_get_category_list();
-			if ($categories) {
-				foreach ($categories as $category) {
-					//$usage_count = lnb_get_category_usage_count($category->id);
-					//$usage_details = lnb_get_links_by_category($category->id);
-					?>
+            <?php
+            // Display categories with update and delete options
+            $categories = lnb_get_category_list();
+            if ($categories) {
+                foreach ($categories as $category) {
+                    $usage_count = lnb_get_category_usage_count($category->id);
+                    $usage_details = lnb_get_links_by_category($category->id);
+                    ?>
                     <div class="category-card">
                         <form method="POST" action="">
-							<?php wp_nonce_field('category_action_nonce'); ?>
+                            <?php wp_nonce_field('category_action_nonce'); ?>
                             <input type="hidden" name="category_id" value="<?= esc_attr($category->id); ?>">
 
                             <table class="form-table">
@@ -115,18 +107,6 @@ function categories_page(): void
                                     </td>
                                 </tr>
 
-                                <!-- Created At -->
-                                <tr>
-                                    <th><label><span class="not-required">*&nbsp;</span>Created At</label></th>
-                                    <td><?= esc_html($category->created_at); ?></td>
-                                </tr>
-
-                                <!-- Updated At -->
-                                <tr>
-                                    <th><label><span class="not-required">*&nbsp;</span>Updated At</label></th>
-                                    <td><?= esc_html($category->updated_at); ?></td>
-                                </tr>
-
                                 <!-- Usage Count -->
                                 <tr>
                                     <th><label><span class="not-required">*&nbsp;</span>Usage Count</label></th>
@@ -137,15 +117,15 @@ function categories_page(): void
                                 <tr>
                                     <th><label><span class="not-required">*&nbsp;</span>Usage Details</label></th>
                                     <td>
-										<?php
-										if (empty($usage_details)) {
-											echo "<span class='text-light-gray'>N/A</span>";
-										} else {
-											foreach ($usage_details as $usage_detail) {
-												echo "<p>ID: <a href='admin.php?page=link-n-blog-details&id=" . $usage_detail->id . "'>" . $usage_detail->id . "</a>, name: " . $usage_detail->link_name . "</p>";
-											}
-										}
-										?>
+                                        <?php
+                                        if (empty($usage_details)) {
+                                            echo "<span class='text-light-gray'>N/A</span>";
+                                        } else {
+                                            foreach ($usage_details as $usage_detail) {
+                                                echo "<p>ID: <a href='admin.php?page=link-n-blog-details&id=" . $usage_detail->id . "'>" . $usage_detail->id . "</a>, name: " . $usage_detail->link_name . "</p>";
+                                            }
+                                        }
+                                        ?>
                                     </td>
                                 </tr>
                             </table>
@@ -155,23 +135,23 @@ function categories_page(): void
                                 </button>
                                 <button type="submit" name="delete_category" class="button button-danger"
                                         onclick="return confirm('Are you sure you want to delete this category?');"
-									<?php echo $category->id == 1 || $usage_count > 0 ? 'disabled' : ''; ?>>
+                                    <?php echo $usage_count > 0 ? 'disabled' : ''; ?>>
                                     Delete
                                 </button>
                             </p>
 
                         </form>
                     </div>
-					<?php
-				}
-			}
-			?>
+                    <?php
+                }
+            }
+            ?>
 
             <!-- Add a New Category -->
             <div class="category-card add-new-category">
                 <h2>Add a New Category</h2>
                 <form method="POST" action="">
-					<?php wp_nonce_field('category_action_nonce'); ?>
+                    <?php wp_nonce_field('category_action_nonce'); ?>
                     <input type="hidden" name="category_id">
                     <table class="form-table">
 
@@ -204,7 +184,7 @@ function categories_page(): void
             initializeColorPicker();
         });
     </script>
-	<?php
+    <?php
 }
 
 ?>

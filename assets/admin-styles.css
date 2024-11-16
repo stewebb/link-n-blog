@@ -24,6 +24,13 @@
     vertical-align: middle;
 }
 
+.selectors-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 1rem;
+}
 /*************************************
  *               Buttons             *
  ************************************/

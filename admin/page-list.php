@@ -54,16 +54,14 @@ function link_list_page(): void
 
 	// Calculate unique background colors for each group based on HSV color space
 	$group_colors = [];
-	$i = 0;
-
-	foreach ($unique_groups as $group_id => $group_name) {
+	foreach ($unique_groups as $ug_id => $ug_name) {
 
 		// Concatenate group_id and group_name
-		$concat_string = "id={$group_id}, name={$group_name}";
+		$concat_string = "id={$ug_id}, name={$ug_name}";
 
 		// Generate hue from concatenated string
 		$hue = crc32($concat_string) % 360;
-		$group_colors[$group_id] = [
+		$group_colors[$ug_id] = [
 			'primary' => "hsl($hue, 70%, 90%)",     // Light pastel based on hue
 			'secondary' => "rgb(248, 248, 248)",    // Fixed light gray
 			'tertiary' => "hsl($hue, 50%, 30%)"     // Dark color for the group name column
@@ -73,36 +71,41 @@ function link_list_page(): void
 
     <div class="wrap">
         <h1 class="wp-heading-inline">Link List</h1>
-        <hr class="wp-header-end">
+        <hr class="wp-header-end mb-3">
 
-        <!-- Group Selector -->
-        <div class="group-selector mb-3">
-            <form method="GET" style="display: inline;">
-                <input type="hidden" name="page" value="link-n-blog">
-                <label for="group_id">Filter by Group:</label>
-                <select name="group_id" id="group_id" onchange="this.form.submit()">
-                    <option value="0" <?= $group_id == 0 ? 'selected' : '' ?>>All Groups</option>
-				    <?php foreach ($groups as $group): ?>
-                        <option value="<?= $group->id ?>" <?= $group->id == $group_id ? 'selected' : '' ?>>
-						    <?= esc_html($group->name) ?>
-                        </option>
-				    <?php endforeach; ?>
-                </select>
-            </form>
+        <!-- Group and Per Page Selector Container -->
+        <div class="selectors-container">
+
+            <!-- Group Selector -->
+            <div class="group-selector">
+                <form method="GET">
+                    <input type="hidden" name="page" value="link-n-blog">
+                    <label for="group_id">Filter by Group:</label>
+                    <select name="group_id" id="group_id" onchange="this.form.submit()">
+                        <option value="0" <?= ($group_id == 0) ? 'selected' : '' ?>>All Groups</option>
+					    <?php foreach ($groups as $group): ?>
+                            <option value="<?= $group->id ?>" <?= $group->id == $group_id ? 'selected' : '' ?>>
+							    <?= esc_html($group->name) ?>
+                            </option>
+					    <?php endforeach; ?>
+                    </select>
+                </form>
+            </div>
+
+            <!-- Per Page Selector -->
+            <div class="per-page-selector">
+                <form method="GET">
+                    <input type="hidden" name="page" value="link-n-blog">
+                    <label for="per_page">Links per page:</label>
+                    <select name="per_page" id="per_page" onchange="this.form.submit()">
+					    <?php foreach ([10, 25, 50, 100] as $count): ?>
+                            <option value="<?= $count ?>" <?= $count === $per_page ? 'selected' : '' ?>><?= $count ?></option>
+					    <?php endforeach; ?>
+                    </select>
+                </form>
+            </div>
         </div>
 
-        <!-- Per Page Selector -->
-        <div class="per-page-selector mb-3">
-            <form method="GET" style="display: inline;">
-                <input type="hidden" name="page" value="link-n-blog">
-                <label for="per_page">Links per page:</label>
-                <select name="per_page" id="per_page" onchange="this.form.submit()">
-				    <?php foreach ([10, 25, 50, 100] as $count): ?>
-                        <option value="<?= $count ?>" <?= $count === $per_page ? 'selected' : '' ?>><?= $count ?></option>
-				    <?php endforeach; ?>
-                </select>
-            </form>
-        </div>
 
         <table class="widefat fixed table-view-list">
             <thead>

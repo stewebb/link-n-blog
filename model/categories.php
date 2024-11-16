@@ -24,6 +24,7 @@
  * @return array|object|null The list of categories as an array or object on success, null on failure.
  */
 
+
 function lnb_get_category_list(): array|object|null {
     global $wpdb;
     $table_categories = $wpdb->prefix . 'lnb_categories';
