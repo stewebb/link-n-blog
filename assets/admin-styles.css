@@ -74,6 +74,10 @@
     color: #BFBFBF;
 }
 
+.text-strikethrough {
+    text-decoration: line-through;
+}
+
 /*************************************
  *             Pagination            *
  ************************************/

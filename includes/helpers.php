@@ -7,7 +7,7 @@
 /**
  * Generate a set of light and dark colors based on the group name.
  *
- * This utility function uses the CRC32 hash of the MD5 hash of the group name
+ * This utility function uses the CRC32 hash of the SHA-256 hash of the group name
  * to calculate a hue value, ensuring consistent color generation for a given name.
  * The generated colors are returned in HSL format.
  *
@@ -18,9 +18,9 @@
  *               - 'dark' (string): A dark color in HSL format suitable for text or contrasting elements.
  */
 
-function lnb_get_group_colors( string $group_name ) {
+function lnb_get_group_colors( string $group_name ): array {
 
-	$hue = crc32( md5( $group_name ) ) % 360;
+	$hue = crc32(hash('sha512', $group_name)) % 360;
 	return [
 		'light' => "hsl($hue, 70%, 90%)",
 		'dark'  => "hsl($hue, 50%, 30%)"

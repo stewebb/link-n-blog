@@ -1,11 +1,13 @@
 <?php
 
+require_once(plugin_dir_path(__FILE__) . '../includes/helpers.php');
 require_once( plugin_dir_path( __FILE__ ) . '../model/links.php' );
 require_once( plugin_dir_path( __FILE__ ) . '../model/groups.php' );
 
 // Groups Management Page
 function groups_page(): void {
 	if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+
 		// Nonce Verification
 		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'group_action_nonce' ) ) {
 			die( 'Security check failed' );
@@ -74,34 +76,23 @@ function groups_page(): void {
 				foreach ( $groups as $group ) {
 					$usage_count       = lnb_get_group_usage_count( $group->id );
 					$usage_details     = lnb_get_links_by_group( $group->id );
+                    $group_color       = lnb_get_group_colors( $group->name );
+
 					$default_group     = $group->id == 1;
 					$empty_group       = $usage_count == 0;
 					$cannot_be_deleted = $default_group || ! $empty_group;
-					$is_enabled        = ! $group->disabled; // Invert disabled for enabled status
+					$is_enabled        = ! $group->disabled;
 					?>
 
-                    <div class="lnb-card">
+                    <div class="lnb-card" id="group-<?= esc_attr( $group->id ); ?>">
                         <form method="POST" action="">
 							<?php wp_nonce_field( 'group_action_nonce' ); ?>
                             <input type="hidden" name="group_id" value="<?= esc_attr( $group->id ); ?>">
 
                             <!-- Card Header with Group ID -->
-                            <div class="lnb-card-header">
-
-                                <!-- TODO
-                                I have a group to color hash
-                                $concat_string = "id={groupid}, name={groupname}";
-
-		// Generate hue from concatenated string
-		$hue = crc32($concat_string) % 360;
-		$group_colors[$ug_id] = [
-			'light' => "hsl($hue, 70%, 90%)",     // Light pastel based on hue
-			'dark' => "hsl($hue, 50%, 30%)"     // Dark color for the group name column
-		];
-                                i=
-                                --><!-- TODO Set light bg color-->
-                                <div class="color-block" style="background-color: <?= esc_attr($link->color) ?>;">  <!-- TODO Set dark clock color-->
-                                    <span class="color-hex"><?= esc_html($link->color) ?></span> <!-- TODO Sisplay HSV val dark clock color-->
+                            <div class="lnb-card-header" style="background-color: <?= esc_attr($group_color['light']) ?>;">
+                                <div class="color-block" style="background-color: <?= esc_attr($group_color['dark']) ?>;">
+                                    <span class="color-hex"><?= esc_html($group_color['dark']) ?></span>
                                 </div>
 
                                 Group ID: <?= esc_attr( $group->id ); ?>
@@ -117,10 +108,6 @@ function groups_page(): void {
 								if ( $cannot_be_deleted ) {
 									echo '&nbsp;<span class="badge badge-dark">Cannot be deleted</span>';
 								}
-
-								//if ( ! $is_enabled ) {
-								//	echo '&nbsp;<span class="badge badge-danger">Disabled</span>';
-								//}
 								?>
                             </div>
 

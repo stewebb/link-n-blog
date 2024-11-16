@@ -7,6 +7,7 @@ require_once( plugin_dir_path( __FILE__ ) . '../model/categories.php' );
 function categories_page(): void {
 
 	if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+
 		// Nonce Verification
 		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'category_action_nonce' ) ) {
 			die( 'Security check failed' );
@@ -76,7 +77,7 @@ function categories_page(): void {
 					$cannot_be_deleted = $default_category || !$empty_category;
 					?>
 
-                    <div class="lnb-card">
+                    <div class="lnb-card" id="category-<?= esc_attr( $category->id ); ?>">
                         <form method="POST" action="">
 							<?php wp_nonce_field( 'category_action_nonce' ); ?>
                             <input type="hidden" name="category_id" value="<?= esc_attr( $category->id ); ?>">

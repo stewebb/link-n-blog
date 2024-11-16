@@ -82,7 +82,9 @@ function lnb_get_link_list(int $page_num = 1, int $per_page = 10, string $sort_b
 
 	// Start building the query
 	$query = "
-        SELECT l.*, c.name AS category_name, g.name AS group_name
+        SELECT l.*, 
+               c.name AS category_name, c.color AS category_color,
+               g.name AS group_name, g.disabled AS group_disabled
         FROM $table_links AS l
         LEFT JOIN $table_categories AS c ON l.category_id = c.id
         LEFT JOIN $table_groups AS g ON l.group_id = g.id
