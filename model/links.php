@@ -150,6 +150,7 @@ function lnb_get_link_details_by_id(int $link_id): object|array|null {
  *
  * @return int The total count of links.
  */
+
 function lnb_get_link_count(?int $group_id = null): int {
 	global $wpdb;
 	$table_links = $wpdb->prefix . 'lnb_links';
@@ -163,6 +164,26 @@ function lnb_get_link_count(?int $group_id = null): int {
 	}
 
 	return (int) $wpdb->get_var($sql);
+}
+
+/**
+ * Retrieve the IDs and names of links associated with a specific category.
+ *
+ * This function fetches the 'id' and 'name' of each link in the 'lnb_links' table
+ * that belong to a given category. Useful for listing links in a category or further processing.
+ *
+ * @param int $category_id The ID of the category to fetch links for.
+ *
+ * @return array|null An array of objects with 'id' and 'name' of each link on success, or null on failure.
+ * @global wpdb $wpdb WordPress database access object.
+ */
+
+
+function lnb_get_links_by_category(int $category_id): ?array {
+    global $wpdb;
+    $table_links = $wpdb->prefix . 'lnb_links';
+    $query = $wpdb->prepare("SELECT id, link_name FROM $table_links WHERE category_id = %d", $category_id);
+    return $wpdb->get_results($query);
 }
 
 /*************************************

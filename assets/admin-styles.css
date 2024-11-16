@@ -181,12 +181,6 @@
     transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
-/*
-.lnb-card:nth-child(even) {
-    background-color: #f6f7f7;
-}
- */
-
 .lnb-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
@@ -217,12 +211,6 @@
     gap: 10px;
     margin-top: 10px;
 }
-
-/*
-.add-new-category h2 {
-    color: #0073aa;
-}
- */
 
 /*************************************
  *            Color Blocks           *
@@ -276,4 +264,38 @@
 
 .badge-dark {
     background-color: #23282d;
+}
+
+/*************************************
+ *            Usage Details          *
+ ************************************/
+
+.usage-details-list {
+    list-style-type: none;
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.usage-detail-item {
+    background-color: #f9f9f9;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+}
+
+.usage-detail-item a {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.usage-detail-item a:hover {
+    text-decoration: underline;
+}
+
+.usage-detail-item strong {
+    color: #333;
 }

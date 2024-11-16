@@ -1,5 +1,6 @@
 <?php
 
+require_once( plugin_dir_path( __FILE__ ) . '../model/links.php' );
 require_once( plugin_dir_path( __FILE__ ) . '../model/categories.php' );
 
 // Update categories_page to ensure colors are added/modified
@@ -45,8 +46,9 @@ function categories_page(): void {
 			} else {
 
 				// Check if category is used in links
-				if ( lnb_get_category_usage_count( $category_id ) > 0 ) {
-					echo "<div class='notice notice-error'><p>The category is used in $category_id link(s).</p></div>";
+				$usage_count = lnb_get_category_usage_count( $category_id );
+				if ( $usage_count> 0 ) {
+					echo "<div class='notice notice-error'><p>This category is used in $usage_count link(s).</p></div>";
 				} else {
 					echo lnb_delete_category( $category_id ) ? "<div class='notice notice-success'><p>Category deleted successfully.</p></div>" : "<div class='notice notice-error'><p>Error deleting category.</p></div>";
 				}
@@ -66,14 +68,14 @@ function categories_page(): void {
 			$categories = lnb_get_category_list();
 			if ( $categories ) {
 				foreach ( $categories as $category ) {
-
                     $usage_count = lnb_get_category_usage_count($category->id);
+                    $usage_details = lnb_get_links_by_category($category->id);
 
                     $default_category = $category->id == 1;
                     $empty_category = $usage_count == 0;
 					$cannot_be_deleted = $default_category || !$empty_category;
-
 					?>
+
                     <div class="lnb-card">
                         <form method="POST" action="">
 							<?php wp_nonce_field( 'category_action_nonce' ); ?>
@@ -147,17 +149,23 @@ function categories_page(): void {
                                     <tr>
                                         <th><label><span class="not-required">*&nbsp;</span>Usage Details</label></th>
                                         <td>
-											<?php
-											if ( empty( $usage_details ) ) {
-												echo "<span class='text-light-gray'>N/A</span>";
-											} else {
-												foreach ( $usage_details as $usage_detail ) {
-													echo "<p>ID: <a href='admin.php?page=link-n-blog-details&id=" . $usage_detail->id . "'>" . $usage_detail->id . "</a>, name: " . $usage_detail->link_name . "</p>";
-												}
-											}
-											?>
+			                                <?php
+			                                if ( empty( $usage_details ) ) {
+				                                echo "<span class='text-light-gray'>N/A</span>";
+			                                } else {
+				                                echo "<ul class='usage-details-list'>";
+				                                foreach ( $usage_details as $usage_detail ) {
+					                                echo "<li class='usage-detail-item'>";
+					                                echo "<strong>ID:</strong> <a href='admin.php?page=link-n-blog-details&id=" . $usage_detail->id . "'>" . $usage_detail->id . "</a> | ";
+					                                echo "<strong>Name:</strong> " . esc_html($usage_detail->link_name);
+					                                echo "</li>";
+				                                }
+				                                echo "</ul>";
+			                                }
+			                                ?>
                                         </td>
                                     </tr>
+
                                 </table>
 
                                 <p class="submit">
@@ -180,33 +188,39 @@ function categories_page(): void {
 
             <!-- Add a New Category -->
             <div class="lnb-card add-new-category">
-                <h2>Add a New Category</h2>
-                <form method="POST" action="">
-					<?php wp_nonce_field( 'category_action_nonce' ); ?>
-                    <input type="hidden" name="category_id">
-                    <table class="form-table">
+                <div class="lnb-card-header" style="color: #2271b1;">
+                    Add a New Category
+                </div>
+                <div class="lnb-card-body">
+                    <form method="POST" action="">
+				        <?php wp_nonce_field( 'category_action_nonce' ); ?>
+                        <input type="hidden" name="category_id">
+                        <table class="form-table">
 
-                        <!-- Name -->
-                        <tr>
-                            <th><label for="category_name"><span class="required">*&nbsp;</span>Name</label></th>
-                            <td><input type="text" name="category_name" id="category_name" class="regular-text"
-                                       placeholder="Enter category name" required></td>
-                        </tr>
+                            <!-- Name -->
+                            <tr>
+                                <th><label for="category_name"><span class="required">*&nbsp;</span>Name</label></th>
+                                <td><input type="text" name="category_name" id="category_name" class="regular-text"
+                                           placeholder="Enter category name" required></td>
+                            </tr>
 
-                        <!-- Color -->
-                        <tr>
-                            <th scope="row"><label for="color"><span class="not-required">*&nbsp;</span>Color</label>
-                            </th>
-                            <td>
-                                <input type="text" name="color" id="color" value="" class="regular-text color-picker"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <p class="submit">
-                        <button type="submit" name="update_category" class="button button-primary">Add</button>
-                    </p>
-                </form>
+                            <!-- Color -->
+                            <tr>
+                                <th scope="row"><label for="color"><span class="not-required">*&nbsp;</span>Color</label>
+                                </th>
+                                <td>
+                                    <input type="text" name="color" id="color" value="" class="regular-text color-picker"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <p class="submit inline-buttons">
+                            <button type="submit" name="update_category" class="button button-primary">Add</button>
+                        </p>
+                    </form>
+                </div>
             </div>
+
+
         </div>
     </div>
 
@@ -217,5 +231,4 @@ function categories_page(): void {
     </script>
 	<?php
 }
-
 ?>
