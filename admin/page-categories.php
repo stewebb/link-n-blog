@@ -1,7 +1,7 @@
 <?php
 
-require_once( plugin_dir_path( __FILE__ ) . '../model/links.php' );
-require_once( plugin_dir_path( __FILE__ ) . '../model/categories.php' );
+//require_once( plugin_dir_path( __FILE__ ) . '../model/links.php' );
+//require_once( plugin_dir_path( __FILE__ ) . '../model/categories.php' );
 
 // Update categories_page to ensure colors are added/modified
 function categories_page(): void {

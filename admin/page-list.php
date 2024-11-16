@@ -1,8 +1,8 @@
 <?php
 
 //require_once( plugin_dir_path( __FILE__ ) . '../includes/helpers.php' );
-require_once( plugin_dir_path( __FILE__ ) . '../model/links.php' );
-require_once( plugin_dir_path( __FILE__ ) . '../model/groups.php' );
+//require_once( plugin_dir_path( __FILE__ ) . '../model/links.php' );
+//require_once( plugin_dir_path( __FILE__ ) . '../model/groups.php' );
 
 // Helper function to generate table headers with sorting links
 function generate_sortable_header( $column_name, $sort_field, $current_sort_by, $current_sort_order, $page_num, $group_id ): string {

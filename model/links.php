@@ -228,11 +228,11 @@ function lnb_get_all_links_grouped_by_category(int $group_id): array {
 
 	// Query to get all links with the category and group details
 	$sql = $wpdb->prepare("
-        SELECT l.id, l.link_name, l.label_text, l.cover_image_id, l.target, l.wp_page_id, l.color, l.category_id, l.hit_num, l.url, 
+        SELECT l.*, 
                c.name AS category_name
         FROM $table_links AS l
         LEFT JOIN $table_categories AS c ON l.category_id = c.id
-        LEFT JOIN $table_groups AS g ON c.group_id = g.id
+        LEFT JOIN $table_groups AS g ON l.group_id = g.id
         WHERE g.id = %d AND g.disabled = 0
     ", $group_id);
 
@@ -247,7 +247,6 @@ function lnb_get_all_links_grouped_by_category(int $group_id): array {
 
 	return $grouped_links;
 }
-
 
 /*************************************
  *                Update             *

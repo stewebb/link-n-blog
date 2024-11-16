@@ -82,7 +82,6 @@ function lnb_get_group_usage_count(int $group_id): ?string {
 	return $wpdb->get_var($query);
 }
 
-
 /*************************************
  *                Update             *
  ************************************/

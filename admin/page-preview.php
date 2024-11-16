@@ -1,18 +1,16 @@
 <?php
 
-require_once(plugin_dir_path(__FILE__) . '../crud/read.php');
-
 function preview_page(): void
 {
     // Retrieve all grouped links
-    $grouped_links = lnb_get_all_links_grouped_by_category();
-    echo do_shortcode('[helloworld]');
+    //$grouped_links = lnb_get_all_links_grouped_by_category(1);
+    echo do_shortcode('[lnb id=1]');
     ?>
 
     <style>
         .preview-container {
             padding: 20px;
-            background-color: #f1f1f1; /* Light gray for contrast */
+            background-color: #f1f1f1;
             border-radius: 8px;
         }
     </style>

@@ -16,6 +16,12 @@
 include_once(plugin_dir_path(__FILE__) . 'includes/helpers.php');
 include_once( plugin_dir_path( __FILE__ ) . 'includes/enqueue.php' );
 
+// Models
+include_once( plugin_dir_path( __FILE__ ) . 'model/categories.php' );
+include_once( plugin_dir_path( __FILE__ ) . 'model/groups.php' );
+include_once( plugin_dir_path( __FILE__ ) . 'model/links.php' );
+
+
 // Activation
 include_once(plugin_dir_path(__FILE__) . 'includes/activation.php');
 register_activation_hook(__FILE__, 'lnb_create_database_tables');
