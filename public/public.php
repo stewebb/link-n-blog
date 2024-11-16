@@ -13,3 +13,13 @@ add_shortcode('lnb',function ($atts) {
 	echo '</pre>';
 	return ob_get_clean();
 });
+
+add_action('wp', function() {
+	$current_post = get_post();
+
+	if ($current_post && has_shortcode($current_post->post_content, 'lnb')) {
+		echo "Shortcode is loaded!";
+	} else {
+		echo "Shortcode is not loaded.";
+	}
+});

@@ -1,74 +1,137 @@
 <?php
 
+// Check if the content contains the `[lnb id=...]` shortcode
+function lnb_has_shortcode(): bool {
+	global $post;
+
+	// Function to detect the `[lnb id=...]` shortcode pattern
+	$shortcode_pattern = '/\[lnb\s+id=[\'"]?\d+[\'"]?\]/';
+
+	// Check for admin pages
+	if (is_admin()) {
+		$screen = get_current_screen();
+
+		// In admin, retrieve the content of the current post being edited
+		if ($screen && isset($_GET['post'])) {
+			$post = get_post((int) $_GET['post']);
+		}
+	}
+
+	// Check if post content matches the shortcode pattern
+	return $post && preg_match($shortcode_pattern, $post->post_content ?? '');
+}
+
+
+// Enqueue public pages assets via shortcode
+add_action('wp_enqueue_scripts', function (): void {
+
+
+	if (lnb_has_shortcode()) {
+		// Enqueue local Bootstrap CSS
+		wp_enqueue_style(
+			'bootstrap-css',
+			plugins_url('../assets/bootstrap.min.css', __FILE__)
+		);
+
+		// Enqueue your custom styles for public pages
+		wp_enqueue_style(
+			'link-n-blog-public-css',
+			plugins_url('../assets/public-styles.css', __FILE__)
+		);
+
+		// Enqueue local Bootstrap JS
+		wp_enqueue_script(
+			'bootstrap-js',
+			plugins_url('../assets/bootstrap.bundle.min.js', __FILE__),
+			['jquery'],
+			'5.3.0-alpha1',
+			true
+		);
+
+		// Enqueue your custom scripts for public pages
+		wp_enqueue_script(
+			'link-n-blog-public-js',
+			plugins_url('../assets/public-scripts.js', __FILE__),
+			['jquery'],
+			'1.0',
+			true
+		);
+	}
+});
+
 // Enqueue admin styles and conditionally enqueue scripts
-add_action( 'admin_enqueue_scripts', function (): void {
-	// Enqueue admin styles
+add_action('admin_enqueue_scripts', function (): void {
+	// Custom admin assets
 	wp_enqueue_style(
 		'admin-css',
-		plugins_url( '../assets/admin-styles.css', __FILE__ )
+		plugins_url('../assets/admin-styles.css', __FILE__)
 	);
-
 	wp_enqueue_script(
 		'admin-script',
-		plugins_url( '../assets/admin-scripts.js', __FILE__ ),
-		[ 'jquery' ],
+		plugins_url('../assets/admin-scripts.js', __FILE__),
+		['jquery'],
 		'1.0',
-		false
+		true
 	);
 
-	// Enqueue WordPress color picker and media uploader
-	wp_enqueue_style( 'wp-color-picker' );
-	wp_enqueue_script( 'wp-color-picker' );
+	// WordPress pickers
+	wp_enqueue_style('wp-color-picker');
+	wp_enqueue_script('wp-color-picker');
 	wp_enqueue_media();
 
 	// Conditionally enqueue scripts based on admin page
 	global $hook_suffix;
 
-	// Link List page
-	if ( $hook_suffix === 'link-n-blog_page_link-n-blog-link-list' ) {
-		//wp_enqueue_script(
-		//    'link-list-script',
-		//    plugins_url('js/link-list.js', __FILE__),
-		//    ['jquery'],
-		//    '1.0',
-		//    true
-		//);
-	} // Add a Link page
-	elseif ( $hook_suffix === 'link-n-blog_page_link-n-blog-details' ) {
+	switch ($hook_suffix) {
+		// Link List page
+		case 'link-n-blog_page_link-n-blog-link-list':
+			// Enqueue scripts/styles specific to the Link List page
+			break;
 
-	} // Categories page
-	elseif ( $hook_suffix === 'link-n-blog_page_link-n-blog-categories' ) {
-		//wp_enqueue_script(
-		//    'categories-script',
-		//    plugins_url('js/categories.js', __FILE__),
-		//    ['jquery'],
-		//    '1.0',
-		//    true
-		//);
-	} // Preview page
-	elseif ( $hook_suffix === 'link-n-blog_page_link-n-blog-preview' ) {
-		wp_enqueue_style(
-			'admin-preview-css',
-			plugins_url( '../assets/admin-preview.css', __FILE__ )
-		);
+		// Add a Link page
+		case 'link-n-blog_page_link-n-blog-details':
+			// Enqueue scripts/styles specific to Add a Link page
+			break;
 
-		wp_enqueue_script(
-			'admin-color-script',
-			plugins_url( '../assets/ColorManipulator.js', __FILE__ ),
-			[ 'jquery' ],
-			'1.0',
-			true
-		);
+		// Categories page
+		case 'link-n-blog_page_link-n-blog-categories':
+			// Enqueue scripts/styles specific to Categories page
+			break;
 
-		wp_enqueue_script(
-			'admin-image-script',
-			plugins_url( '../assets/ImageManipulator.js', __FILE__ ),
-			[ 'jquery' ],
-			'1.0',
-			true
-		);
-		// TODO Remove jquery dependency
+		// Preview page
+		case 'link-n-blog_page_link-n-blog-preview':
+			// Enqueue scripts/styles specific to Preview page
+			break;
+
+		default:
+			// No specific assets for other admin pages
+			break;
 	}
-} );
+});
 
-//add_action('admin_enqueue_scripts', 'lnb_admin_styles');
+
+
+/*
+ *
+	wp_enqueue_style(
+		'admin-preview-css',
+		plugins_url( '../assets/admin-preview.css', __FILE__ )
+	);
+
+	wp_enqueue_script(
+		'admin-color-script',
+		plugins_url( '../assets/ColorManipulator.js', __FILE__ ),
+		[ 'jquery' ],
+		'1.0',
+		true
+	);
+
+	wp_enqueue_script(
+		'admin-image-script',
+		plugins_url( '../assets/ImageManipulator.js', __FILE__ ),
+		[ 'jquery' ],
+		'1.0',
+		true
+	);
+	// TODO Remove jquery dependency
+	*/
