@@ -1,4 +1,8 @@
-.lnb-container {
+.lnb-group-container {
+
+}
+
+.lnb-category-container {
 
 }
 
@@ -10,15 +14,14 @@
 
 }
 
-.lnb-category-content {
-
-}
-
 .lnb-link-item {
 
 }
 
-.lnb-link-container {
+.lnb-link-foreground {
 
 }
 
+.lnb-overlay {
+
+}

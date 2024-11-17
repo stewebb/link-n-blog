@@ -17,7 +17,7 @@ function link_page( $group, $grouped_links ): bool|string {
         }
     </script>
 
-    <div class="container lnb-container">
+    <div class="container lnb-group-container">
 
         <!-- Group Title -->
         <div class="text-center fw-bold my-4 lnb-group-title">
@@ -32,7 +32,7 @@ function link_page( $group, $grouped_links ): bool|string {
 			$category_color = $category->color ?? "#000000";
 			?>
 
-            <div class="row mb-3">
+            <div class="row mb-3 lnb-category-container">
 
                 <!-- Category Title -->
                 <div class="col-12 lnb-category-title">
@@ -63,11 +63,11 @@ function link_page( $group, $grouped_links ): bool|string {
 					$link_target      = esc_attr( $link->target ?? '_blank' );
 					?>
 
-                    <div class="col-xl-3 col-lg-4 col-sm-6 lnb-menu-col lnb-category-content">
+                    <div class="col-xl-3 col-lg-4 col-sm-6 lnb-menu-col">
                         <div class="lnb-link-item">
 
                             <!-- BG color or cover image -->
-                            <div class="lnb-link-container">
+                            <div class="lnb-link-foreground">
 								<?php if ( empty( $link->cover_image_id ) ) : ?>
                                     <canvas id="link-<?= $link->id ?>" class="responsive-canvas"></canvas>
                                     <script>
@@ -87,7 +87,7 @@ function link_page( $group, $grouped_links ): bool|string {
                             </div>
 
                             <!-- Overlay when hovered -->
-                            <div class="lnb-overlay"
+                            <div class="lnb-link-overlay"
                                  onmouseover="applyHoverColor(this, '<?= $link_color ?>')"
                                  onmouseout="clearHoverColor(this)">
 
@@ -100,17 +100,17 @@ function link_page( $group, $grouped_links ): bool|string {
                                 <!-- Buttons (Inline and Circle) (Only display in N&L mode ) -->
 								<?php if ( $link->display > 0 ): ?>
                                     <div class="d-flex justify-content-center gap-3">
-										<?php if ( ! empty( $link->url ) ) : ?>
+	                                    <?php if ( ! empty( $link->url ) ) : ?>
                                             <button type="button" class="btn btn-outline-dark rounded-circle"
-                                                    onclick="window.open('<?= $link_url ?>', '<?= $link_target ?>')"
+                                                    onclick="if (confirm('You will go to <?= $link->url ?>.')) { window.open('<?= $link_url ?>', '<?= $link_target ?>'); }"
                                                     style="color: <?= $link_color ?>; border-color: <?= $link_color ?>;"
                                                     onmouseover="this.style.backgroundColor='<?= $link_color ?>'; this.style.color='#ffffff';"
                                                     onmouseout="this.style.backgroundColor='transparent'; this.style.color='<?= $link_color ?>';">
                                                 <span class="dashicons dashicons-admin-site"></span>
                                             </button>
-										<?php endif; ?>
+	                                    <?php endif; ?>
 
-										<?php if ( ! empty( $link->wp_page_id ) ) : ?>
+                                        <?php if ( ! empty( $link->wp_page_id ) ) : ?>
                                             <button type="button" class="btn btn-outline-dark rounded-circle"
                                                     onclick="window.open('<?= $link_wp_page_url ?>')"
                                                     style="color: <?= $link_color ?>; border-color: <?= $link_color ?>;"
@@ -131,16 +131,13 @@ function link_page( $group, $grouped_links ): bool|string {
 								<?php endif; ?>
                             </div>
 
-
                         </div>
                     </div>
 				<?php endforeach; ?>
             </div>
-		<?php
-
-		endforeach;
-		?>
+		<?php endforeach; ?>
     </div>
+
     <script>
         jQuery(document).ready(function ($) {
             $('.lnb-link-item').each(function (index, element) {
