@@ -1,88 +1,63 @@
 <?php
 
-// Check if the content contains the `[lnb id=...]` shortcode
-function lnb_has_shortcode(): bool {
-	global $post;
+function enqueue_public_assets() {
+// Enqueue Bootstrap CSS
+	wp_enqueue_style(
+		'bootstrap-css',
+		plugin_dir_url( __FILE__ ) . 'assets/css/bootstrap.min.css',
+		[],
+		'5.3.0'
+	);
 
-	// Function to detect the `[lnb id=...]` shortcode pattern
-	$shortcode_pattern = '/\[lnb\s+id=[\'"]?\d+[\'"]?\]/';
-
-	// Check for admin pages
-	if (is_admin()) {
-		$screen = get_current_screen();
-
-		// In admin, retrieve the content of the current post being edited
-		if ($screen && isset($_GET['post'])) {
-			$post = get_post((int) $_GET['post']);
-		}
-	}
-
-	// Check if post content matches the shortcode pattern
-	return $post && preg_match($shortcode_pattern, $post->post_content ?? '');
+	// Enqueue Bootstrap JS
+	wp_enqueue_script(
+		'bootstrap-js',
+		plugin_dir_url( __FILE__ ) . 'assets/js/bootstrap.bundle.min.js',
+		[],
+		'5.3.0',
+		true
+	);
 }
 
+add_action( 'wp', function () {
+	$current_post = get_post();
 
-// Enqueue public pages assets via shortcode
-add_action('wp_enqueue_scripts', function (): void {
-
-
-	if (lnb_has_shortcode()) {
-		// Enqueue local Bootstrap CSS
-		wp_enqueue_style(
-			'bootstrap-css',
-			plugins_url('../assets/bootstrap.min.css', __FILE__)
-		);
-
-		// Enqueue your custom styles for public pages
-		wp_enqueue_style(
-			'link-n-blog-public-css',
-			plugins_url('../assets/public-styles.css', __FILE__)
-		);
-
-		// Enqueue local Bootstrap JS
-		wp_enqueue_script(
-			'bootstrap-js',
-			plugins_url('../assets/bootstrap.bundle.min.js', __FILE__),
-			['jquery'],
-			'5.3.0-alpha1',
-			true
-		);
-
-		// Enqueue your custom scripts for public pages
-		wp_enqueue_script(
-			'link-n-blog-public-js',
-			plugins_url('../assets/public-scripts.js', __FILE__),
-			['jquery'],
-			'1.0',
-			true
-		);
+	if ( $current_post && has_shortcode( $current_post->post_content, 'lnb' ) ) {
+		// Enqueue Bootstrap CSS and JS
+		add_action( 'wp_enqueue_scripts', function () {
+			wp_enqueue_style(
+				'bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css', [], '5.3.0' );
+			wp_enqueue_script( 'bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js', [ 'jquery' ], '5.3.0', true );
+		} );
 	}
-});
+} );
+
 
 // Enqueue admin styles and conditionally enqueue scripts
-add_action('admin_enqueue_scripts', function (): void {
+add_action( 'admin_enqueue_scripts', function (): void {
+
 	// Custom admin assets
 	wp_enqueue_style(
 		'admin-css',
-		plugins_url('../assets/admin-styles.css', __FILE__)
+		plugins_url( '../assets/css/admin-styles.css', __FILE__ )
 	);
 	wp_enqueue_script(
 		'admin-script',
-		plugins_url('../assets/admin-scripts.js', __FILE__),
-		['jquery'],
+		plugins_url( '../assets/js/admin-scripts.js', __FILE__ ),
+		[ 'jquery' ],
 		'1.0',
 		true
 	);
 
 	// WordPress pickers
-	wp_enqueue_style('wp-color-picker');
-	wp_enqueue_script('wp-color-picker');
+	wp_enqueue_style( 'wp-color-picker' );
+	wp_enqueue_script( 'wp-color-picker' );
 	wp_enqueue_media();
 
 	// Conditionally enqueue scripts based on admin page
 	global $hook_suffix;
 
-	switch ($hook_suffix) {
+	switch ( $hook_suffix ) {
 		// Link List page
 		case 'link-n-blog_page_link-n-blog-link-list':
 			// Enqueue scripts/styles specific to the Link List page
@@ -107,7 +82,7 @@ add_action('admin_enqueue_scripts', function (): void {
 			// No specific assets for other admin pages
 			break;
 	}
-});
+} );
 
 
 
