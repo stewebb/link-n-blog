@@ -47,6 +47,10 @@ function enqueue_public_assets(): void {
 		'5.3.0',
 		true
 	);
+
+	if (!is_admin()) {
+		wp_enqueue_style('dashicons');
+	}
 }
 
 add_action( 'wp', function () {
@@ -107,30 +111,3 @@ add_action( 'admin_enqueue_scripts', function (): void {
 			break;
 	}
 } );
-
-
-
-/*
- *
-	wp_enqueue_style(
-		'admin-preview-css',
-		plugins_url( '../assets/admin-preview.css', __FILE__ )
-	);
-
-	wp_enqueue_script(
-		'admin-color-script',
-		plugins_url( '../assets/ColorManipulator.js', __FILE__ ),
-		[ 'jquery' ],
-		'1.0',
-		true
-	);
-
-	wp_enqueue_script(
-		'admin-image-script',
-		plugins_url( '../assets/ImageManipulator.js', __FILE__ ),
-		[ 'jquery' ],
-		'1.0',
-		true
-	);
-	// TODO Remove jquery dependency
-	*/

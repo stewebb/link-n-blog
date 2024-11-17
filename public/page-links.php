@@ -49,10 +49,10 @@ function link_page( $group, $grouped_links ): bool|string {
 				<?php foreach ( $categorized_links as $link ) : ?>
 					<?php
 
-                    // Skip rendering if it's hidden
-                    if($link->display < 0) {
-                        continue;
-                    }
+					// Skip rendering if it's hidden
+					if ( $link->display < 0 ) {
+						continue;
+					}
 
 					$display_text = '';
 					if ( ! empty( $link->label_text ) ) {
@@ -86,53 +86,55 @@ function link_page( $group, $grouped_links ): bool|string {
                                         <?= $display_text ?>
                                     </span>
 								<?php else : ?>
-									<?= wp_get_attachment_image( $link->cover_image_id ); ?>
+									<?= wp_get_attachment_image( $link->cover_image_id, 'full' ); ?>
 								<?php endif; ?>
                             </div>
 
-                            <!-- Overlay when hovered (Only display in N&L mode ) -->
-							<?php if ( $link->display != 1 ): ?>
-                                <div class="overlay"
-                                     onmouseover="applyHoverColor(this, '<?= $link_color ?>')"
-                                     onmouseout="clearHoverColor(this)">
+                            <!-- Overlay when hovered -->
+                            <div class="overlay"
+                                 onmouseover="applyHoverColor(this, '<?= $link_color ?>')"
+                                 onmouseout="clearHoverColor(this)">
 
-                                    <!-- Text -->
-                                    <div class="text-primary"
-                                         style="color: <?= $link_color ?> !important;">
-                                        <h4 class="fw-bold"><?= $display_text ?></h4>
-                                    </div>
+                                <!-- Text -->
+                                <div class="text-primary"
+                                     style="color: <?= $link_color ?> !important;">
+                                    <h4 class="fw-bold"><?= $display_text ?></h4>
+                                </div>
 
-                                    <!-- Buttons -->
-                                    <div class="d-grid gap-0 col-6 mx-auto">
+                                <!-- Buttons (Inline and Circle) (Only display in N&L mode ) -->
+								<?php if ( $link->display > 0 ): ?>
+                                    <div class="d-flex justify-content-center gap-3">
 										<?php if ( ! empty( $link->url ) ) : ?>
-                                            <button type="button" class="btn btn-outline-dark"
+                                            <button type="button" class="btn btn-outline-dark rounded-circle"
                                                     onclick="window.open('<?= $link_url ?>', '<?= $link_target ?>')"
                                                     style="color: <?= $link_color ?>; border-color: <?= $link_color ?>;"
                                                     onmouseover="this.style.backgroundColor='<?= $link_color ?>'; this.style.color='#ffffff';"
                                                     onmouseout="this.style.backgroundColor='transparent'; this.style.color='<?= $link_color ?>';">
-                                                Visit Site
+                                                <span class="dashicons dashicons-admin-site"></span>
                                             </button>
 										<?php endif; ?>
 
 										<?php if ( ! empty( $link->wp_page_id ) ) : ?>
-                                            <button type="button" class="btn btn-outline-dark"
+                                            <button type="button" class="btn btn-outline-dark rounded-circle"
                                                     onclick="window.open('<?= $link_wp_page_url ?>')"
                                                     style="color: <?= $link_color ?>; border-color: <?= $link_color ?>;"
                                                     onmouseover="this.style.backgroundColor='<?= $link_color ?>'; this.style.color='#ffffff';"
                                                     onmouseout="this.style.backgroundColor='transparent'; this.style.color='<?= $link_color ?>';">
-                                                Learn More
+                                                <span class="dashicons dashicons-text-page"></span>
                                             </button>
 										<?php endif; ?>
 
-                                        <button type="button" class="btn btn-outline-dark"
+                                        <button type="button" class="btn btn-outline-dark rounded-circle" disabled
                                                 style="color: <?= $link_color ?>; border-color: <?= $link_color ?>;"
                                                 onmouseover="this.style.backgroundColor='<?= $link_color ?>'; this.style.color='#ffffff';"
                                                 onmouseout="this.style.backgroundColor='transparent'; this.style.color='<?= $link_color ?>';">
-                                            Share
+                                            <span class="dashicons dashicons-share"></span>
                                         </button>
                                     </div>
-                                </div>
-							<?php endif; ?>
+
+								<?php endif; ?>
+                            </div>
+
 
                         </div>
                     </div>
