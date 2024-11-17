@@ -1,28 +1,43 @@
 <?php
 
+include_once "page-links.php";
 include_once "page-not-found.php";
 
 // Register the shortcode
 add_shortcode('lnb',function ($atts) {
 	$atts = shortcode_atts(['id' => 0], $atts, 'lnb');
 	$group_id = intval($atts['id']);
-	//$group = lnb_get_
-	$grouped_links = lnb_get_all_links_grouped_by_category($group_id);
 
-	// Empty check
-	if(empty($grouped_links)) {
-		not_found_page(1);
-		return null;
+	// Get group
+	$group = lnb_get_group_by_id($group_id);
+	if (empty($group)) {
+		return not_found_page(
+			"Group Not Found",
+			"The group with <b>ID=" . htmlspecialchars($group_id, ENT_QUOTES, 'UTF-8') . "</b> could not be found."
+		);
 	}
 
-	// For now, just print_r the results
-	ob_start(); // Start output buffering
-	echo '<pre>';
-	print_r($grouped_links);
-	echo '</pre>';
-	return ob_get_clean();
+	// Check if the group is disabled
+	if ($group->disabled == 1) {
+		return not_found_page(
+			"Group Disabled",
+			"The group <b>" . htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8') . "</b> is currently disabled. Please contact the administrator for more information."
+		);
+	}
+
+	// Fetch links grouped by category
+	$grouped_links = lnb_get_all_links_grouped_by_category($group_id);
+	if (empty($grouped_links)) {
+		return not_found_page(
+			"No Links Found",
+			"No links are associated with the group <b>" . htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8') . "</b>. Please add some links to this group."
+		);
+	}
+
+	return link_page($grouped_links);
 });
 
+/*
 add_action('wp', function() {
 	$current_post = get_post();
 
@@ -32,3 +47,4 @@ add_action('wp', function() {
 		echo "Shortcode is not loaded.";
 	}
 });
+*/
