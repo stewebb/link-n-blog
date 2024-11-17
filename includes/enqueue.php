@@ -33,20 +33,22 @@ function enqueue_public_assets(): void {
 	);
 
 	// Bootstrap
-	wp_enqueue_style(
-		'bootstrap-css',
-		plugin_dir_url( __FILE__ ) . '../assets/css/bootstrap.min.css',
-		[],
-		'5.3.0'
-	);
+	if (get_option('load_bootstrap', true)) {
+		wp_enqueue_style(
+			'bootstrap-css',
+			plugin_dir_url( __FILE__ ) . '../assets/css/bootstrap.min.css',
+			[],
+			'5.3.0'
+		);
 
-	wp_enqueue_script(
-		'bootstrap-js',
-		plugin_dir_url( __FILE__ ) . '../assets/js/bootstrap.bundle.min.js',
-		[],
-		'5.3.0',
-		true
-	);
+		wp_enqueue_script(
+			'bootstrap-js',
+			plugin_dir_url( __FILE__ ) . '../assets/js/bootstrap.bundle.min.js',
+			[],
+			'5.3.0',
+			true
+		);
+	}
 
 	if (!is_admin()) {
 		wp_enqueue_style('dashicons');

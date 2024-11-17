@@ -6,6 +6,7 @@
     width: 20px;
     height: 20px;
     object-fit: contain;
+    box-sizing: content-box!important;
 }
 
 .full-width {
@@ -192,7 +193,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Card Header (like BS Card Header) */
+/* Card Header */
 .lnb-card-header {
     background-color: #f7f7f7;
     font-size: 1.2em;
@@ -222,9 +223,9 @@
     padding: 15px;
     display: flex;
     gap: 10px;
-    justify-content: flex-start; /* Align buttons to the left */
-    margin-top: auto; /* Push to the bottom */
-    border-top: 1px solid #ccd0d4; /* Optional: Add a separator line */
+    justify-content: flex-start;
+    margin-top: auto;
+    border-top: 1px solid #ccd0d4;
 }
 
 /*************************************

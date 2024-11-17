@@ -72,20 +72,10 @@ add_action('admin_menu', function () {
     // Settings sub-menu
     add_submenu_page(
         'link-n-blog',
-        'Options & Helps',
-        'Options & Helps',
+        'Settings',
+        'Settings',
         'manage_options',
         'link-n-blog-settings',
         'settings_page'
     );
-
-	// Helps sub-menu
-	//add_submenu_page(
-	//	'link-n-blog',
-	//	'Helps',
-	//	'Helps',
-	//	'manage_options',
-	//	'link-n-blog-helps',
-	//	'helps_page'
-	//);
 });

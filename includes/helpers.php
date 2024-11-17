@@ -26,3 +26,8 @@ function lnb_get_group_colors( string $group_name ): array {
 		'dark'  => "hsl($hue, 50%, 30%)"
 	];
 }
+
+add_action( 'admin_init', function () {
+	register_setting( 'lnb-settings-group', 'load_bootstrap' );
+	register_setting( 'lnb-settings-group', 'default_color' );
+} );

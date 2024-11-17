@@ -1,11 +1,12 @@
 <?php
 
 function link_page( $group, $grouped_links ): bool|string {
+    $default_color = get_option( 'default_color' , 'e070a7');
 	ob_start();
 	?>
 
     <script>
-        const colorManipulator = new ColorManipulator('#000000', 90, true);
+        const colorManipulator = new ColorManipulator('<?= $default_color ?>', 90, true);
 
         function applyHoverColor(element, color) {
             colorManipulator.setColor(color);
@@ -29,7 +30,7 @@ function link_page( $group, $grouped_links ): bool|string {
 		foreach ( $grouped_links as $category_id => $categorized_links ):
 			$category = lnb_get_category_by_id( $category_id );
 			$category_name = $category->name ?? "Uncategorized";
-			$category_color = $category->color ?? "#000000";
+			$category_color = $category->color ?? $default_color;
 			?>
 
             <div class="row mb-3 lnb-category-container">
@@ -57,7 +58,7 @@ function link_page( $group, $grouped_links ): bool|string {
 						$display_text = esc_html( $link->link_name );
 					}
 
-					$link_color       = esc_attr( empty( $link->color ) ? "#000000" : $link->color );
+					$link_color       = esc_attr( empty( $link->color ) ? $default_color : $link->color );
 					$link_url         = esc_url( $link->url ?? 'javascript:void(0)' );
 					$link_wp_page_url = ! empty( $link->wp_page_id ) ? esc_url( get_permalink( $link->wp_page_id ) ) : 'javascript:void(0)';
 					$link_target      = esc_attr( $link->target ?? '_blank' );
