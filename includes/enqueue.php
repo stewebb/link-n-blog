@@ -1,18 +1,27 @@
 <?php
 
-function enqueue_public_assets() {
-// Enqueue Bootstrap CSS
+function enqueue_public_assets(): void {
+
+	// Custom public assets
+	wp_enqueue_script(
+		'color-manipulator-js',
+		plugin_dir_url( __FILE__ ) . '../assets/js/ColorManipulator.js',
+		[],
+		'1.0.0',
+		false
+	);
+
+	// Bootstrap
 	wp_enqueue_style(
 		'bootstrap-css',
-		plugin_dir_url( __FILE__ ) . 'assets/css/bootstrap.min.css',
+		plugin_dir_url( __FILE__ ) . '../assets/css/bootstrap.min.css',
 		[],
 		'5.3.0'
 	);
 
-	// Enqueue Bootstrap JS
 	wp_enqueue_script(
 		'bootstrap-js',
-		plugin_dir_url( __FILE__ ) . 'assets/js/bootstrap.bundle.min.js',
+		plugin_dir_url( __FILE__ ) . '../assets/js/bootstrap.bundle.min.js',
 		[],
 		'5.3.0',
 		true
@@ -21,17 +30,10 @@ function enqueue_public_assets() {
 
 add_action( 'wp', function () {
 	$current_post = get_post();
-
 	if ( $current_post && has_shortcode( $current_post->post_content, 'lnb' ) ) {
-		// Enqueue Bootstrap CSS and JS
-		add_action( 'wp_enqueue_scripts', function () {
-			wp_enqueue_style(
-				'bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css', [], '5.3.0' );
-			wp_enqueue_script( 'bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js', [ 'jquery' ], '5.3.0', true );
-		} );
+		enqueue_public_assets();
 	}
 } );
-
 
 // Enqueue admin styles and conditionally enqueue scripts
 add_action( 'admin_enqueue_scripts', function (): void {
@@ -39,13 +41,14 @@ add_action( 'admin_enqueue_scripts', function (): void {
 	// Custom admin assets
 	wp_enqueue_style(
 		'admin-css',
-		plugins_url( '../assets/css/admin-styles.css', __FILE__ )
+		plugin_dir_url( __FILE__ ) . '../assets/css/admin-styles.css'
 	);
+
 	wp_enqueue_script(
 		'admin-script',
-		plugins_url( '../assets/js/admin-scripts.js', __FILE__ ),
+		plugin_dir_url( __FILE__ ) . '../assets/js/admin-scripts.js',
 		[ 'jquery' ],
-		'1.0',
+		'1.0.0',
 		true
 	);
 
@@ -75,7 +78,7 @@ add_action( 'admin_enqueue_scripts', function (): void {
 
 		// Preview page
 		case 'link-n-blog_page_link-n-blog-preview':
-			// Enqueue scripts/styles specific to Preview page
+			enqueue_public_assets();
 			break;
 
 		default:
