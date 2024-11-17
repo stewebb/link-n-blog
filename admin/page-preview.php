@@ -27,12 +27,9 @@ function preview_page(): void
         </div>
     </div>
 
+	<?= do_shortcode('[lnb id=' . $group_id . ']'); ?>
 
-	<?php
-    // Retrieve all grouped links
-    //$grouped_links = lnb_get_all_links_grouped_by_category(1);
-    //echo do_shortcode('[lnb id=1]');
-
+        <?php
     /*
     ?>
 

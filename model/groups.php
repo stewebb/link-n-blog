@@ -44,6 +44,26 @@ function lnb_add_group(string $group_name, bool $enabled): mysqli_result|bool|in
  ************************************/
 
 /**
+ * Retrieve a specific group by ID.
+ *
+ * This function fetches a group from the 'lnb_groups' table
+ * based on the provided group ID. Useful for retrieving details
+ * of a specific group for editing or display purposes.
+ *
+ * @global wpdb $wpdb WordPress database access object.
+ *
+ * @param int $group_id The ID of the group to retrieve.
+ * @return object|null The group details as an object on success, null on failure.
+ */
+
+function lnb_get_group_by_id(int $group_id): ?object {
+	global $wpdb;
+	$table_groups = $wpdb->prefix . 'lnb_groups';
+	$query = $wpdb->prepare("SELECT * FROM $table_groups WHERE id = %d", $group_id);
+	return $wpdb->get_row($query);
+}
+
+/**
  * Retrieve a list of all groups.
  *
  * This function fetches all groups from the 'lnb_groups' table,

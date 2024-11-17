@@ -27,9 +27,9 @@ composer.lock
 lib/twig/
 
 # Ignore any compiled or minified files if you plan to generate them automatically
-*.min.js
-*.min.css
-*.map
+#*.min.js
+#*.min.css
+#*.map
 
 # Ignore WordPress core and config files (for development environments)
 wp-config.php
