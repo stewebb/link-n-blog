@@ -11,11 +11,12 @@
     border: 1px solid var(--bs-gray-300);
     margin: 0;
     font-size: 18px;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s ease;
     min-height: 200px;
 }
 
 .link-item:hover {
+    transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 

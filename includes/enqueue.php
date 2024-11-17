@@ -9,6 +9,22 @@ function enqueue_public_assets(): void {
 	);
 
 	wp_enqueue_script(
+		'patternomaly-js',
+		plugin_dir_url( __FILE__ ) . '../assets/js/patternomaly.min.js',
+		[],
+		'1.0.0',
+		false
+	);
+
+	wp_enqueue_script(
+		'pattern-generator-js',
+		plugin_dir_url( __FILE__ ) . '../assets/js/PatternGenerator.js',
+		['patternomaly-js'],
+		'1.0.0',
+		false
+	);
+
+	wp_enqueue_script(
 		'color-manipulator-js',
 		plugin_dir_url( __FILE__ ) . '../assets/js/ColorManipulator.js',
 		[],

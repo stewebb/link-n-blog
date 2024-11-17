@@ -19,17 +19,14 @@ function link_page( $group, $grouped_links ): bool|string {
 
     <div class="container">
 
-        <!-- Group Information -->
+        <!-- Group Title -->
         <div class="text-center fw-bold my-4 lnb-group-title">
             <h3 class="fs-3"><?= $group->name ?></h3>
         </div>
 
+        <!-- Group Content (Iterate all categories) -->
 		<?php
-
-		// Iterate all categories
 		foreach ( $grouped_links as $category_id => $categorized_links ):
-			//echo $category_id;
-
 			$category = lnb_get_category_by_id( $category_id );
 			$category_name = $category->name ?? "Uncategorized";
 			$category_color = $category->color ?? "#000000";
@@ -40,24 +37,40 @@ function link_page( $group, $grouped_links ): bool|string {
             </pre>
 
             <div class="row mb-3">
+
+                <!-- Category Title -->
                 <div class="col-12 lnb-category-title">
                     <h4 style="color: <?= $category_color ?>;">
 						<?= $category_name ?>
                     </h4>
                 </div>
+
+                <!-- Category Content (Iterate all links) -->
 				<?php foreach ( $categorized_links as $link ) : ?>
 					<?php
-					$display_text     = esc_html( $link->label_text ?? $link->link_name ?? '' );
-					$link_color       = esc_attr( $link->color ?? "#000000" );
+
+                    // Skip rendering if it's hidden
+                    if($link->display < 0) {
+                        continue;
+                    }
+
+					$display_text = '';
+					if ( ! empty( $link->label_text ) ) {
+						$display_text = esc_html( $link->label_text );
+					} elseif ( ! empty( $link->link_name ) ) {
+						$display_text = esc_html( $link->link_name );
+					}
+
+					$link_color       = esc_attr( empty( $link->color ) ? "#000000" : $link->color );
 					$link_url         = esc_url( $link->url ?? 'javascript:void(0)' );
 					$link_wp_page_url = ! empty( $link->wp_page_id ) ? esc_url( get_permalink( $link->wp_page_id ) ) : 'javascript:void(0)';
 					$link_target      = esc_attr( $link->target ?? '_blank' );
-                    // TODO sanitize all fields here...
 					?>
-                    <div class="col-xl-3 col-lg-4 col-sm-6 menu-col">
-                        <div class="link-item">
 
-                            <!-- Image -->
+                    <div class="col-xl-3 col-lg-4 col-sm-6 menu-col">
+                        <div class="link-item lnb-link-item">
+
+                            <!-- BG color or cover image -->
                             <div class="banner-container">
 								<?php if ( empty( $link->cover_image_id ) ) : ?>
                                     <canvas id="link-<?= $link->id ?>" class="responsive-canvas"></canvas>
@@ -68,62 +81,65 @@ function link_page( $group, $grouped_links ): bool|string {
                                             .drawPattern('link-<?= $link->id ?>', '<?= $link->id ?>', 512, 512);
                                     </script>
                                     <span class="centered-text fw-bold"
-                                          style="color:<?= $link_color ?>;">
-                                                            <?= $display_text ?>
-                                                        </span>
+                                          style="color:<?= $link_color ?>;"
+                                    >
+                                        <?= $display_text ?>
+                                    </span>
 								<?php else : ?>
 									<?= wp_get_attachment_image( $link->cover_image_id ); ?>
 								<?php endif; ?>
                             </div>
 
-                            <!-- Overlay when hovered -->
-                            <div class="overlay"
-                                 onmouseover="applyHoverColor(this, '<?= $link_color ?>')"
-                                 onmouseout="clearHoverColor(this)">
+                            <!-- Overlay when hovered (Only display in N&L mode ) -->
+							<?php if ( $link->display != 1 ): ?>
+                                <div class="overlay"
+                                     onmouseover="applyHoverColor(this, '<?= $link_color ?>')"
+                                     onmouseout="clearHoverColor(this)">
 
-                                <!-- Text -->
-                                <div class="text-primary"
-                                     style="color: <?= $link_color ?> !important;">
-                                    <h4 class="fw-bold"><?= $display_text ?></h4>
-                                </div>
+                                    <!-- Text -->
+                                    <div class="text-primary"
+                                         style="color: <?= $link_color ?> !important;">
+                                        <h4 class="fw-bold"><?= $display_text ?></h4>
+                                    </div>
 
-                                <!-- Buttons -->
-                                <div class="d-grid gap-0 col-6 mx-auto">
-									<?php if ( ! empty( $link->url ) ) : ?>
+                                    <!-- Buttons -->
+                                    <div class="d-grid gap-0 col-6 mx-auto">
+										<?php if ( ! empty( $link->url ) ) : ?>
+                                            <button type="button" class="btn btn-outline-dark"
+                                                    onclick="window.open('<?= $link_url ?>', '<?= $link_target ?>')"
+                                                    style="color: <?= $link_color ?>; border-color: <?= $link_color ?>;"
+                                                    onmouseover="this.style.backgroundColor='<?= $link_color ?>'; this.style.color='#ffffff';"
+                                                    onmouseout="this.style.backgroundColor='transparent'; this.style.color='<?= $link_color ?>';">
+                                                Visit Site
+                                            </button>
+										<?php endif; ?>
+
+										<?php if ( ! empty( $link->wp_page_id ) ) : ?>
+                                            <button type="button" class="btn btn-outline-dark"
+                                                    onclick="window.open('<?= $link_wp_page_url ?>')"
+                                                    style="color: <?= $link_color ?>; border-color: <?= $link_color ?>;"
+                                                    onmouseover="this.style.backgroundColor='<?= $link_color ?>'; this.style.color='#ffffff';"
+                                                    onmouseout="this.style.backgroundColor='transparent'; this.style.color='<?= $link_color ?>';">
+                                                Learn More
+                                            </button>
+										<?php endif; ?>
+
                                         <button type="button" class="btn btn-outline-dark"
-                                                onclick="window.open('<?= $link_url ?>', '<?= $link_target ?>')"
                                                 style="color: <?= $link_color ?>; border-color: <?= $link_color ?>;"
                                                 onmouseover="this.style.backgroundColor='<?= $link_color ?>'; this.style.color='#ffffff';"
                                                 onmouseout="this.style.backgroundColor='transparent'; this.style.color='<?= $link_color ?>';">
-                                            Visit Site
+                                            Share
                                         </button>
-									<?php endif; ?>
-
-									<?php if ( ! empty( $link->wp_page_id ) ) : ?>
-                                        <button type="button" class="btn btn-outline-dark"
-                                                onclick="window.open('<?= $link_wp_page_url ?>')"
-                                                style="color: <?= $link_color ?>; border-color: <?= $link_color ?>;"
-                                                onmouseover="this.style.backgroundColor='<?= $link_color ?>'; this.style.color='#ffffff';"
-                                                onmouseout="this.style.backgroundColor='transparent'; this.style.color='<?= $link_color ?>';">
-                                            Learn More
-                                        </button>
-									<?php endif; ?>
-
-                                    <button type="button" class="btn btn-outline-dark"
-                                            style="color: <?= $link_color ?>; border-color: <?= $link_color ?>;"
-                                            onmouseover="this.style.backgroundColor='<?= $link_color ?>'; this.style.color='#ffffff';"
-                                            onmouseout="this.style.backgroundColor='transparent'; this.style.color='<?= $link_color ?>';">
-                                        Share
-                                    </button>
+                                    </div>
                                 </div>
+							<?php endif; ?>
 
-                            </div>
                         </div>
                     </div>
 				<?php endforeach; ?>
             </div>
-			<?php
-			$i ++;
+		<?php
+
 		endforeach;
 		?>
     </div>

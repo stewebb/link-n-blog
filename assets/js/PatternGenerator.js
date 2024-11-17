@@ -82,11 +82,9 @@ class PatternGenerator {
             console.error('Canvas with id "' + canvasId + '" not found.');
             return;
         }
-        //const canvas_size = Math.max(canvas.width, canvas.height);
 
         const ctx = canvas.getContext('2d');
         ctx.fillStyle = this.selectPattern(seed);
         ctx.fillRect(0, 0, width, height);
-        //console.log(canvas_size);
     }
 }
