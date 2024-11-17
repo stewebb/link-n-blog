@@ -38,6 +38,26 @@ function lnb_add_category(string $category_name, string $color): mysqli_result|b
  ************************************/
 
 /**
+ * Retrieve a specific category by ID.
+ *
+ * This function fetches a category from the 'lnb_categories' table
+ * based on the provided category ID. Useful for retrieving details
+ * of a specific category for editing or display purposes.
+ *
+ * @global wpdb $wpdb WordPress database access object.
+ *
+ * @param int $category_id The ID of the category to retrieve.
+ * @return object|null The category details as an object on success, null on failure.
+ */
+
+function lnb_get_category_by_id(int $category_id): ?object {
+	global $wpdb;
+	$table_categories = $wpdb->prefix . 'lnb_categories';
+	$query = $wpdb->prepare("SELECT * FROM $table_categories WHERE id = %d", $category_id);
+	return $wpdb->get_row($query);
+}
+
+/**
  * Retrieve a list of all categories.
  *
  * This function fetches all categories from the 'lnb_categories' table,

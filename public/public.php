@@ -34,7 +34,7 @@ add_shortcode('lnb',function ($atts) {
 		);
 	}
 
-	return link_page($grouped_links);
+	return link_page($group, $grouped_links);
 });
 
 /*

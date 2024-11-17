@@ -1,12 +1,9 @@
 <?php
 
-function link_page( $grouped_links ): bool|string {
+function link_page( $group, $grouped_links ): bool|string {
 	ob_start();
 	?>
 
-        <pre>
-            <?php print_r( $grouped_links ); ?>
-        </pre>
     <script>
         const colorManipulator = new ColorManipulator('#000000', 90, true);
 
@@ -22,24 +19,40 @@ function link_page( $grouped_links ): bool|string {
 
     <div class="container">
 
+        <!-- Group Information -->
+        <div class="text-center fw-bold my-4 lnb-group-title">
+            <h3 class="fs-3"><?= $group->name ?></h3>
+        </div>
+
 		<?php
 
-		foreach ( $grouped_links as $category => $links ) :
+		// Iterate all categories
+		foreach ( $grouped_links as $category_id => $categorized_links ):
+			//echo $category_id;
+
+			$category = lnb_get_category_by_id( $category_id );
+			$category_name = $category->name ?? "Uncategorized";
+			$category_color = $category->color ?? "#000000";
 			?>
+
+            <pre>
+                <?php print_r( $categorized_links ); ?>
+            </pre>
+
             <div class="row mb-3">
-                <div class="col-12">
-                    <h4 class="courgette-regular"
-                        style="color: hsl(<?= $i ?>, 100%, 33%);">
-						<?= ! empty( $category ) ? esc_html( $category ) : 'Uncategorized' ?>
+                <div class="col-12 lnb-category-title">
+                    <h4 style="color: <?= $category_color ?>;">
+						<?= $category_name ?>
                     </h4>
                 </div>
-				<?php foreach ( $links as $link ) : ?>
+				<?php foreach ( $categorized_links as $link ) : ?>
 					<?php
 					$display_text     = esc_html( $link->label_text ?? $link->link_name ?? '' );
 					$link_color       = esc_attr( $link->color ?? "#000000" );
 					$link_url         = esc_url( $link->url ?? 'javascript:void(0)' );
 					$link_wp_page_url = ! empty( $link->wp_page_id ) ? esc_url( get_permalink( $link->wp_page_id ) ) : 'javascript:void(0)';
 					$link_target      = esc_attr( $link->target ?? '_blank' );
+                    // TODO sanitize all fields here...
 					?>
                     <div class="col-xl-3 col-lg-4 col-sm-6 menu-col">
                         <div class="link-item">

@@ -228,8 +228,7 @@ function lnb_get_all_links_grouped_by_category(int $group_id): array {
 
 	// Query to get all links with the category and group details
 	$sql = $wpdb->prepare("
-        SELECT l.*, 
-               c.name AS category_name
+        SELECT l.*
         FROM $table_links AS l
         LEFT JOIN $table_categories AS c ON l.category_id = c.id
         LEFT JOIN $table_groups AS g ON l.group_id = g.id
@@ -241,7 +240,7 @@ function lnb_get_all_links_grouped_by_category(int $group_id): array {
 	// Group links by category
 	$grouped_links = [];
 	foreach ($links as $link) {
-		$category = $link->category_name ?? "Uncategorized";
+		$category = $link->category_id ?? "1";
 		$grouped_links[$category][] = $link;
 	}
 

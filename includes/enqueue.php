@@ -3,6 +3,11 @@
 function enqueue_public_assets(): void {
 
 	// Custom public assets
+	wp_enqueue_style(
+		'link-item-css',
+		plugin_dir_url( __FILE__ ) . '../assets/css/link-item.css'
+	);
+
 	wp_enqueue_script(
 		'color-manipulator-js',
 		plugin_dir_url( __FILE__ ) . '../assets/js/ColorManipulator.js',
