@@ -17,7 +17,7 @@ function link_page( $group, $grouped_links ): bool|string {
         }
     </script>
 
-    <div class="container">
+    <div class="container lnb-container">
 
         <!-- Group Title -->
         <div class="text-center fw-bold my-4 lnb-group-title">
@@ -31,10 +31,6 @@ function link_page( $group, $grouped_links ): bool|string {
 			$category_name = $category->name ?? "Uncategorized";
 			$category_color = $category->color ?? "#000000";
 			?>
-
-            <pre>
-                <?php print_r( $categorized_links ); ?>
-            </pre>
 
             <div class="row mb-3">
 
@@ -67,11 +63,11 @@ function link_page( $group, $grouped_links ): bool|string {
 					$link_target      = esc_attr( $link->target ?? '_blank' );
 					?>
 
-                    <div class="col-xl-3 col-lg-4 col-sm-6 menu-col">
-                        <div class="link-item lnb-link-item">
+                    <div class="col-xl-3 col-lg-4 col-sm-6 lnb-menu-col lnb-category-content">
+                        <div class="lnb-link-item">
 
                             <!-- BG color or cover image -->
-                            <div class="banner-container">
+                            <div class="lnb-link-container">
 								<?php if ( empty( $link->cover_image_id ) ) : ?>
                                     <canvas id="link-<?= $link->id ?>" class="responsive-canvas"></canvas>
                                     <script>
@@ -91,7 +87,7 @@ function link_page( $group, $grouped_links ): bool|string {
                             </div>
 
                             <!-- Overlay when hovered -->
-                            <div class="overlay"
+                            <div class="lnb-overlay"
                                  onmouseover="applyHoverColor(this, '<?= $link_color ?>')"
                                  onmouseout="clearHoverColor(this)">
 
@@ -147,7 +143,7 @@ function link_page( $group, $grouped_links ): bool|string {
     </div>
     <script>
         jQuery(document).ready(function ($) {
-            $('.link-item').each(function (index, element) {
+            $('.lnb-link-item').each(function (index, element) {
                 const width = $(element).width();
                 const height = $(element).height();
                 $('.responsive-canvas').css({
