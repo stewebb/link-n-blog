@@ -21,7 +21,7 @@ add_shortcode('lnb',function ($atts) {
 	if ($group->disabled == 1) {
 		return not_found_page(
 			"Group Disabled",
-			"The group <b>" . htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8') . "</b> is currently disabled. Please contact the administrator for more information."
+			"The group <b>" . htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8') . "</b> is currently disabled."
 		);
 	}
 
@@ -30,7 +30,7 @@ add_shortcode('lnb',function ($atts) {
 	if (empty($grouped_links)) {
 		return not_found_page(
 			"No Links Found",
-			"No links are associated with the group <b>" . htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8') . "</b>. Please add some links to this group."
+			"No links are associated with the group <b>" . htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8') . "</b>."
 		);
 	}
 

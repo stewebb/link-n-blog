@@ -1,6 +1,5 @@
 <?php
 
-// Settings Page HTML
 function settings_page(): void {
 	?>
 
@@ -10,7 +9,6 @@ function settings_page(): void {
 
         <form method="post" action="options.php">
 			<?php
-			// Display WordPress settings fields
 			settings_fields( 'lnb-settings-group' );
 			do_settings_sections( 'lnb-settings-group' );
 			?>
@@ -19,8 +17,11 @@ function settings_page(): void {
                 <tr valign="top">
                     <th scope="row">Load Bootstrap</th>
                     <td>
-                        <input type="checkbox" name="load_bootstrap" value="1"
-							<?php checked( 1, get_option( 'load_bootstrap', 1 ) ); ?> />
+                        <p>
+                            <input type="checkbox" name="load_bootstrap" value="1"
+								<?php checked( 1, get_option( 'load_bootstrap', 1 ) ); ?> />
+                        </p>
+                        <p class="description">Deselect if bootstrap in included in your theme.</p>
                     </td>
                 </tr>
 
@@ -44,7 +45,6 @@ function settings_page(): void {
             $('.color-field').wpColorPicker();
         });
     </script>
-
 
 	<?php
 }
