@@ -102,7 +102,11 @@ function link_list_page(): void {
 				<?= generate_sortable_header( 'Display', 'display', $sort_by, $sort_order, $page_num, $group_id ); ?>
                 <th scope="col">Cover Image</th>
 				<?= generate_sortable_header( 'Category', 'category', $sort_by, $sort_order, $page_num, $group_id ); ?>
+
+                <!--
 				<?= generate_sortable_header( 'Hit Num', 'hit_num', $sort_by, $sort_order, $page_num, $group_id ); ?>
+				-->
+
             </tr>
             </thead>
 
@@ -204,7 +208,10 @@ function link_list_page(): void {
                         </td>
 
                         <!-- Hit Num -->
+                        <!--
                         <td><?= esc_html( $link->hit_num ) ?></td>
+                        -->
+
                     </tr>
 					<?php $row_index ++;
 					?>

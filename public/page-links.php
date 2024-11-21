@@ -121,12 +121,15 @@ function link_page( $group, $grouped_links ): bool|string {
                                             </button>
 										<?php endif; ?>
 
+                                        <!--
                                         <button type="button" class="btn btn-outline-dark rounded-circle" disabled
                                                 style="color: <?= $link_color ?>; border-color: <?= $link_color ?>;"
                                                 onmouseover="this.style.backgroundColor='<?= $link_color ?>'; this.style.color='#ffffff';"
                                                 onmouseout="this.style.backgroundColor='transparent'; this.style.color='<?= $link_color ?>';">
                                             <span class="dashicons dashicons-share"></span>
                                         </button>
+                                        -->
+
                                     </div>
 
 								<?php endif; ?>

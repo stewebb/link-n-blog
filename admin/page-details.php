@@ -200,18 +200,22 @@ function link_details_page(): void
                 <?php if ($is_edit_mode): ?>
 
                     <!-- Hit Number -->
+                    <!--
                     <tr>
                         <th scope="row"><label for="hit_num"><span class="not-required">*&nbsp;</span>Hit Number</label>
                         </th>
                         <td><?= $link_data['hit_num'] ?></td>
                     </tr>
+                    -->
 
                     <!-- Last Visit -->
+                    <!--
                     <tr>
                         <th scope="row"><label for="last_visit"><span class="not-required">*&nbsp;</span>Last
                                 Visit</label></th>
                         <td><?= !empty($link_data['last_visit']) ? $link_data['last_visit'] : "Never" ?></td>
                     </tr>
+                    -->
 
                     <!-- Created At -->
                     <tr>
@@ -232,13 +236,6 @@ function link_details_page(): void
 
             <div class="inline-buttons">
                 <?php submit_button($is_edit_mode ? 'Update Link' : 'Add New Link'); ?>
-
-                <!--
-                <p class="submit">
-                    <a href="admin.php?page=link-n-blog" class="button button-secondary">Back to List</a>
-                </p>
-                -->
-
                 <?php if ($is_edit_mode): ?>
                     <p class="submit">
                         <?php
